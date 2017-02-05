@@ -98,10 +98,11 @@ path_prepend () { path_remove $1; export PATH="$1:$PATH"; }
 path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`; }
 
 # Export
-export PATH="$HOME/.pyenv/shims:$PATH"
-eval "$(pyenv init -)"
-export PATH="$HOME/.rbenv/shims:$PATH"
-eval "$(rbenv init -)"
+if type pyenv > /dev/null 2>&1; then
+        eval "$(pyenv init -)"
+fi
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export PATH="/usr/local/bin:$PATH"
 
