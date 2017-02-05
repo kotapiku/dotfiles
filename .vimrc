@@ -25,6 +25,7 @@ set hlsearch    "highlight
 set ignorecase
 set wrapscan
 
+set noswapfile    "swapファイルをつくらない
 nnoremap n nzz    "検索時にカーソル位置を中央に
 nnoremap N Nzz
 nnoremap Y y$    "Yでカーソル位置から行末までコピー
