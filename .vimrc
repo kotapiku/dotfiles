@@ -32,5 +32,4 @@ nnoremap Y y$    "Yでカーソル位置から行末までコピー
 
 " color scheme
 set background=dark
-colorscheme hybrid
-
+colorscheme solarized
