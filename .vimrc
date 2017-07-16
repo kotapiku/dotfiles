@@ -30,6 +30,9 @@ nnoremap n nzz    "検索時にカーソル位置を中央に
 nnoremap N Nzz
 nnoremap Y y$    "Yでカーソル位置から行末までコピー
 
+" clipboard
+set clipboard+=unnamed
+
 " color scheme
 set background=dark
 colorscheme solarized
