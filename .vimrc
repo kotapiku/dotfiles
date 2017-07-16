@@ -1,4 +1,3 @@
-
 " encoding
 set encoding=utf-8
 scriptencoding utf-8
@@ -10,14 +9,13 @@ set title
 syntax on
 set ruler    "display cursor position
 set wildmenu    "completion
-set showmatch    "jump to corresponding parenthesis
 
 " indent
-set smartindent
+set autoindent
+set cindent
 set tabstop=4
 set shiftwidth=4
 set expandtab    "replace tab with space
-
 
 " search
 set incsearch    "increment
@@ -32,6 +30,15 @@ nnoremap Y y$    "Yでカーソル位置から行末までコピー
 
 " clipboard
 set clipboard+=unnamed
+
+" 括弧補完
+inoremap { {}<LEFT>
+inoremap [ []<LEFT>
+inoremap ( ()<LEFT>
+inoremap < <><LEFT>
+inoremap " ""<LEFT>
+inoremap ' ''<LEFT>
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
 
 " color scheme
 set background=dark
