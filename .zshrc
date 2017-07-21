@@ -80,7 +80,7 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
-
+alias vi='nvim'
 alias -s py=python
 
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
@@ -106,6 +106,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.nodebrew/current/bin:$PATH"
+export XDG_CONFIG_HOME=~/.config
 
 #brewとpyenvの共存のため
 alias brew="env PATH=${PATH/\/Users\/itertle\/\.pyenv\/shims:/} brew"
