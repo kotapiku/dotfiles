@@ -48,6 +48,19 @@ vmap <Leader>c <Plug>(caw:hatpos:toggle)
 set background=dark
 colorscheme solarized
 
+" nerdtree
+map <C-n> :NERDTreeToggle<CR>
+
+" buffer
+set hidden
+nnoremap <silent>bp :bprevious<CR>
+nnoremap <silent>bn :bnext<CR>
+nnoremap <silent>bb :b#<CR>
+nnoremap <silent>bf :bf<CR>
+nnoremap <silent>bl :bl<CR>
+nnoremap <silent>bm :bm<CR>
+nnoremap <silent>bd :bdelete<CR>
+
 "dein Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
@@ -67,10 +80,27 @@ if dein#load_state('/Users/kotapiku/.cache/dein')
   " Add or remove your plugins here:
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('tyru/caw.vim')
-  call dein#add('Shougo/deoplete.nvim')
-  :let g:deoplete#enable_at_startup = 1
-
+  call dein#add('tyru/caw.vim') " コメントアウト
+  call dein#add('Shougo/deoplete.nvim') " 補完
+    :let g:deoplete#enable_at_startup = 1
+  call dein#add('ryanoasis/vim-devicons')
+  call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
+  call dein#add('vim-airline/vim-airline') " ステータスバー
+    let g:airline_powerline_fonts = 1
+    let g:airline#extensions#tabline#enabled = 1
+    set laststatus=2
+  call dein#add('vim-airline/vim-airline-themes')
+    let g:airline_theme='solarized'
+    let g:airline_solarized_bg='dark'
+  call dein#add('ctrlpvim/ctrlp.vim')
+    let g:ctrlp_show_hidden = 1
+  call dein#add('Shougo/denite.nvim')
+  call dein#add('scrooloose/nerdtree')
+    let NERDTreeShowHidden = 1
+    let g:NERDTreeShowBookmarks=1
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
   " You can specify revision/branch/tag.
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
