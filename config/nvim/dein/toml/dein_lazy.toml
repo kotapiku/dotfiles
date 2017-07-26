@@ -1,0 +1,16 @@
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+depends = ['Shougo/neosnippet-snippets']
+on_i = 1
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'tyru/caw.vim'   #コメントアウト
+on_i = 1
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+hook_add = 'let g:deoplete#enable_at_startup = 1'
+on_i = 1

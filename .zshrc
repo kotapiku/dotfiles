@@ -82,6 +82,7 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias vi='nvim'
 alias -s py=python
+alias -s cpp=g++ -Wall -o 
 
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 

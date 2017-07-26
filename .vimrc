@@ -70,45 +70,28 @@ endif
 set runtimepath+=/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state('/Users/kotapiku/.cache/dein')
-  call dein#begin('/Users/kotapiku/.cache/dein')
+if dein#load_state($HOME . '/.config/nvim/dein')
 
-  " Let dein manage dein
-  " Required:
-  call dein#add('/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim')
+" XDG base direcory compartible
+  let g:dein#cache_directory = $HOME . '/.cache/dein'
 
-  " Add or remove your plugins here:
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('tyru/caw.vim') " コメントアウト
-  call dein#add('Shougo/deoplete.nvim') " 補完
-    :let g:deoplete#enable_at_startup = 1
-  call dein#add('ryanoasis/vim-devicons')
-  call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
-  call dein#add('vim-airline/vim-airline') " ステータスバー
-    let g:airline_powerline_fonts = 1
-    let g:airline#extensions#tabline#enabled = 1
-    set laststatus=2
-  call dein#add('vim-airline/vim-airline-themes')
-    let g:airline_theme='solarized'
-    let g:airline_solarized_bg='dark'
-  call dein#add('ctrlpvim/ctrlp.vim')
-    let g:ctrlp_show_hidden = 1
-  call dein#add('Shougo/denite.nvim')
-  call dein#add('scrooloose/nerdtree')
-    let NERDTreeShowHidden = 1
-    let g:NERDTreeShowBookmarks=1
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+  " dein begin
+  call dein#begin($HOME . '/.config/nvim/dein')
 
-  " You can specify revision/branch/tag.
-  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+ " プラグインリストを収めた TOML ファイル
+ " 予め TOML ファイル（後述）を用意しておく
+ let s:toml_dir  = $HOME . '/.config/nvim/dein/toml' 
+ let s:toml      = s:toml_dir . '/dein.toml'
+ let s:lazy_toml = s:toml_dir . '/dein_lazy.toml'
+
+ " TOML を読み込み、キャッシュしておく
+ call dein#load_toml(s:toml,      {'lazy': 0})
+ call dein#load_toml(s:lazy_toml, {'lazy': 1})
+
 
   " Required:
   call dein#end()
   call dein#save_state()
-  call deoplete#enable() 
 endif
 
 " Required:

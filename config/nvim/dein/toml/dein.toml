@@ -1,0 +1,45 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'vim-airline/vim-airline' 
+depends = ['vim-airline-themes']
+hook_add = '''
+    let g:airline_powerline_fonts = 1
+    let g:airline#extensions#tabline#enabled = 1
+    set laststatus=2
+'''
+
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes' 
+hook_add = '''
+    let g:airline_theme='solarized'
+    let g:airline_solarized_bg='dark'
+'''
+
+[[plugins]]
+repo = 'ctrlpvim/ctrlp.vim'
+hook_add = '''
+    let g:ctrlp_show_hidden = 1
+'''
+
+[[plugins]]
+repo = 'Shougo/denite.nvim' 
+
+[[plugins]]
+repo = 'scrooloose/nerdtree' 
+depends = ['ryanoasis/vim-devicons','tiagofumo/vim-nerdtree-syntax-highlight']
+hook_add = '''
+    let g:NERDTreeShowHidden = 1
+    let g:NERDTreeShowBookmarks=1
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+'''
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons' 
+
+[[plugins]]
+repo = 'tiagofumo/vim-nerdtree-syntax-highlight' 
+
