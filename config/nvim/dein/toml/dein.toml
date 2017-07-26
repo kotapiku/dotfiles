@@ -2,6 +2,9 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
 repo = 'vim-airline/vim-airline' 
 depends = ['vim-airline-themes']
 hook_add = '''
@@ -32,7 +35,11 @@ depends = ['ryanoasis/vim-devicons','tiagofumo/vim-nerdtree-syntax-highlight']
 hook_add = '''
     let g:NERDTreeShowHidden = 1
     let g:NERDTreeShowBookmarks=1
+    # 他のバッファをすべて閉じた時にNERDTreeが開いていたらNERDTreeも一緒に閉じる
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    # 起動時にnerdtree表示 
+    autocmd vimenter * NERDTree
+    # ファイル名が指定されてvimが起動した場合はnerdtreeを表示しない
     autocmd StdinReadPre * let s:std_in=1
     autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 '''

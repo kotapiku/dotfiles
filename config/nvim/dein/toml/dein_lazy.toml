@@ -1,10 +1,7 @@
 [[plugins]]
 repo = 'Shougo/neosnippet.vim'
-depends = ['Shougo/neosnippet-snippets']
+depends = ['neosnippet-snippets']
 on_i = 1
-
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
 
 [[plugins]]
 repo = 'tyru/caw.vim'   #コメントアウト
