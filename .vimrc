@@ -27,6 +27,7 @@ set noswapfile    "swapファイルをつくらない
 nnoremap n nzz    "検索時にカーソル位置を中央に
 nnoremap N Nzz
 nnoremap Y y$    "Yでカーソル位置から行末までコピー
+nnoremap <F3> :noh<CR>    "検索したハイライトを消す
 
 " clipboard
 set clipboard+=unnamed
