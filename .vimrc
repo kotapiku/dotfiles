@@ -27,7 +27,6 @@ set noswapfile    "swapファイルをつくらない
 nnoremap n nzz    "検索時にカーソル位置を中央に
 nnoremap N Nzz
 nnoremap Y y$    "Yでカーソル位置から行末までコピー
-nnoremap <F3> :noh<CR>    "検索したハイライトを消す
 
 " clipboard
 set clipboard+=unnamed
@@ -40,6 +39,9 @@ inoremap ( ()<LEFT>
 inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
+
+" =前後に空白補完
+inoremap <expr> = getline(".")[col(".")-3] == '=' ? "<bs>= " : getline(".")[col(".")-2] =~ '\s' ? "= " : "="
 
 " caw comment out
 nmap <Leader>c <Plug>(caw:hatpos:toggle)
