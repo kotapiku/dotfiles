@@ -47,3 +47,5 @@ repo = 'ryanoasis/vim-devicons'
 [[plugins]]
 repo = 'tiagofumo/vim-nerdtree-syntax-highlight' 
 
+[[plugins]]
+repo = 'neovimhaskell/haskell-vim'
