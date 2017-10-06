@@ -43,10 +43,6 @@ inoremap {<Enter> {}<Left><CR><ESC><S-o>
 " =前後に空白補完
 inoremap <expr> = getline(".")[col(".")-3] == '=' ? "<bs>= " : getline(".")[col(".")-2] =~ '\s' ? "= " : "="
 
-" caw comment out
-nmap <Leader>c <Plug>(caw:hatpos:toggle)
-vmap <Leader>c <Plug>(caw:hatpos:toggle)
-
 " color scheme
 set background=dark
 colorscheme solarized

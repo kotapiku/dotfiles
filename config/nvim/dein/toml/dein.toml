@@ -21,12 +21,6 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'ctrlpvim/ctrlp.vim'
-hook_add = '''
-    let g:ctrlp_show_hidden = 1
-'''
-
-[[plugins]]
 repo = 'Shougo/denite.nvim' 
 
 [[plugins]]
@@ -49,3 +43,11 @@ repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 [[plugins]]
 repo = 'neovimhaskell/haskell-vim'
+
+[[plugins]]
+repo = 'tyru/caw.vim'
+hook_add = '''
+nmap <Leader>c <Plug>(caw:hatpos:toggle)
+vmap <Leader>c <Plug>(caw:hatpos:toggle)
+'''
+
