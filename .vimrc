@@ -32,7 +32,7 @@ nnoremap Y y$    "Yでカーソル位置から行末までコピー
 set clipboard+=unnamed
 
 " 括弧補完
-inoremap { {}<LEFT>
+inoremap {{ {}<LEFT>
 inoremap [ []<LEFT>
 inoremap ( ()<LEFT>
 " inoremap < <><LEFT>
