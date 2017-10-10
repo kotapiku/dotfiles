@@ -43,6 +43,9 @@ inoremap {<Enter> {}<Left><CR><ESC><S-o>
 " =前後に空白補完
 inoremap <expr> = getline(".")[col(".")-3] == '=' ? "<bs>= " : getline(".")[col(".")-2] =~ '\s' ? "= " : "="
 
+" == でバッファ内インデント
+nnoremap == gg=G''
+
 " color scheme
 set background=dark
 colorscheme solarized
@@ -52,13 +55,13 @@ map <C-n> :NERDTreeToggle<CR>
 
 " buffer
 set hidden
-nnoremap <silent>bp :bprevious<CR>
-nnoremap <silent>bn :bnext<CR>
-nnoremap <silent>bb :b#<CR>
-nnoremap <silent>bf :bf<CR>
-nnoremap <silent>bl :bl<CR>
-nnoremap <silent>bm :bm<CR>
-nnoremap <silent>bd :bdelete<CR>
+nnoremap <Space>bp :bprevious<CR>
+nnoremap <Space>bn :bnext<CR>
+nnoremap <Space>bb :b#<CR>
+nnoremap <Space>bf :bf<CR>
+nnoremap <Space>bl :bl<CR>
+nnoremap <Space>bm :bm<CR>
+nnoremap <Space>bd :bdelete<CR>
 
 "dein Scripts-----------------------------
 if &compatible
