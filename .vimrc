@@ -31,11 +31,13 @@ nnoremap Y y$    "Yでカーソル位置から行末までコピー
 " clipboard
 set clipboard+=unnamed
 
+" vimgrepで自動cw
+autocmd QuickFixCmdPost *grep* cwindow
+
 " 括弧補完
 inoremap {{ {}<LEFT>
 inoremap [ []<LEFT>
 inoremap ( ()<LEFT>
-" inoremap < <><LEFT>
 inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
