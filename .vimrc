@@ -65,6 +65,19 @@ nnoremap <Space>bl :bl<CR>
 nnoremap <Space>bm :bm<CR>
 nnoremap <Space>bd :bdelete<CR>
 
+" keymap
+inoremap jk <Esc>
+nnoremap gs  :<C-u>%s///g<Left><Left><Left>
+vnoremap gs  :s///g<Left><Left><Left>
+nnoremap k   gk
+nnoremap j   gj
+vnoremap k   gk
+vnoremap j   gj
+nnoremap gk  k
+nnoremap gj  j
+vnoremap gk  k
+vnoremap gj  j
+
 "dein Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
