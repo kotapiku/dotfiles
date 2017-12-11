@@ -67,7 +67,9 @@ nnoremap <Space>bd :bdelete<CR>
 
 " keymap
 nnoremap :w :w<CR>
+nnoremap :noh :noh<CR>
 inoremap jk <Esc>
+vnoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
 vnoremap gs  :s///g<Left><Left><Left>
 nnoremap k   gk
