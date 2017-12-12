@@ -72,6 +72,7 @@ setopt pushd_ignore_dups    # 重複したディレクトリを追加しない
 setopt extended_glob    # 高機能なワイルドカード展開を使用する
 
 bindkey '^R' history-incremental-pattern-search-backward    # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
+bindkey -v
 
 # Alias
 alias la='ls -a'    #ファイル全表示

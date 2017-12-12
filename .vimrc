@@ -48,10 +48,6 @@ inoremap <expr> = getline(".")[col(".")-3] == '=' ? "<bs>= " : getline(".")[col(
 " == でバッファ内インデント
 nnoremap == gg=G''
 
-" color scheme
-set background=dark
-colorscheme solarized
-
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
@@ -87,7 +83,7 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
 if dein#load_state($HOME . '/.config/nvim/dein')
@@ -124,3 +120,8 @@ if dein#check_install()
 endif
 
 "End dein Scripts-------------------------
+
+set background=dark
+colorscheme solarized
+
+
