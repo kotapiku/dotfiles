@@ -94,6 +94,9 @@ alias -g G='| grep'    #検索
 export CLICOLOR=1
 alias ls='ls -G -F'
 
+# vi mode
+bindkey -M viins 'jk' vi-cmd-mode
+
 #pathの追加・削除のための関数
 path_append ()  { path_remove $1; export PATH="$PATH:$1"; }
 path_prepend () { path_remove $1; export PATH="$1:$PATH"; }
