@@ -76,6 +76,8 @@ nnoremap gk  k
 nnoremap gj  j
 vnoremap gk  k
 vnoremap gj  j
+nnoremap ; :
+nnoremap : ;
 
 "dein Scripts-----------------------------
 if &compatible
