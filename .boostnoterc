@@ -11,7 +11,7 @@
     },
     "hotkey": {
         "toggleFinder": "Cmd + Alt + S",
-        "toggleMain": "Ctrl + B"
+        "toggleMain": "Ctrl + Command + B"
     },
     "isSideNavFolded": false,
     "listStyle": "DEFAULT",

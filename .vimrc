@@ -49,7 +49,7 @@ inoremap <expr> = getline(".")[col(".")-3] == '=' ? "<bs>= " : getline(".")[col(
 nnoremap == gg=G''
 
 " nerdtree
-map <C-n> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 " buffer
 set hidden
@@ -62,8 +62,8 @@ nnoremap <Space>bm :bm<CR>
 nnoremap <Space>bd :bdelete<CR>
 
 " keymap
-nnoremap :w :w<CR>
-nnoremap :noh :noh<CR>
+nnoremap ;w :w<CR>
+nnoremap ;noh :noh<CR>
 inoremap jk <Esc>
 vnoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
