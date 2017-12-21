@@ -65,7 +65,6 @@ nnoremap <Space>bd :bdelete<CR>
 nnoremap ;w :w<CR>
 nnoremap ;noh :noh<CR>
 inoremap jk <Esc>
-vnoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
 vnoremap gs  :s///g<Left><Left><Left>
 nnoremap k   gk
@@ -88,17 +87,17 @@ endif
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state($HOME . '/.config/nvim/dein')
+if dein#load_state($HOME . '/dotfiles/config/nvim/dein')
 
 " XDG base direcory compartible
   let g:dein#cache_directory = $HOME . '/.cache/dein'
 
   " dein begin
-  call dein#begin($HOME . '/.config/nvim/dein')
+  call dein#begin($HOME . '/dotfiles/config/nvim/dein')
 
  " プラグインリストを収めた TOML ファイル
  " 予め TOML ファイル（後述）を用意しておく
- let s:toml_dir  = $HOME . '/.config/nvim/dein/toml' 
+ let s:toml_dir  = $HOME . '/dotfiles/config/nvim/dein/toml' 
  let s:toml      = s:toml_dir . '/dein.toml'
  let s:lazy_toml = s:toml_dir . '/dein_lazy.toml'
 
