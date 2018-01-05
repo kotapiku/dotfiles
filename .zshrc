@@ -114,6 +114,7 @@ export PATH="$HOME/.nodebrew/current/bin:$PATH"
 export XDG_CONFIG_HOME=~/.config
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"    #for egison
+export PATH="/usr/local/Cellar/ghc:$PATH"
 
 #brewとpyenvの共存のため
 alias brew="env PATH=${PATH/\/Users\/itertle\/\.pyenv\/shims:/} brew"
