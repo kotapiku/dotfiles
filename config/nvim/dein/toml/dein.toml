@@ -7,7 +7,7 @@ repo = 'Shougo/dein.vim'
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 
-/* status bar */
+# status bar
 [[plugins]]
 repo = 'vim-airline/vim-airline' 
 depends = ['vim-airline-themes']
@@ -42,7 +42,7 @@ repo = 'ryanoasis/vim-devicons'
 [[plugins]]
 repo = 'tiagofumo/vim-nerdtree-syntax-highlight' 
 
-/* comment */
+# comment
 [[plugins]]
 repo = 'tyru/caw.vim'
 hook_add = '''
