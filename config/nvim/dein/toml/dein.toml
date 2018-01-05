@@ -59,3 +59,6 @@ repo = 'alpicola/vim-egison'
 
 [[plugins]]
 repo = 'begriffs/haskell-vim-now'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
