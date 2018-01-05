@@ -62,3 +62,5 @@ repo = 'begriffs/haskell-vim-now'
 [[plugins]]
 repo = 'neovimhaskell/haskell-vim'
 
+[[plugins]]
+repo = 'kassio/neoterm'

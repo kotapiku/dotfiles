@@ -79,6 +79,10 @@ nnoremap ; :
 nnoremap : ;
 nnoremap /  /\v
 
+" terminal mode
+nnoremap ;Tnew :Tnew<C-w>j
+tnoremap <silent> jk <C-\><C-n>
+
 "dein Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
