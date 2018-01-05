@@ -7,6 +7,7 @@ repo = 'Shougo/dein.vim'
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 
+/* status bar */
 [[plugins]]
 repo = 'vim-airline/vim-airline' 
 depends = ['vim-airline-themes']
@@ -22,9 +23,6 @@ hook_add = '''
     let g:airline_theme='solarized'
     let g:airline_solarized_bg='dark'
 '''
-
-[[plugins]]
-repo = 'Shougo/denite.nvim' 
 
 [[plugins]]
 repo = 'scrooloose/nerdtree' 
@@ -44,9 +42,7 @@ repo = 'ryanoasis/vim-devicons'
 [[plugins]]
 repo = 'tiagofumo/vim-nerdtree-syntax-highlight' 
 
-[[plugins]]
-repo = 'neovimhaskell/haskell-vim'
-
+/* comment */
 [[plugins]]
 repo = 'tyru/caw.vim'
 hook_add = '''
@@ -55,10 +51,14 @@ vmap <Leader>c <Plug>(caw:hatpos:toggle)
 '''
 
 [[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
 repo = 'alpicola/vim-egison'
 
 [[plugins]]
 repo = 'begriffs/haskell-vim-now'
 
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
+repo = 'neovimhaskell/haskell-vim'
+
