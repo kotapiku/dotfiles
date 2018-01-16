@@ -30,7 +30,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000    #メモリ上に保存される件数
 SAVEHIST=100000    #ファイルに保存される件数
 setopt hist_ignore_dups    #重複した履歴を保存しない
-setopt share_history    #同時に起動したzshの間でヒストリを共有する
 setopt hist_ignore_space    #半角スペースを入れたコマンドは履歴に残さない
 setopt hist_ignore_all_dups    # 同じコマンドをヒストリに残さない
 setopt hist_reduce_blanks    # ヒストリに保存するときに余分なスペースを削除する
@@ -71,8 +70,14 @@ setopt auto_pushd    # cd したら自動的にpushdする
 setopt pushd_ignore_dups    # 重複したディレクトリを追加しない
 setopt extended_glob    # 高機能なワイルドカード展開を使用する
 
-bindkey '^R' history-incremental-pattern-search-backward    # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey -v
+
+# History search
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^p" history-beginning-search-backward-end
+bindkey "^n" history-beginning-search-forward-end
 
 # Alias
 alias la='ls -a'    #ファイル全表示
