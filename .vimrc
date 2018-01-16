@@ -62,8 +62,6 @@ nnoremap <Space>bm :bm<CR>
 nnoremap <Space>bd :bdelete<CR>
 
 " keymap
-nnoremap ;w :w<CR>
-nnoremap ;noh :noh<CR>
 inoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
 vnoremap gs  :s///g<Left><Left><Left>
@@ -80,7 +78,6 @@ nnoremap : ;
 nnoremap /  /\v
 
 " terminal mode
-nnoremap ;Tnew :Tnew<C-w>j
 tnoremap <silent> jk <C-\><C-n>
 
 "dein Scripts-----------------------------
