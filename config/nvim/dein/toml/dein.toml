@@ -46,8 +46,8 @@ repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
 [[plugins]]
 repo = 'tyru/caw.vim'
 hook_add = '''
-nmap <Leader>c <Plug>(caw:hatpos:toggle)
-vmap <Leader>c <Plug>(caw:hatpos:toggle)
+    nmap <Leader>c <Plug>(caw:hatpos:toggle)
+    vmap <Leader>c <Plug>(caw:hatpos:toggle)
 '''
 
 [[plugins]]
@@ -64,3 +64,7 @@ repo = 'neovimhaskell/haskell-vim'
 
 [[plugins]]
 repo = 'kassio/neoterm'
+hook_add = '''
+    " hide/close terminal
+    nnoremap <silent> ,tc :call neoterm#close()<cr>
+'''
