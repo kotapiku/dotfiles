@@ -89,7 +89,7 @@ alias mkdir='mkdir -p'
 alias vi='nvim'
 alias -s py=python
 alias -s cpp=g++ -Wall -o 
-
+alias ctags="`brew --prefix`/bin/ctags"
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 
 # Global alias

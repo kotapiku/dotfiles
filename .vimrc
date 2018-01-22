@@ -49,7 +49,10 @@ inoremap <expr> = getline(".")[col(".")-3] == '=' ? "<bs>= " : getline(".")[col(
 nnoremap == gg=G''
 
 " nerdtree
-nnoremap <C-n> :NERDTreeToggle<CR>
+nnoremap <Space>n :NERDTreeToggle<CR>
+
+" tagbar
+nnoremap <Space>t :TagbarToggle<CR>
 
 " buffer
 set hidden
