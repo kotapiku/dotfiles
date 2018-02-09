@@ -52,7 +52,7 @@ nnoremap == gg=G''
 nnoremap <Space>n :NERDTreeToggle<CR>
 
 " tagbar
-nnoremap <Space>t :TagbarToggle<CR>
+nnoremap <Space>t :TagbarToggle<CR><C-w>l
 
 " buffer
 set hidden
