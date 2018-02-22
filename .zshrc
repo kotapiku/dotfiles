@@ -115,7 +115,6 @@ export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="$PYENV_ROOT/versions/3.6.4/bin:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export PATH="$HOME/.nodebrew/current/bin:$PATH"
 export XDG_CONFIG_HOME=~/.config
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/dev/egison/.cabal-sandbox/bin:$PATH"
