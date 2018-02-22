@@ -111,17 +111,18 @@ path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'
 if type pyenv > /dev/null 2>&1; then
         eval "$(pyenv init -)"
 fi
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv/shims"
+export PATH="$PYENV_ROOT/versions/3.6.4/bin:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.nodebrew/current/bin:$PATH"
 export XDG_CONFIG_HOME=~/.config
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/dev/egison/.cabal-sandbox/bin:$PATH"
+export PATH="$HOME/.cache:$PATH"
 
 #brewとpyenvの共存のため
-alias brew="env PATH=${PATH/\/Users\/itertle\/\.pyenv\/shims:/} brew"
+alias brew="env PATH=${PATH/\/Users\/kotapiku\/\.pyenv\/shims:/} brew"
 #envのpathの重複自動削除
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 
