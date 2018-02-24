@@ -96,6 +96,8 @@ alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効に
 alias -g L='| less'    #閲覧
 alias -g G='| grep'    #検索
 
+alias acedit="~/.pyenv/shims/versions/3.5.4/bin/acedit"
+
 export CLICOLOR=1
 alias ls='ls -G -F'
 
@@ -112,7 +114,6 @@ if type pyenv > /dev/null 2>&1; then
         eval "$(pyenv init -)"
 fi
 export PYENV_ROOT="$HOME/.pyenv/shims"
-export PATH="$PYENV_ROOT/versions/3.6.4/bin:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export XDG_CONFIG_HOME=~/.config
