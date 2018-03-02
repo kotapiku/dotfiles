@@ -91,6 +91,7 @@ alias -s py=python
 alias -s cpp=g++ -Wall -o 
 alias ctags="`brew --prefix`/bin/ctags"
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
+alias fcp='(){ cat $1 | pbcopy }'
 
 # Global alias
 alias -g L='| less'    #閲覧
