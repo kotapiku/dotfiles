@@ -84,7 +84,6 @@ vnoremap gk  k
 vnoremap gj  j
 nnoremap ; :
 nnoremap : ;
-nnoremap /  /\v
 
 " terminal mode
 tnoremap <silent> jk <C-\><C-n>
