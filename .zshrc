@@ -88,7 +88,7 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias vi='nvim'
 alias -s py=python
-alias -s cpp=g++ -Wall -o 
+alias -s cpp=g++ -Wall -o
 alias ctags="`brew --prefix`/bin/ctags"
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 alias fcp='(){ cat $1 | pbcopy }'
@@ -115,6 +115,7 @@ if type pyenv > /dev/null 2>&1; then
         eval "$(pyenv init -)"
 fi
 export PYENV_ROOT="$HOME/.pyenv/shims"
+export PATH="$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export XDG_CONFIG_HOME=~/.config

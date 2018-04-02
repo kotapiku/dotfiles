@@ -104,11 +104,3 @@ hook_add = '''
 [[plugins]]
 repo = 'bitc/lushtags'
 
-[[plugins]]
-repo = 'neomake/neomake'
-hook_add = '''
-    autocmd! BufWritePost * Neomake
-    let g:neomake_cpp_enable_markers=['gcc']
-    let g:neomake_cpp_gcc_args = ["-std=c++14", "-Wall"]
-    let g:neomake_cpp_gcccheck_args = ["-std=c++14", "-Wall"]
- '''
