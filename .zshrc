@@ -80,6 +80,8 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
 # Alias
+alias ocaml="rlwrap ocaml"
+alias cdd="cd .."
 alias la='ls -a'    #ファイル全表示
 alias ll='ls -l'    #詳細表示
 alias rm='rm -i'
