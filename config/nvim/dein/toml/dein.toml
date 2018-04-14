@@ -1,5 +1,5 @@
 [[plugins]]
-repo = 'altercation/vim-colors-solarized'
+repo = 'https://github.com/morhetz/gruvbox.git'
 
 [[plugins]]
 repo = 'Shougo/dein.vim'
@@ -20,7 +20,7 @@ hook_add = '''
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes' 
 hook_add = '''
-    let g:airline_theme='solarized'
+    let g:airline_theme='gruvbox'
     let g:airline_solarized_bg='dark'
 '''
 

@@ -134,6 +134,6 @@ endif
 "End dein Scripts-------------------------
 
 set background=dark
-colorscheme solarized
+colorscheme gruvbox
 
 
