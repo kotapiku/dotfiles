@@ -94,6 +94,8 @@ alias fcp='(){ cat $1 | pbcopy }'
 alias ctags="`brew --prefix`/bin/ctags"
 alias acedit="~/.pyenv/shims/versions/3.5.4/bin/acedit"
 
+function git(){hub "$@"}
+
 # vi mode
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode   # jkでvi-modeへ
@@ -122,3 +124,5 @@ alias brew="env PATH=${PATH/\/Users\/kotapiku\/\.pyenv\/shims:/} brew"
 #envのpathの重複自動削除
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 
+#再起動
+alias relogin='exec $SHELL -l'
