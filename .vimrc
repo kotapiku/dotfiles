@@ -136,4 +136,4 @@ endif
 set background=dark
 colorscheme gruvbox
 
-
+set clipboard=unnamedplus

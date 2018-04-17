@@ -89,12 +89,22 @@ alias vi='nvim'
 alias -s py=python
 alias -s cpp=g++ -Wall -o
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
-alias fcp='(){ cat $1 | pbcopy }'
 
-alias ctags="`brew --prefix`/bin/ctags"
+case ${OSTYPE} in
+    darwin*)
+        alias fcp='(){ cat $1 | pbcopy }'
+        alias ctags="`brew --prefix`/bin/ctags"
+        function git(){hub "$@"}
+        ;;
+    linux*)
+        alias fcp='(){cat $1 | xsel --clipboard --input}'
+        #OPAM configuration
+        . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+        ;;
+esac
+
 alias acedit="~/.pyenv/shims/versions/3.5.4/bin/acedit"
 
-function git(){hub "$@"}
 
 # vi mode
 bindkey -v
