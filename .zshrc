@@ -90,6 +90,7 @@ alias -s py=python
 alias -s cpp=g++ -Wall -o
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 function git(){hub "$@"}
+function mkcd () { mkdir -p $1 && cd $1 }
 
 case ${OSTYPE} in
     darwin*)
