@@ -111,8 +111,12 @@ if dein#load_state($HOME . '/dotfiles/config/nvim/dein')
  " プラグインリストを収めた TOML ファイル
  " 予め TOML ファイル（後述）を用意しておく
  let s:toml_dir  = $HOME . '/dotfiles/config/nvim/dein/toml' 
- let s:toml      = s:toml_dir . '/dein.toml'
  let s:lazy_toml = s:toml_dir . '/dein_lazy.toml'
+ if has("mac")
+     let s:toml      = s:toml_dir . '/dein.toml'
+ elseif has("unix")
+     let s:toml      = s:toml_dir . '/dein_unix.toml'
+ endif
 
  " TOML を読み込み、キャッシュしておく
  call dein#load_toml(s:toml,      {'lazy': 0})
