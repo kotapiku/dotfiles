@@ -89,12 +89,12 @@ alias vi='nvim'
 alias -s py=python
 alias -s cpp=g++ -Wall -o
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
+function git(){hub "$@"}
 
 case ${OSTYPE} in
     darwin*)
         alias fcp='(){ cat $1 | pbcopy }'
         alias ctags="`brew --prefix`/bin/ctags"
-        function git(){hub "$@"}
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
