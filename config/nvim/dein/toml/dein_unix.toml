@@ -109,3 +109,4 @@ repo = 'eagletmt/ghcmod-vim'
 
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
+build = 'make'
