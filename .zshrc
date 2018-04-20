@@ -89,6 +89,8 @@ alias vi='nvim'
 alias -s py=python
 alias -s cpp=g++ -Wall -o
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
+alias g='cd $(ghq list -p | peco)'
+alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 function git(){hub "$@"}
 function mkcd () { mkdir -p $1 && cd $1 }
 
