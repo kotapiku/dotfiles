@@ -841,9 +841,9 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 126 606 469 0 0 1920 1080 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>311 260 796 473 0 0 1366 768 </string>
+	<string>522 258 796 473 0 0 1366 746 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>93 26 650 427 0 0 1366 746 </string>
+	<string>93 0 570 452 0 0 1366 746 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>292 88 665 427 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1582,7 +1582,7 @@
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<false/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
@@ -1625,7 +1625,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/kotapiku/dotfiles</string>
+	<string>/Users/kotapiku/dotfiles/iterm</string>
 	<key>Print In Black And White</key>
 	<true/>
 	<key>PromptOnQuit</key>
@@ -1639,7 +1639,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-04-14T09:12:35Z</date>
+	<date>2018-04-22T04:42:08Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
