@@ -15,13 +15,8 @@ set autoindent
 set cindent
 set expandtab    "replace tab with space
 
-if stridx(expand("%:p"), "/dev/egison/") != -1
-  set tabstop=2
-  set shiftwidth=2
-else
-  set tabstop=4
-  set shiftwidth=4
-endif
+set tabstop=4
+set shiftwidth=4
 
 " search
 set incsearch    "increment

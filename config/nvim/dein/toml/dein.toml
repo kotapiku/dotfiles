@@ -1,5 +1,5 @@
 [[plugins]]
-repo = 'https://github.com/morhetz/gruvbox.git'
+repo = 'morhetz/gruvbox.git'
 
 [[plugins]]
 repo = 'Shougo/dein.vim'
@@ -104,3 +104,13 @@ hook_add = '''
 [[plugins]]
 repo = 'bitc/lushtags'
 
+[[plugins]]
+repo = 'plasticboy/vim-markdown'
+depends = ['godlygeek/tabular']
+
+[[plugins]]
+repo = 'godlygeek/tabular'
+
+[[plugins]]
+repo = 'embear/vim-localvimrc'
+hook_add = 'let g:localvimrc_ask = 0'

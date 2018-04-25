@@ -2,3 +2,4 @@
 config/nvim/dein/repos/
 config/nvim/.netrwhist
 .python-version
+.DS_Store
