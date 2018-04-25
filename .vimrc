@@ -90,7 +90,12 @@ nnoremap : ;
 " terminal mode
 tnoremap <silent> jk <C-\><C-n>
 
-let g:python_host_prog='/Users/kotapiku/.pyenv/shims/shims/python'
+if has("mac")
+    let g:python_host_prog='/Users/kotapiku/.pyenv/shims/shims/python'
+elseif has("unix")
+    let g:python_host_prog='/usr/bin/python'
+    let g:python3_host_prog='/usr/bin/python3'
+endif
 
 "dein Scripts-----------------------------
 if &compatible
