@@ -1,6 +1,10 @@
 #!/bin/bash
-set -e
+set -eu
 DOT_DIRECTORY="${HOME}/dotfiles"
+
+has() {
+  type "$1" > /dev/null 2>&1
+}
 
 usage() {
   name=`basename $0`
