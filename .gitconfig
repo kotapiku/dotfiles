@@ -1,5 +1,5 @@
 [core]
-  excludesfile = /Users/kotapiku/.gitignore_global
+  excludesfile = ~/.gitignore_global
 [user]
   name = kotapiku
   email = ice08235523@gmail.com
