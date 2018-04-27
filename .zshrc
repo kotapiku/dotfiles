@@ -77,7 +77,6 @@ setopt pushd_ignore_dups    # 重複したディレクトリを追加しない
 setopt extended_glob    # 高機能なワイルドカード展開を使用する
 
 # Alias
-alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
 alias cdd="cd .."
 alias ls='ls -G -F' # 色付けして表示, 名前の末尾に記号(種類)を表示
 alias la='ls -a'
@@ -85,14 +84,22 @@ alias ll='ls -l'
 alias cp='cp -i'    # コピー先に同名のファイルが存在したとき確認
 alias mv='mv -i'    # 上書き前に確認
 alias mkdir='mkdir -p'
+alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
+function mkcd () { mkdir -p $1 && cd $1 }
+
+alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
 alias vi='nvim'
+
 alias -s py=python
 alias -s cpp=g++ -Wall -o
-alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
+
+alias zshrc='vim ~/.zshrc'
+alias vimrc='vim ~/.vimrc'
+alias tmuxrc='vim ~/.tmux.conf'
+
 alias g='cd $(ghq list -p | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 function git(){hub "$@"}
-function mkcd () { mkdir -p $1 && cd $1 }
 
 case ${OSTYPE} in
     darwin*)
@@ -108,6 +115,38 @@ esac
 
 alias acedit="~/.pyenv/shims/versions/3.5.4/bin/acedit"
 
+# extract
+function extract() {
+	case $1 in
+		*.tar.gz|*.tgz) tar xzvf $1;;
+		*.tar.xz) tar Jxvf $1;;
+		*.zip) unzip $1;;
+		*.lzh) lha e $1;;
+		*.tar.bz2|*.tbz) tar xjvf $1;;
+		*.tar.Z) tar zxvf $1;;
+		*.gz) gzip -d $1;;
+		*.bz2) bzip2 -dc $1;;
+		*.Z) uncompress $1;;
+		*.tar) tar xvf $1;;
+		*.arj) unarj $1;;
+	esac
+}
+
+# tmux
+if [ ! -z `which tmux` ]; then
+	if [ $SHLVL = 1 ]; then
+		if [ $(( `ps aux | grep tmux | grep $USER | grep -v grep | wc -l` )) != 0 ]; then
+			echo -n 'Attach tmux session? [Y/n]'
+			read YN
+			[[ $YN = '' ]] && YN=y
+			[[ $YN = y ]] && tmux attach
+		fi
+		echo -n 'No tmux session, create new? [Y/n]'
+		read YN
+		[[ $YN = '' ]] && YN=y
+		[[ $YN = y ]] && tmux
+	fi
+fi
 
 # vi mode
 bindkey -v
