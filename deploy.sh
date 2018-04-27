@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu
 DOT_DIRECTORY="${HOME}/dotfiles"
+OVERWRITE=false
 
 has() {
   type "$1" > /dev/null 2>&1
@@ -35,6 +36,8 @@ do
     [[ ${f} = ".git" ]] && continue
     [[ ${f} = ".gitignore" ]] && continue
     [[ ${f} = ".DS_Store" ]] && continue
+    [[ ${f} = ".python-version" ]] && continue
+    [[ ${f} = ".lvimrc" ]] && continue
 
     ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
   fi
