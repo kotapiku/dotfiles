@@ -1,16 +1,16 @@
 [core]
-	excludesfile = /Users/kotapiku/.gitignore_global
+  excludesfile = /Users/kotapiku/.gitignore_global
 [user]
-	name = kotapiku
-	email = ice08235523@gmail.com
+  name = kotapiku
+  email = ice08235523@gmail.com
 [commit]
-	template = /Users/kotapiku/.stCommitMsg
+  template = /Users/kotapiku/.stCommitMsg
 [use]
-	name = kotapiku
+  name = kotapiku
 [fetch]
-    prune=True
+  prune=True
 [alias]
-    sync = !git checkout master && git pull origin master && git fetch -p origin && git branch -d $(git branch --merged | grep -v master | grep -v '*')
-    new = "!f() { git sync; git checkout -b $USER/$(echo $@ | sed 's/\\ /-/g'); }; f"
+  sync = !git checkout master && git pull origin master && git fetch -p origin && git branch -d $(git branch --merged | grep -v master | grep -v '*')
+  new = "!f() { git sync; git checkout -b $USER/$(echo $@ | sed 's/\\ /-/g'); }; f"
 [push]
-    default = current
+  default = current
