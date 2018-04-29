@@ -88,6 +88,7 @@ tnoremap <silent> jk <C-\><C-n>
 
 if has("mac")
     let g:python_host_prog='/Users/kotapiku/.pyenv/shims/shims/python'
+    let g:python3_host_prog='/Users/kotapiku/.pyenv/shims/shims/python3'
 elseif has("unix")
     let g:python_host_prog='/usr/bin/python'
     let g:python3_host_prog='/usr/bin/python3'
