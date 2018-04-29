@@ -20,8 +20,7 @@ hook_add = '''
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes' 
 hook_add = '''
-    let g:airline_theme='gruvbox'
-    let g:airline_solarized_bg='dark'
+    let g:airline_theme='minimalist'
 '''
 
 [[plugins]]
