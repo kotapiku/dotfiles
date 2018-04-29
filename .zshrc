@@ -93,9 +93,9 @@ alias vi='nvim'
 alias -s py=python
 alias -s cpp=g++ -Wall -o
 
-alias zshrc='vim ~/.zshrc'
-alias vimrc='vim ~/.vimrc'
-alias tmuxrc='vim ~/.tmux.conf'
+alias zshrc='vi ~/.zshrc'
+alias vimrc='vi ~/.vimrc'
+alias tmuxrc='vi ~/.tmux.conf'
 
 alias g='cd $(ghq list -p | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
@@ -133,19 +133,22 @@ function extract() {
 }
 
 # tmux
-if [ ! -z `which tmux` ]; then
-	if [ $SHLVL = 1 ]; then
-		if [ $(( `ps aux | grep tmux | grep $USER | grep -v grep | wc -l` )) != 0 ]; then
-			echo -n 'Attach tmux session? [Y/n]'
-			read YN
-			[[ $YN = '' ]] && YN=y
-			[[ $YN = y ]] && tmux attach
-		fi
-		echo -n 'No tmux session, create new? [Y/n]'
-		read YN
-		[[ $YN = '' ]] && YN=y
-		[[ $YN = y ]] && tmux
-	fi
+if [[ ! -n $TMUX && $- == *l* ]]; then
+  # get the IDs
+  ID="`tmux list-sessions`"
+  if [[ -z "$ID" ]]; then
+    tmux new-session
+  fi
+  create_new_session="Create New Session"
+  ID="$ID\n${create_new_session}:"
+  ID="`echo $ID | peco | cut -d: -f1`"
+  if [[ "$ID" = "${create_new_session}" ]]; then
+    tmux new-session
+  elif [[ -n "$ID" ]]; then
+    tmux attach-session -t "$ID"
+  else
+    :  # Start terminal normally
+  fi
 fi
 
 # vi mode
