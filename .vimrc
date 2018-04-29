@@ -58,7 +58,7 @@ nnoremap <Space>t :TagbarToggle<CR><C-w>l
 
 " buffer
 set hidden
-set nosol
+set nosol   "buffer間をカーソル位置を保存して移動
 nnoremap <Space>bp :bprevious<CR>
 nnoremap <Space>bn :bnext<CR>
 nnoremap <Space>bb :b#<CR>
