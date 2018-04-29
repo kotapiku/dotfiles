@@ -2,6 +2,9 @@
 	"segments": {
 		"right": [
       {
+        "function": "powerline.segments.common.vcs.branch"
+      },
+      {
         "function": "powerline.segments.common.bat.battery"
       },
       {
@@ -11,20 +14,15 @@
               "format": "%Y/%m/%d %H:%M",
               "istime": false 
           }
-      },
-			{
-				"function": "powerline.segments.common.net.hostname"
-			}
+      }
 		],
 
     "left": [
 			{
-				"function": "powerline.segments.common.sys.uptime",
-				"priority": 50
+				"function": "powerline.segments.common.net.hostname"
 			},
 			{
-				"function": "powerline.segments.common.sys.system_load",
-				"priority": 50
+				"function": "powerline.segments.common.net.external_ip"
 			}
     ]
 	}
