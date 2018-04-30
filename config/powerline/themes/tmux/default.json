@@ -8,16 +8,13 @@
         "function": "powerline.segments.common.bat.battery"
       },
       {
-          "function": "powerline.segments.common.time.date",
-          "name": "time",
-          "args": {
-              "format": "%Y/%m/%d %H:%M",
-              "istime": false 
-          }
-      },
-			{
-				"function": "powerline.segments.common.net.hostname"
-			}
+        "function": "powerline.segments.common.time.date",
+        "name": "time",
+        "args": {
+            "format": "%Y/%m/%d %H:%M",
+            "istime": false 
+        }
+      }
 		],
 
     "left": [
