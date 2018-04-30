@@ -44,12 +44,6 @@ inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 
-" =前後に空白補完
-inoremap <expr> = getline(".")[col(".")-3] == '=' ? "<bs>= " : getline(".")[col(".")-2] =~ '\s' ? "= " : "="
-
-" == でバッファ内インデント
-nnoremap == gg=G''
-
 " nerdtree
 nnoremap <Space>n :NERDTreeToggle<CR>
 
