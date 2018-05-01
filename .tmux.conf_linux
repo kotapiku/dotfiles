@@ -15,6 +15,9 @@ set-option -g default-terminal "screen-256color"
 # reload .tmux.conf
 bind r source-file ~/.tmux.conf \; display "Reloaded!"
 
+# prefix key
+set -g prefix C-a
+
 # vi keybind
 set-window-option -g mode-keys vi
 
