@@ -1,0 +1,37 @@
+# status bar
+set-option -g status-position top
+set-option -g status on
+set-option -g status-interval 1
+set-option -g status-left-length 150
+
+run-shell "powerline-daemon -q"
+source ".local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+
+set-option -g mouse on
+set-option -g base-index 1
+set-option -sg escape-time 0
+set-option -g default-terminal "screen-256color"
+
+# reload .tmux.conf
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+# vi keybind
+set-window-option -g mode-keys vi
+
+# splits and move windows
+bind-key v split-window -h
+bind-key s split-window -v
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+
+# copy
+bind -t vi-copy v begin-selection
+bind -t vi-copy V select-line
+bind -t vi-copy C-v rectangle-toggle
+bind -t vi-copy y copy-pipe "xsel -bi"
+bind -t vi-copy Y copy-line
+bind -t vi-copy C-b page-up
+bind -t vi-copy C-f page-down
+
