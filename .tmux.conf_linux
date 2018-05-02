@@ -5,7 +5,7 @@ set-option -g status-interval 1
 set-option -g status-left-length 150
 
 run-shell "powerline-daemon -q"
-souce $PLCONFPATH
+source .local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf
 
 set-option -g mouse on
 set-option -g base-index 1
