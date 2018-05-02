@@ -168,7 +168,6 @@ export PATH="$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export XDG_CONFIG_HOME=~/.config
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/dev/egison/.cabal-sandbox/bin:$PATH"
 export PATH="$HOME/.cabal-sandbox/bin:$PATH"
 export PATH="$HOME/.cache:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
