@@ -113,3 +113,10 @@ repo = 'godlygeek/tabular'
 [[plugins]]
 repo = 'embear/vim-localvimrc'
 hook_add = 'let g:localvimrc_ask = 0'
+
+# for latex
+[[plugins]]
+repo = 'lervag/vimtex'
+
+[[plugins]]
+repo = 'xuhdev/vim-latex-live-preview'

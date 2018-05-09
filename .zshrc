@@ -96,6 +96,7 @@ alias -s cpp=g++ -Wall -o
 alias zshrc='vi ~/.zshrc'
 alias vimrc='vi ~/.vimrc'
 alias tmuxrc='vi ~/.tmux.conf'
+alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
 
 alias g='cd $(ghq list -p | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
