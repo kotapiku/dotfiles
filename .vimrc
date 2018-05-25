@@ -126,7 +126,8 @@ if dein#load_state(s:dein_path)
  " Required:
  call dein#end()
  call dein#save_state()
- call dein#check_clean()
+
+ call map(dein#check_clean(), "delete(v:val, 'rf')")
 endif
 
 " Required:
