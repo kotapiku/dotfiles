@@ -94,34 +94,39 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+let s:dein_path = $HOME . '/dotfiles/config/nvim/dein'
+let s:dein_repo_path = s:dein_path . '/repos/github.com/Shougo/dein.vim'
+
+if !isdirectory(s:dein_repo_path)
+  execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_path
+endif
+
+execute 'set runtimepath^=' . s:dein_repo_path
 
 " Required:
-if dein#load_state($HOME . '/dotfiles/config/nvim/dein')
+if dein#load_state(s:dein_path)
 
 " XDG base direcory compartible
-  let g:dein#cache_directory = $HOME . '/.cache/dein'
+ let g:dein#cache_directory = $HOME . '/.cache/dein'
 
-  " dein begin
-  call dein#begin($HOME . '/dotfiles/config/nvim/dein')
-
- " プラグインリストを収めた TOML ファイル
- " 予め TOML ファイル（後述）を用意しておく
- let s:toml_dir  = $HOME . '/dotfiles/config/nvim/dein/toml' 
+ " dein begin
+ call dein#begin(s:dein_path)
+ let s:toml_dir  = s:dein_path . '/toml'
  let s:lazy_toml = s:toml_dir . '/dein_lazy.toml'
  if has("mac")
-     let s:toml      = s:toml_dir . '/dein.toml'
+   let s:toml      = s:toml_dir . '/dein.toml'
  elseif has("unix")
-     let s:toml      = s:toml_dir . '/dein_unix.toml'
+   let s:toml      = s:toml_dir . '/dein_unix.toml'
  endif
 
  " TOML を読み込み、キャッシュしておく
  call dein#load_toml(s:toml,      {'lazy': 0})
  call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
-  " Required:
-  call dein#end()
-  call dein#save_state()
+ " Required:
+ call dein#end()
+ call dein#save_state()
+ call dein#check_clean()
 endif
 
 " Required:
