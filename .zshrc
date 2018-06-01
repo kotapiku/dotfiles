@@ -100,6 +100,7 @@ alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
 
 alias g='cd $(ghq list -p | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+
 function git(){hub "$@"}
 
 case ${OSTYPE} in
@@ -169,11 +170,11 @@ export PATH="$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export XDG_CONFIG_HOME=~/.config
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cache:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="/usr/local/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
 
 #brewとpyenvの共存のため
 alias brew="env PATH=${PATH/\/Users\/kotapiku\/\.pyenv\/shims:/} brew"
