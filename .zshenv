@@ -4,3 +4,4 @@ export GOPATH=$HOME/go
 export GOROOT=/usr/lib/go
 export PATH=$PATH:$GOROOT/bin/:$GOPATH/bin
 export FPATH=$FPATH:~/.zplug/repos/docker
+export PATH="~/.ghq/github.com/egison/egison/.stack-work/install:$PATH"

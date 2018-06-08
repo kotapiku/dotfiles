@@ -103,12 +103,11 @@ alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 
 function oj_d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
 
-function git(){hub "$@"}
-
 case ${OSTYPE} in
     darwin*)
         alias fcp='(){ cat $1 | pbcopy }'
         alias ctags="`brew --prefix`/bin/ctags"
+        function git(){hub "$@"}
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
@@ -177,6 +176,7 @@ export PATH="$HOME/.cache:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="/usr/local/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
 
 #brewとpyenvの共存のため
 alias brew="env PATH=${PATH/\/Users\/kotapiku\/\.pyenv\/shims:/} brew"
