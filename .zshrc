@@ -100,6 +100,9 @@ alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
 
 alias g='cd $(ghq list -p | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+
+function oj_d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
+
 function git(){hub "$@"}
 
 case ${OSTYPE} in
@@ -168,6 +171,7 @@ fi
 export PATH="$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export XDG_CONFIG_HOME=~/.config
+export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cache:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"

@@ -88,6 +88,7 @@ elseif has("unix")
     let g:python3_host_prog='/usr/bin/python3'
 endif
 
+if has("nvim")
 "dein Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
@@ -134,6 +135,7 @@ if dein#check_install()
 endif
 
 "End dein Scripts-------------------------
+endif
 
 set background=dark
 colorscheme gruvbox
