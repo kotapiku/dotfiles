@@ -4,3 +4,4 @@ export GOPATH=$HOME/go
 export GOROOT=/usr/lib/go
 export PATH=$PATH:$GOROOT/bin/:$GOPATH/bin
 export PATH="~/.ghq/github.com/egison/egison/.stack-work/install/x86_64-linux-nopie/lts-11.10/8.2.2/bin:$PATH"
+export FPATH=$FPATH:~/.zplug/repos/docker
