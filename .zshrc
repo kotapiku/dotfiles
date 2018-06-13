@@ -101,12 +101,12 @@ alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
 alias g='cd $(ghq list -p | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 
-function git(){hub "$@"}
 
 case ${OSTYPE} in
     darwin*)
         alias fcp='(){ cat $1 | pbcopy }'
         alias ctags="`brew --prefix`/bin/ctags"
+        function git(){hub "$@"}
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
