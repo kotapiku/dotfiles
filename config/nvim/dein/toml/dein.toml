@@ -120,3 +120,6 @@ repo = 'lervag/vimtex'
 
 [[plugins]]
 repo = 'xuhdev/vim-latex-live-preview'
+
+[[plugins]]
+repo = 'adimit/prolog.vim'
