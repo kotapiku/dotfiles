@@ -10,7 +10,6 @@ syntax on
 set ruler    "display cursor position
 set wildmenu    "completion
 set nofoldenable    "disable fold
-set wildignorecase  "to ignorecase in e command
 
 " indent
 set autoindent
@@ -33,6 +32,10 @@ nnoremap Y y$    "Yでカーソル位置から行末までコピー
 
 " clipboard
 set clipboard+=unnamed
+
+" ignore in completion
+set wildignorecase  "to ignorecase in e command
+set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.cmi,*.cmo,*.cma
 
 " vimgrepで自動cw
 autocmd QuickFixCmdPost *grep* cwindow
