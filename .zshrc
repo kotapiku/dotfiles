@@ -101,6 +101,8 @@ alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
 alias g='cd $(ghq list -p | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 
+function mktar () { tar cvzf $1.tar.gz $1 }
+
 function oj_d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
 
 case ${OSTYPE} in
