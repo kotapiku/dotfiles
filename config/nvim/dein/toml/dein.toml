@@ -52,12 +52,6 @@ hook_add = '''
 repo = 'airblade/vim-gitgutter'
 
 [[plugins]]
-repo = 'alpicola/vim-egison'
-
-[[plugins]]
-repo = 'neovimhaskell/haskell-vim'
-
-[[plugins]]
 repo = 'kassio/neoterm'
 hook_add = '''
     " hide/close terminal
@@ -121,5 +115,13 @@ repo = 'lervag/vimtex'
 [[plugins]]
 repo = 'xuhdev/vim-latex-live-preview'
 
+# for languages
 [[plugins]]
-repo = 'adimit/prolog.vim'
+repo = 'rust-lang/rust.vim'
+
+[[plugins]]
+repo = 'alpicola/vim-egison'
+
+[[plugins]]
+repo = 'neovimhaskell/haskell-vim'
+
