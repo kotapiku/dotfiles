@@ -104,7 +104,7 @@ function oj_d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks
 
 case ${OSTYPE} in
     darwin*)
-        alias fcp='(){ cat $1 | pbcopy }'
+        function fcp () { cat $1 | pbcopy }
         alias ctags="`brew --prefix`/bin/ctags"
         function git(){hub "$@"}
         ;;
@@ -114,8 +114,6 @@ case ${OSTYPE} in
         . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
         ;;
 esac
-
-alias acedit="~/.pyenv/shims/versions/3.5.4/bin/acedit"
 
 # extract
 function extract() {
@@ -157,6 +155,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
+
+export RUST_BACKTRACE=1
 
 #brewとpyenvの共存のため
 alias brew="env PATH=${PATH/\/Users\/kotapiku\/\.pyenv\/shims:/} brew"

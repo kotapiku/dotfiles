@@ -113,6 +113,9 @@ repo = 'xuhdev/vim-latex-live-preview'
 repo = 'rust-lang/rust.vim'
 
 [[plugins]]
+repo = 'racer-rust/vim-racer'
+
+[[plugins]]
 repo = 'alpicola/vim-egison'
 
 [[plugins]]

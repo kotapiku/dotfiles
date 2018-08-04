@@ -41,7 +41,7 @@ set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.
 autocmd QuickFixCmdPost *grep* cwindow
 
 " 括弧補完
-inoremap {{ {}<LEFT>
+inoremap {{ {}<LEFT><Space><Space><Left>
 inoremap [ []<LEFT>
 inoremap ( ()<LEFT>
 inoremap " ""<LEFT>
