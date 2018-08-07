@@ -90,7 +90,7 @@ function mkcd () { mkdir -p $1 && cd $1 }
 alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
 alias vi='nvim'
 
-alias -s py=python
+alias -s py=python3
 alias -s cpp=g++ -Wall -o
 
 alias zshrc='vi ~/.zshrc'
@@ -101,6 +101,10 @@ alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
 function mktar () { tar cvzf $1.tar.gz $1 }
 
 function oj_d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
+function oj_url_d () { rm -rf test && oj d $1 }
+
+function rust-cp-macro () { cat ~/.ghq/github.com/kotapiku/competitive-pg/rust-cp/macro.rs > $1
+                            nvim $1 }
 
 case ${OSTYPE} in
     darwin*)

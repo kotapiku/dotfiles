@@ -111,6 +111,10 @@ repo = 'xuhdev/vim-latex-live-preview'
 # for languages
 [[plugins]]
 repo = 'rust-lang/rust.vim'
+on_ft = 'rust'
+hook_source = '''
+    let g:rustfmt_autosave = 1
+'''
 
 [[plugins]]
 repo = 'racer-rust/vim-racer'
