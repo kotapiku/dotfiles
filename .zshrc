@@ -103,6 +103,8 @@ function mktar () { tar cvzf $1.tar.gz $1 }
 function oj_d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
 function oj_url_d () { rm -rf test && oj d $1 }
 
+function ru () { rustc $1 -o a.out || return 1 ; oj test -i }
+
 function rust-cp-macro () { cat ~/.ghq/github.com/kotapiku/competitive-pg/rust-cp/macro.rs > $1
                             nvim $1 }
 
