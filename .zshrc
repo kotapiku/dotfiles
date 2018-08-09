@@ -16,7 +16,7 @@ if [ -e "${HOME}/.zplug" ]; then
 	zplug load
 fi
 
-# zplug setting
+# Zplug setting
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=30'
@@ -100,13 +100,19 @@ alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
-function oj_d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
-function oj_url_d () { rm -rf test && oj d $1 }
+# for atcoder
+function oj-d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
+function oj-url-d () { rm -rf test && oj d $1 }
 
 function ru () { rustc $1 -o a.out || return 1 ; oj test -i }
 
-function rust-cp-macro () { cat ~/.ghq/github.com/kotapiku/competitive-pg/rust-cp/macro.rs > $1
-                            nvim $1 }
+function rust-cp-macro () { if [ -e $1 ]; then
+                                echo "file exists."
+                            else
+                                cat ~/.ghq/github.com/kotapiku/competitive-pg/rust-cp/macro.rs > $1
+                                nvim $1 
+                            fi
+                            }
 
 case ${OSTYPE} in
     darwin*)
@@ -121,7 +127,6 @@ case ${OSTYPE} in
         ;;
 esac
 
-# extract
 function extract() {
 	case $1 in
 		*.tar.gz|*.tgz) tar xzvf $1;;
