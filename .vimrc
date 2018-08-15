@@ -7,8 +7,8 @@ set fileencodings=utf-8
 set number
 set title
 syntax on
-set ruler    "display cursor position
-set wildmenu    "completion
+set ruler           "display cursor position
+set wildmenu        "completion
 set nofoldenable    "disable fold
 
 " indent
@@ -20,9 +20,10 @@ set tabstop=4
 set shiftwidth=4
 
 " search
-set incsearch    "increment
-set hlsearch    "highlight
+set incsearch    "incremental search
+set hlsearch     "highlight
 set ignorecase
+set smartcase    "大文字含んでいたら区別
 set wrapscan
 
 set noswapfile    "swapファイルをつくらない
