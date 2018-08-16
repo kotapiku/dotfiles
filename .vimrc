@@ -41,14 +41,6 @@ set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.
 " vimgrepで自動cw
 autocmd QuickFixCmdPost *grep* cwindow
 
-" 括弧補完
-inoremap {{ {}<LEFT><Left>
-inoremap [ []<LEFT>
-inoremap ( ()<LEFT>
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
-inoremap {<Enter> {}<Left><CR><ESC><S-o>
-
 " nerdtree
 nnoremap <Space>n :NERDTreeToggle<CR>
 

@@ -87,6 +87,10 @@ hook_add = '''
             \ }
 '''
 
+# branckets
+[[plugins]]
+repo = 'itmammoth/doorboy.vim'
+
 [[plugins]]
 repo = 'bitc/lushtags'
 
