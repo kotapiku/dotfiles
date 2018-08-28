@@ -94,9 +94,13 @@ repo = 'itmammoth/doorboy.vim'
 [[plugins]]
 repo = 'bitc/lushtags'
 
+# markdown
 [[plugins]]
 repo = 'plasticboy/vim-markdown'
 depends = ['godlygeek/tabular']
+
+[[plugins]]
+repo = 'suan/vim-instant-markdown'
 
 [[plugins]]
 repo = 'godlygeek/tabular'
