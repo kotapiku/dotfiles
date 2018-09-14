@@ -93,10 +93,9 @@ alias vi='nvim'
 alias -s py=python3
 alias -s cpp=g++ -Wall -o
 
-alias zshrc='vi ~/.zshrc'
-alias vimrc='vi ~/.vimrc'
-alias tmuxrc='vi ~/.tmux.conf'
-alias deintoml='vi ~/dotfiles/config/nvim/dein/toml/dein.toml'
+alias zshrc='nvim ~/.zshrc'
+alias vimrc='nvim ~/.vimrc'
+alias tmuxrc='nvim ~/.tmux.conf'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
@@ -118,10 +117,12 @@ case ${OSTYPE} in
     darwin*)
         function fcp () { cat $1 | pbcopy }
         alias ctags="`brew --prefix`/bin/ctags"
+        alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
         function git(){hub "$@"}
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
+        alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein_unix.toml'
         #OPAM configuration
         . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
         ;;

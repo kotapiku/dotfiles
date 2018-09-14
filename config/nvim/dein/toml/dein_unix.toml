@@ -125,3 +125,6 @@ repo = 'eagletmt/ghcmod-vim'
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
 build = 'make'
+
+[[plugins]]
+repo = 'andy-morris/alex.vim'
