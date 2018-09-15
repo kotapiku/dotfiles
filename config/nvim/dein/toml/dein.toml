@@ -133,3 +133,8 @@ repo = 'alpicola/vim-egison'
 [[plugins]]
 repo = 'neovimhaskell/haskell-vim'
 
+[[plugins]]
+repo = 'andy-morris/alex.vim'
+
+[[plugins]]
+repo = 'andy-morris/happy.vim'
