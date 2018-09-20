@@ -7,6 +7,9 @@ repo = 'Shougo/dein.vim'
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+
 # status bar
 [[plugins]]
 repo = 'vim-airline/vim-airline' 
@@ -109,6 +112,7 @@ hook_add = 'let g:localvimrc_ask = 0'
 # for latex
 [[plugins]]
 repo = 'lervag/vimtex'
+hook_add = 'g:vimtex_compiler_progname = "nvr"'
 
 [[plugins]]
 repo = 'xuhdev/vim-latex-live-preview'
