@@ -128,3 +128,6 @@ build = 'make'
 
 [[plugins]]
 repo = 'andy-morris/alex.vim'
+
+[[plugins]]
+repo = 'andy-morris/happy.vim'
