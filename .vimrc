@@ -48,9 +48,6 @@ autocmd QuickFixCmdPost *grep* cwindow
 " nerdtree
 nnoremap <Space>n :NERDTreeToggle<CR>
 
-" tagbar
-nnoremap <Space>t :TagbarToggle<CR><C-w>l
-
 " defx
 autocmd FileType defx call s:defx_my_settings()
 	function! s:defx_my_settings() abort
@@ -96,13 +93,13 @@ autocmd FileType defx call s:defx_my_settings()
 " buffer
 set hidden
 set nosol   "buffer間をカーソル位置を保存して移動
-nnoremap <Space>bp :bprevious<CR>
-nnoremap <Space>bn :bnext<CR>
+nnoremap <Space>bp :bp<CR>
+nnoremap <Space>bn :bn<CR>
 nnoremap <Space>bb :b#<CR>
 nnoremap <Space>bf :bf<CR>
 nnoremap <Space>bl :bl<CR>
 nnoremap <Space>bm :bm<CR>
-nnoremap <Space>bd :bdelete<CR>
+nnoremap <Space>bd :bp<bar>bd#<CR>
 
 " keymap
 let mapleader = "\\"
