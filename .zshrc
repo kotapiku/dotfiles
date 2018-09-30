@@ -180,3 +180,9 @@ export LC_ALL='ja_JP.UTF-8'
 
 #再起動
 alias relogin='exec $SHELL -l'
+
+# === cool-peco init ===
+FPATH="$FPATH:/Users/kotapiku/.ghq/github.com/ryoppy/cool-peco"
+autoload -Uz cool-peco
+cool-peco
+# ======================
