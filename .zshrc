@@ -119,6 +119,12 @@ case ${OSTYPE} in
         alias ctags="`brew --prefix`/bin/ctags"
         alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
         function git(){hub "$@"}
+
+        # === cool-peco init ===
+        FPATH="$FPATH:/Users/kotapiku/.ghq/github.com/ryoppy/cool-peco"
+        autoload -Uz cool-peco
+        cool-peco
+        # ======================
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
@@ -180,9 +186,3 @@ export LC_ALL='ja_JP.UTF-8'
 
 #再起動
 alias relogin='exec $SHELL -l'
-
-# === cool-peco init ===
-FPATH="$FPATH:/Users/kotapiku/.ghq/github.com/ryoppy/cool-peco"
-autoload -Uz cool-peco
-cool-peco
-# ======================
