@@ -99,6 +99,17 @@ alias tmuxrc='nvim ~/.tmux.conf'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
+# for yugen
+alias ip-add-yugen='curl ifconfig.me | xargs -I {} curl http://49.212.25.77/cgi-bin/ssh.cgi --data network={}'
+
+# for todolist
+alias ta='todolist a'
+alias tl='todolist l'
+alias tlp='todolist l by p'
+alias tlc='todolist l by c'
+alias te='todolist e'
+alias td='todolist d'
+
 # for atcoder
 function oj-d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
 function oj-url-d () { rm -rf test && oj d $1 }
@@ -173,6 +184,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 
 export RUST_BACKTRACE=1
 
