@@ -97,8 +97,8 @@ nnoremap <Space>bp :bp<CR>
 nnoremap <Space>bn :bn<CR>
 nnoremap <Space>bb :b#<CR>
 nnoremap <Space>bf :bf<CR>
+nnoremap <Space>bm :execut(":b" . (len(split(execute(":ls"), "\n"))+1)/2)<CR>
 nnoremap <Space>bl :bl<CR>
-nnoremap <Space>bm :bm<CR>
 nnoremap <Space>bd :bp<bar>bd#<CR>
 
 " keymap
