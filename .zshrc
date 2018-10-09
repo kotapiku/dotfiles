@@ -95,7 +95,7 @@ alias -s cpp=g++ -Wall -o
 
 alias zshrc='nvim ~/.zshrc'
 alias vimrc='nvim ~/.vimrc'
-alias tmuxrc='nvim ~/.tmux.conf'
+alias tmuxconf='nvim ~/.tmux.conf'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
