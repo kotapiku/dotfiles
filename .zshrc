@@ -174,22 +174,20 @@ path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'
 if type pyenv > /dev/null 2>&1; then
         eval "$(pyenv init -)"
 fi
-export PATH="$PYENV_ROOT/shims:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
 export XDG_CONFIG_HOME=~/.config
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cache:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
-export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 
 export RUST_BACKTRACE=1
 
-#brewとpyenvの共存のため
-alias brew="env PATH=${PATH/\/Users\/kotapiku\/\.pyenv\/shims:/} brew"
 #envのpathの重複自動削除
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 

@@ -2,7 +2,7 @@
 	"segments": {
 		"right": [
       {
-        "function": "powerline.segments.common.vcs.branch"
+        "function": "powerline.segments.common.net.network_load"
       },
       {
         "function": "powerline.segments.common.bat.battery"

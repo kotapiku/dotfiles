@@ -56,6 +56,9 @@ repo = 'airblade/vim-gitgutter'
 repo = 'itmammoth/doorboy.vim'
 
 [[plugins]]
+repo = 'machakann/vim-sandwich'
+
+[[plugins]]
 repo = 'bitc/lushtags'
 
 # markdown
