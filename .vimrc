@@ -38,12 +38,13 @@ set clipboard+=unnamed
 set wildignorecase  "to ignorecase in e command
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.cmi,*.cmo,*.cma
 
-" filetype
-au BufNewFile,BufRead *.x setf alex
-au BufNewFile,BufRead *.y setf happy
-
-" vimgrepで自動cw
-autocmd QuickFixCmdPost *grep* cwindow
+" autocmd
+augroup vimrc
+  autocmd!
+  au BufNewFile,BufRead *.x setf alex  " set filetype
+  au BufNewFile,BufRead *.y setf happy
+  au BufWritePre * :%s/\s\+$//ge       " delete whitespace in end of line
+augroup End
 
 " nerdtree
 nnoremap <Space>n :NERDTreeToggle<CR>
