@@ -120,7 +120,7 @@ function rust-cp-macro () { if [ -e $1 ]; then
                                 echo "file exists."
                             else
                                 cat ~/.ghq/github.com/kotapiku/competitive-pg/rust-cp/macro.rs > $1
-                                nvim $1 
+                                nvim $1
                             fi
                             }
 
@@ -177,15 +177,14 @@ fi
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/Dropbox:$PATH"
-export XDG_CONFIG_HOME=~/.config
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cache:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"  # for brew
 export PATH="$HOME/go/bin:$PATH"
 
+export XDG_CONFIG_HOME=~/.config  # for neovim
 export RUST_BACKTRACE=1
 
 #envのpathの重複自動削除
