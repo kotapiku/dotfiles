@@ -29,11 +29,10 @@ bind-key k select-pane -U
 bind-key l select-pane -R
 
 # copy
-bind -t vi-copy v begin-selection
-bind -t vi-copy V select-line
-bind -t vi-copy C-v rectangle-toggle
-bind -t vi-copy y copy-pipe "xsel -bi"
-bind -t vi-copy Y copy-line
-bind -t vi-copy C-b page-up
-bind -t vi-copy C-f page-down
-
+bind -T copy-mode-vi v send -X begin-selection
+bind -T copy-mode-vi V send -X select-line
+bind -T copy-mode-vi C-v send -X rectangle-toggle
+bind -T copy-mode-vi y send -X copy-pipe "xsel -bi"
+bind -T copy-mode-vi Y send -X copy-line
+bind -T copy-mode-vi C-b send -X page-up
+bind -T copy-mode-vi C-f send -X page-down
