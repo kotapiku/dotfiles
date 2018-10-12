@@ -94,7 +94,7 @@ autocmd FileType defx call s:defx_my_settings()
 
 " buffer
 set hidden
-set nosol   "buffer間をカーソル位置を保存して移動
+set nosol   " buffer間をカーソル位置を保存して移動
 nnoremap <Space>bp :bp<CR>
 nnoremap <Space>bn :bn<CR>
 nnoremap <Space>bb :b#<CR>

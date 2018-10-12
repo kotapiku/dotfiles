@@ -12,7 +12,7 @@ repo = 'Shougo/defx.nvim'
 
 # status bar
 [[plugins]]
-repo = 'vim-airline/vim-airline' 
+repo = 'vim-airline/vim-airline'
 depends = ['vim-airline-themes']
 hook_add = '''
     let g:airline_powerline_fonts = 1
@@ -21,13 +21,13 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'vim-airline/vim-airline-themes' 
+repo = 'vim-airline/vim-airline-themes'
 hook_add = '''
     let g:airline_theme='minimalist'
 '''
 
 [[plugins]]
-repo = 'scrooloose/nerdtree' 
+repo = 'scrooloose/nerdtree'
 depends = ['tiagofumo/vim-nerdtree-syntax-highlight']
 hook_add = '''
     let g:NERDTreeShowHidden = 1
@@ -38,7 +38,7 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'tiagofumo/vim-nerdtree-syntax-highlight' 
+repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 # comment
 [[plugins]]
@@ -51,7 +51,7 @@ hook_add = '''
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
 
-# branckets
+# brackets
 [[plugins]]
 repo = 'itmammoth/doorboy.vim'
 

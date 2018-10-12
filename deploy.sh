@@ -38,6 +38,10 @@ do
     [[ ${f} = ".DS_Store" ]] && continue
     [[ ${f} = ".python-version" ]] && continue
     [[ ${f} = ".lvimrc" ]] && continue
+    [[ ${f} = ".bashrc_csc" ]] && continue
+    [[ ${f} = ".tmux.conf_linux" ]] && continue
+    [[ ${f} = ".tmux.conf_linux2" ]] && continue
+    [[ ${f} = ".zshenv" ]] && continue
 
     ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
   fi
