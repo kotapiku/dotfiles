@@ -61,17 +61,17 @@ repo = 'machakann/vim-sandwich'
 [[plugins]]
 repo = 'bitc/lushtags'
 
-# markdown
+[[plugins]]
+repo = 'embear/vim-localvimrc'
+hook_add = 'let g:localvimrc_ask = 0'
+
+# for markdown
 [[plugins]]
 repo = 'plasticboy/vim-markdown'
 depends = ['godlygeek/tabular']
 
 [[plugins]]
 repo = 'godlygeek/tabular'
-
-[[plugins]]
-repo = 'embear/vim-localvimrc'
-hook_add = 'let g:localvimrc_ask = 0'
 
 # for latex
 [[plugins]]
@@ -103,3 +103,6 @@ repo = 'andy-morris/alex.vim'
 
 [[plugins]]
 repo = 'andy-morris/happy.vim'
+
+[[plugins]]
+repo = 'cespare/vim-toml'
