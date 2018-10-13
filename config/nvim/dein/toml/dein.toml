@@ -91,18 +91,24 @@ hook_source = '''
 
 [[plugins]]
 repo = 'racer-rust/vim-racer'
+on_ft = 'rust'
 
 [[plugins]]
 repo = 'alpicola/vim-egison'
+on_ft = 'egison'
 
 [[plugins]]
 repo = 'neovimhaskell/haskell-vim'
+on_ft = 'haskell'
 
 [[plugins]]
 repo = 'andy-morris/alex.vim'
+on_ft = 'alex'
 
 [[plugins]]
 repo = 'andy-morris/happy.vim'
+on_ft = 'happy'
 
 [[plugins]]
 repo = 'cespare/vim-toml'
+on_ft = 'toml'
