@@ -129,6 +129,7 @@ case ${OSTYPE} in
         function fcp () { cat $1 | pbcopy }
         alias ctags="`brew --prefix`/bin/ctags"
         alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
+        alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
         function git(){hub "$@"}
 
         # === cool-peco init ===
@@ -140,6 +141,7 @@ case ${OSTYPE} in
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
         alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein_unix.toml'
+        alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
         #OPAM configuration
         . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
         ;;
