@@ -5,10 +5,50 @@ repo = 'morhetz/gruvbox.git'
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-
-[[plugins]]
 repo = 'Shougo/defx.nvim'
+hook_add = '''
+  autocmd FileType defx call s:defx_my_settings()
+    function! s:defx_my_settings() abort
+    " Define mappings
+    nnoremap <silent><buffer><expr> <CR>
+    \ defx#do_action('open')
+    nnoremap <silent><buffer><expr> c
+    \ defx#do_action('copy')
+    nnoremap <silent><buffer><expr> m
+    \ defx#do_action('move')
+    nnoremap <silent><buffer><expr> p
+    \ defx#do_action('paste')
+    nnoremap <silent><buffer><expr> K
+    \ defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr> N
+    \ defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> d
+    \ defx#do_action('remove')
+    nnoremap <silent><buffer><expr> r
+    \ defx#do_action('rename')
+    nnoremap <silent><buffer><expr> x
+    \ defx#do_action('execute_system')
+    nnoremap <silent><buffer><expr> .
+    \ defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> h
+    \ defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> ~
+    \ defx#do_action('cd')
+    nnoremap <silent><buffer><expr> q
+    \ defx#do_action('quit')
+    nnoremap <silent><buffer><expr> <Space>
+    \ defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> *
+    \ defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> j
+    \ line('.') == line('$') ? 'gg' : 'j'
+    nnoremap <silent><buffer><expr> k
+    \ line('.') == 1 ? 'G' : 'k'
+    nnoremap <silent><buffer><expr> <C-l>
+    \ defx#do_action('redraw')
+    endfunction
+'''
+
 
 # status bar
 [[plugins]]
@@ -30,6 +70,7 @@ hook_add = '''
 repo = 'scrooloose/nerdtree'
 depends = ['tiagofumo/vim-nerdtree-syntax-highlight']
 hook_add = '''
+    nnoremap <Space>n :NERDTreeToggle<CR>
     let g:NERDTreeShowHidden = 1
     let g:NERDTreeShowBookmarks=1
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -38,7 +79,14 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'bitc/lushtags'
+
+[[plugins]]
+repo = 'embear/vim-localvimrc'
+hook_add = 'let g:localvimrc_ask = 0'
 
 # comment
 [[plugins]]
@@ -48,9 +96,6 @@ hook_add = '''
     vmap <Leader>c <Plug>(caw:hatpos:toggle)
 '''
 
-[[plugins]]
-repo = 'airblade/vim-gitgutter'
-
 # brackets
 [[plugins]]
 repo = 'itmammoth/doorboy.vim'
@@ -58,57 +103,3 @@ repo = 'itmammoth/doorboy.vim'
 [[plugins]]
 repo = 'machakann/vim-sandwich'
 
-[[plugins]]
-repo = 'bitc/lushtags'
-
-[[plugins]]
-repo = 'embear/vim-localvimrc'
-hook_add = 'let g:localvimrc_ask = 0'
-
-# for markdown
-[[plugins]]
-repo = 'plasticboy/vim-markdown'
-depends = ['godlygeek/tabular']
-
-[[plugins]]
-repo = 'godlygeek/tabular'
-
-# for latex
-[[plugins]]
-repo = 'lervag/vimtex'
-hook_add = 'g:vimtex_compiler_progname = "nvr"'
-
-[[plugins]]
-repo = 'xuhdev/vim-latex-live-preview'
-
-# for languages
-[[plugins]]
-repo = 'rust-lang/rust.vim'
-on_ft = 'rust'
-hook_source = '''
-    let g:rustfmt_autosave = 1
-'''
-
-[[plugins]]
-repo = 'racer-rust/vim-racer'
-on_ft = 'rust'
-
-[[plugins]]
-repo = 'alpicola/vim-egison'
-on_ft = 'egison'
-
-[[plugins]]
-repo = 'neovimhaskell/haskell-vim'
-on_ft = 'haskell'
-
-[[plugins]]
-repo = 'andy-morris/alex.vim'
-on_ft = 'alex'
-
-[[plugins]]
-repo = 'andy-morris/happy.vim'
-on_ft = 'happy'
-
-[[plugins]]
-repo = 'cespare/vim-toml'
-on_ft = 'toml'
