@@ -121,12 +121,8 @@ if dein#load_state(s:dein_path)
  " dein begin
  call dein#begin(s:dein_path)
  let s:toml_dir  = s:dein_path . '/toml'
+ let s:toml      = s:toml_dir . '/dein.toml'
  let s:lazy_toml = s:toml_dir . '/dein_lazy.toml'
- if has("mac")
-   let s:toml      = s:toml_dir . '/dein.toml'
- elseif has("unix")
-   let s:toml      = s:toml_dir . '/dein_unix.toml'
- endif
 
  " TOML を読み込み、キャッシュしておく
  call dein#load_toml(s:toml,      {'lazy': 0})

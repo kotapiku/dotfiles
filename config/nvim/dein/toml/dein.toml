@@ -82,9 +82,6 @@ hook_add = '''
 repo = 'airblade/vim-gitgutter'
 
 [[plugins]]
-repo = 'bitc/lushtags'
-
-[[plugins]]
 repo = 'embear/vim-localvimrc'
 hook_add = 'let g:localvimrc_ask = 0'
 
