@@ -116,20 +116,13 @@ function oj-url-d () { rm -rf test && oj d $1 }
 
 function ru () { rustc $1 -o a.out || return 1 ; oj test -i }
 
-function rust-cp-macro () { if [ -e $1 ]; then
-                                echo "file exists."
-                            else
-                                cat ~/.ghq/github.com/kotapiku/competitive-pg/rust-cp/macro.rs > $1
-                                nvim $1
-                            fi
-                            }
+alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
+alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
 
 case ${OSTYPE} in
     darwin*)
         function fcp () { cat $1 | pbcopy }
         alias ctags="`brew --prefix`/bin/ctags"
-        alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
-        alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
         function git(){hub "$@"}
 
         # === cool-peco init ===
@@ -140,8 +133,6 @@ case ${OSTYPE} in
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
-        alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein_unix.toml'
-        alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
         #OPAM configuration
         . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
         ;;

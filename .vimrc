@@ -70,7 +70,6 @@ function OpenMiddleBuffer()
 endfunction
 
 " keymap
-let mapleader = "\\"
 inoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
 vnoremap gs  :s///g<Left><Left><Left>
@@ -89,9 +88,11 @@ nnoremap : ;
 tnoremap <silent> jk <C-\><C-n>
 
 if has("mac")
+  let mapleader = "\\"
   let g:python_host_prog='/usr/local/bin/python2'
   let g:python3_host_prog='/Users/kotapiku/.pyenv/shims/python3'
 elseif has("unix")
+  let mapleader = "]"
   let g:python_host_prog='/usr/bin/python'
   let g:python3_host_prog='/usr/bin/python3'
 endif
