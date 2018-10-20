@@ -38,7 +38,7 @@ autoload -Uz colors
 colors
 
 # Prompt
-PROMPT="%{${fg[yellow]}%}[%n@%m]%{${reset_color}%} %~
+PROMPT="%{${fg[blue]}%}[%n@%m]%{${reset_color}%} %~
 %# "
 
 autoload -Uz vcs_info
