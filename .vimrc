@@ -7,35 +7,35 @@ set fileencodings=utf-8
 set number
 set title
 syntax on
-set ruler           "display cursor position
-set wildmenu        "completion
-set nofoldenable    "disable fold
+set ruler           " display cursor position
+set wildmenu        " completion
+set nofoldenable    " disable fold
 
 " indent
 set autoindent
 set cindent
-set expandtab    "replace tab with space
+set expandtab    " replace tab with space
 
 set tabstop=4
 set shiftwidth=4
 
 " search
-set incsearch    "incremental search
-set hlsearch     "highlight
+set incsearch    " incremental search
+set hlsearch     " highlight
 set ignorecase
-set smartcase    "大文字含んでいたら区別
+set smartcase    " 大文字含んでいたら区別
 set wrapscan
 
-set noswapfile    "swapファイルをつくらない
-nnoremap n nzz    "検索時にカーソル位置を中央に
+set noswapfile    " swapファイルをつくらない
+nnoremap n nzz    " 検索時にカーソル位置を中央に
 nnoremap N Nzz
-nnoremap Y y$    "Yでカーソル位置から行末までコピー
+nnoremap Y y$    " Yでカーソル位置から行末までコピー
 
 " clipboard
 set clipboard+=unnamed
 
 " ignore in completion
-set wildignorecase  "to ignorecase in e command
+set wildignorecase  " to ignorecase in e command
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.cmi,*.cmo,*.cma
 
 " autocmd
