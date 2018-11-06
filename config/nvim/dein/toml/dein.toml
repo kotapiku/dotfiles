@@ -99,3 +99,8 @@ repo = 'itmammoth/doorboy.vim'
 
 [[plugins]]
 repo = 'machakann/vim-sandwich'
+
+# tmux
+[[plugins]]
+repo = 'christoomey/vim-tmux-navigator'
+hook_add = 'let g:tmux_navigator_save_on_switch = 1'
