@@ -96,6 +96,8 @@ alias -s cpp=g++ -Wall -o
 alias zshrc='nvim ~/.zshrc'
 alias vimrc='nvim ~/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
+alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
+alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
@@ -115,9 +117,6 @@ function oj-d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks
 function oj-url-d () { rm -rf test && oj d $1 }
 
 function ru () { rustc $1 -o a.out || return 1 ; oj test -i }
-
-alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
-alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
 
 case ${OSTYPE} in
     darwin*)

@@ -24,10 +24,6 @@ on_i = 1
 repo = 'Shougo/neosnippet-snippets'
 on_source = ['neosnippet']
 
-[[plugins]]
-repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
-on_source = ['nerdtree']
-
 # for markdown
 [[plugins]]
 repo = 'plasticboy/vim-markdown'

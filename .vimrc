@@ -87,6 +87,13 @@ nnoremap : ;
 " terminal mode
 tnoremap <silent> jk <C-\><C-n>
 
+" open dotfiles by command
+command! Zshrc e ~/.zshrc
+command! Vimrc e ~/.vimrc
+command! Tmuxconf e ~/.tmux.conf
+command! Deintoml e ~/dotfiles/config/nvim/dein/toml/dein.toml
+command! DeintomlLazy e ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml
+
 if has("mac")
   let mapleader = "\\"
   let g:python_host_prog='/usr/local/bin/python2'
