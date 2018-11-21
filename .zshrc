@@ -101,6 +101,8 @@ alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
+alias noti='terminal-notifier -message "おわったよ"'
+
 # for yugen
 alias ip-add-yugen='curl ifconfig.me | xargs -I {} curl http://49.212.25.77/cgi-bin/ssh.cgi --data network={}'
 

@@ -1,5 +1,6 @@
 [core]
   excludesfile = ~/.gitignore_global
+  editor = neovim
 [user]
   name = kotapiku
   email = ice08235523@gmail.com
@@ -8,9 +9,11 @@
 [use]
   name = kotapiku
 [fetch]
-  prune=True
+  prune = true
 [alias]
   sync = !git checkout master && git pull origin master && git fetch -p origin && git branch -d $(git branch --merged | grep -v master | grep -v '*')
   new = "!f() { git sync; git checkout -b $USER/$(echo $@ | sed 's/\\ /-/g'); }; f"
 [push]
   default = current
+[pull]
+  rebase = true
