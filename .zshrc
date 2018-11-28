@@ -101,8 +101,6 @@ alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
-alias noti='terminal-notifier -message "おわったよ"'
-
 # for yugen
 alias ip-add-yugen='curl ifconfig.me | xargs -I {} curl http://49.212.25.77/cgi-bin/ssh.cgi --data network={}'
 
@@ -125,6 +123,7 @@ case ${OSTYPE} in
         function fcp () { cat $1 | pbcopy }
         alias ctags="`brew --prefix`/bin/ctags"
         function git(){hub "$@"}
+        alias noti='terminal-notifier -message "おわった！"'
 
         # === cool-peco init ===
         FPATH="$FPATH:/Users/kotapiku/.ghq/github.com/ryoppy/cool-peco"
@@ -134,6 +133,7 @@ case ${OSTYPE} in
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
+        alias noti='notify-send "おわった！"'
         #OPAM configuration
         . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
         ;;
