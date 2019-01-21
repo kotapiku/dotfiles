@@ -124,6 +124,7 @@ case ${OSTYPE} in
         alias ctags="`brew --prefix`/bin/ctags"
         function git(){hub "$@"}
         alias noti='terminal-notifier -message "おわった！"'
+        export PATH="/usr/local/bin:$PATH"  # for brew
 
         # === cool-peco init ===
         FPATH="$FPATH:/Users/kotapiku/.ghq/github.com/ryoppy/cool-peco"
@@ -134,6 +135,7 @@ case ${OSTYPE} in
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'
         alias noti='notify-send "おわった！"'
+        export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"  # for brew
         #OPAM configuration
         . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
         ;;
@@ -175,7 +177,6 @@ export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cache:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"  # for brew
 export PATH="$HOME/go/bin:$PATH"
 
 export XDG_CONFIG_HOME=~/.config  # for neovim
