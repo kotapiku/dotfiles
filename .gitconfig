@@ -7,7 +7,7 @@
 [alias]
     sync = !git checkout master && git pull origin master && git fetch -p origin && git branch -d $(git branch --merged | grep -v master | grep -v '*')
     new = "!f() { git sync; git checkout -b $USER/$(echo $@ | sed 's/\\ /-/g'); }; f"
-    logtree = "log --graph --graph --oneline --decorate=full"
+    logtree = "log --graph --oneline --decorate=full"
 [fetch]
     prune = true
 [pull]
