@@ -14,8 +14,6 @@
     rebase = true
 [push]
     default = current
-[commit]
-    template = /Users/kotapiku/.stCommitMsg
 [log]
     date = iso
 [diff]
