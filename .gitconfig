@@ -1,19 +1,22 @@
 [core]
-  excludesfile = ~/.gitignore_global
-  editor = neovim
+    excludesfile = ~/.gitignore_global
+    editor = neovim
 [user]
-  name = kotapiku
-  email = ice08235523@gmail.com
-[commit]
-  template = /Users/kotapiku/.stCommitMsg
-[use]
-  name = kotapiku
-[fetch]
-  prune = true
+    name = kotapiku
+    email = ice08235523@gmail.com
 [alias]
-  sync = !git checkout master && git pull origin master && git fetch -p origin && git branch -d $(git branch --merged | grep -v master | grep -v '*')
-  new = "!f() { git sync; git checkout -b $USER/$(echo $@ | sed 's/\\ /-/g'); }; f"
-[push]
-  default = current
+    sync = !git checkout master && git pull origin master && git fetch -p origin && git branch -d $(git branch --merged | grep -v master | grep -v '*')
+    new = "!f() { git sync; git checkout -b $USER/$(echo $@ | sed 's/\\ /-/g'); }; f"
+    logtree = "log --graph --graph --oneline --decorate=full"
+[fetch]
+    prune = true
 [pull]
-  rebase = true
+    rebase = true
+[push]
+    default = current
+[commit]
+    template = /Users/kotapiku/.stCommitMsg
+[log]
+    date = iso
+[diff]
+    algorithm = histogram
