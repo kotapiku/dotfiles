@@ -26,13 +26,9 @@ on_source = ['neosnippet']
 
 # for markdown
 [[plugins]]
-repo = 'plasticboy/vim-markdown'
+repo = 'previm/previm'
 on_ft = 'markdown'
-depends = ['tabular']
-
-[[plugins]]
-repo = 'godlygeek/tabular'
-on_source = ['vim-markdown']
+hook_add = 'let g:previm_open_cmd = "google-chrome"'
 
 # for latex
 [[plugins]]

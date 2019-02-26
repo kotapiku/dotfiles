@@ -53,6 +53,11 @@ function DeleteWhiteSpaces()
   call setpos('.', pos)
 endfunction
 
+augroup PrevimSettings
+    autocmd!
+    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
+
 " buffer
 set hidden
 set nosol   " buffer間をカーソル位置を保存して移動
