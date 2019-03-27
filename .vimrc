@@ -44,6 +44,7 @@ augroup vimrc
   au BufNewFile,BufRead *.x setf alex  " set filetype
   au BufNewFile,BufRead *.y setf happy
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
+  au BufWritePre *.hs %!stylish-haskell
   au FileType ocaml,vim set shiftwidth=2
 augroup End
 
