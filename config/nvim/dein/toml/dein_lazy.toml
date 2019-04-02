@@ -71,3 +71,15 @@ on_ft = 'happy'
 [[plugins]]
 repo = 'cespare/vim-toml'
 on_ft = 'toml'
+
+[[plugins]]
+repo = 'the-lambda-church/coquille'
+on_ft = 'coq'
+depends = ['vimbufsync']
+hook_source = '''
+    let g:coquille_auto_move = 'true'
+'''
+
+[[plugins]]
+repo = 'let-def/vimbufsync'
+on_source = ['coquille']

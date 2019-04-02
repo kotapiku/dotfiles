@@ -43,6 +43,8 @@ augroup vimrc
   autocmd!
   au BufNewFile,BufRead *.x setf alex  " set filetype
   au BufNewFile,BufRead *.y setf happy
+  au BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} setf markdown
+  au BufNewFile,BufRead *.v setf coq
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
   au BufWritePre *.hs %!stylish-haskell
   au FileType ocaml,vim set shiftwidth=2
@@ -53,11 +55,6 @@ function DeleteWhiteSpaces()
   %s/\s\+$//ge
   call setpos('.', pos)
 endfunction
-
-augroup PrevimSettings
-    autocmd!
-    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
 
 " buffer
 set hidden
