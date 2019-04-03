@@ -46,9 +46,15 @@ augroup vimrc
   au BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} setf markdown
   au BufNewFile,BufRead *.v setf coq
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
-  au BufWritePre *.hs %!stylish-haskell
+  au BufWritePre *.hs call StylishHaskell()
   au FileType ocaml,vim set shiftwidth=2
 augroup End
+
+function StylishHaskell()
+  let pos = getpos(".")
+  %!stylish-haskell
+  call setpos('.', pos)
+endfunction
 
 function DeleteWhiteSpaces()
   let pos = getpos(".")
