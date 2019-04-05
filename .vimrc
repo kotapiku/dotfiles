@@ -13,7 +13,6 @@ set nofoldenable    " disable fold
 
 " indent
 set autoindent
-set cindent
 set expandtab    " replace tab with space
 
 set tabstop=4
@@ -45,20 +44,21 @@ augroup vimrc
   au BufNewFile,BufRead *.y setf happy
   au BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} setf markdown
   au BufNewFile,BufRead *.v setf coq
+  au BufNewFile,BufRead *.lean setf lean
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
   au BufWritePre *.hs call StylishHaskell()
   au FileType ocaml,vim set shiftwidth=2
 augroup End
 
-function StylishHaskell()
-  let pos = getpos(".")
-  %!stylish-haskell
-  call setpos('.', pos)
-endfunction
-
 function DeleteWhiteSpaces()
   let pos = getpos(".")
   %s/\s\+$//ge
+  call setpos('.', pos)
+endfunction
+
+function StylishHaskell()
+  let pos = getpos(".")
+  %!stylish-haskell
   call setpos('.', pos)
 endfunction
 

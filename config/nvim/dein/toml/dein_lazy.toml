@@ -71,3 +71,7 @@ on_ft = 'happy'
 [[plugins]]
 repo = 'cespare/vim-toml'
 on_ft = 'toml'
+
+[[plugins]]
+repo = 'leanprover/lean.vim'
+on_ft = 'lean'
