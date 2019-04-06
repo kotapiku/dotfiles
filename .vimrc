@@ -50,15 +50,23 @@ augroup vimrc
   au FileType ocaml,vim set shiftwidth=2
 augroup End
 
-function DeleteWhiteSpaces()
+function! DeleteWhiteSpaces()
   let pos = getpos(".")
   %s/\s\+$//ge
   call setpos('.', pos)
 endfunction
 
-function StylishHaskell()
+function! StylishHaskell()
   let pos = getpos(".")
-  %!stylish-haskell
+  silent w
+  let now = readfile(bufname(""))
+  let result = systemlist("stylish-haskell " . bufname(""))
+  if result[0][0:23] == "Language.Haskell.Stylish"
+    call writefile(now, bufname(""))
+  else
+    call writefile(result, bufname(""))
+  endif
+  e!
   call setpos('.', pos)
 endfunction
 
@@ -73,7 +81,7 @@ nnoremap <Space>bm :call OpenMiddleBuffer()<CR>
 nnoremap <Space>bl :bl<CR>
 nnoremap <Space>bd :bp<bar>bd#<CR>
 
-function OpenMiddleBuffer()
+function! OpenMiddleBuffer()
   let ls = map(split(execute(":ls"), "\n"), "get(split(v:val), 0)")
   execute(":b" . str2nr(get(ls, (len(ls)-1)/2)))
 endfunction
