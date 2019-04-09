@@ -50,6 +50,23 @@ augroup vimrc
   au FileType ocaml,vim set shiftwidth=2
 augroup End
 
+augroup lean
+  autocmd!
+  au BufWritePre *.lean %s/<->/↔/ge
+  au BufWritePre *.lean %s/->/→/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)alpha/\1α/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)beta/\1β/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)gamma/\1γ/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)nat/\1ℕ/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)int/\1ℤ/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)real/\1ℝ/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)not/\1¬/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)and/\1∧/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)or/\1∨/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)forall/\1∀/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)exists/\1∃/ge
+augroup End
+
 function! DeleteWhiteSpaces()
   let pos = getpos(".")
   %s/\s\+$//ge
