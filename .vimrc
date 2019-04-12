@@ -50,21 +50,41 @@ augroup vimrc
   au FileType ocaml,vim set shiftwidth=2
 augroup End
 
-augroup lean
+augroup leanSetting
   autocmd!
+  au BufWritePre *.lean %s/\( \|\W\|^\)not /\1¬/ge              " logical symbols
+  au BufWritePre *.lean %s/\( \|\W\|^\)and\( \|$\)/\1∧\2/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)or\( \|$\)/\1∨\2/ge
   au BufWritePre *.lean %s/<->/↔/ge
   au BufWritePre *.lean %s/->/→/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)alpha/\1α/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)beta/\1β/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)gamma/\1γ/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)nat/\1ℕ/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)int/\1ℤ/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)real/\1ℝ/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)not/\1¬/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)and/\1∧/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)or/\1∨/ge
   au BufWritePre *.lean %s/\( \|\W\|^\)forall/\1∀/ge
   au BufWritePre *.lean %s/\( \|\W\|^\)exists/\1∃/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)fun/\1λ/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)~=/\1≠/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)nat\( \|$\)/\1ℕ\2/ge     " types
+  au BufWritePre *.lean %s/\( \|\W\|^\)int\( \|$\)/\1ℤ\2/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)rat\( \|$\)/\1ℚ\2/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)real\( \|$\)/\1ℝ\2/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)alpha/\1α/ge             " greek letters
+  au BufWritePre *.lean %s/\( \|\W\|^\)beta/\1β/ge
+  au BufWritePre *.lean %s/\( \|\W\|^\)gamma/\1γ/ge
+  au BufWritePre *.lean %s/?(\([^)]\))/⌞\1⌟/ge                  " brackets
+  au BufWritePre *.lean %s/{{/⦃/ge
+  au BufWritePre *.lean %s/}}/⦄/ge
+  au BufWritePre *.lean %s/\\<</⟪/ge
+  au BufWritePre *.lean %s/\\>>/⟫/ge
+  au BufWritePre *.lean %s/\\</⟨/ge
+  au BufWritePre *.lean %s/\\>/⟩/ge
+  au BufWritePre *.lean %s/}}/⦄/ge
+  au BufWritePre *.lean %s/_1\( \|\W\|$\)/₁\1/ge                " subscripts
+  au BufWritePre *.lean %s/_2\( \|\W\|$\)/₂\1/ge
+  au BufWritePre *.lean %s/_3\( \|\W\|$\)/₃\1/ge
+  au BufWritePre *.lean %s/_4\( \|\W\|$\)/₄\1/ge
+  au BufWritePre *.lean %s/_5\( \|\W\|$\)/₅\1/ge
+  au BufWritePre *.lean %s/_6\( \|\W\|$\)/₆\1/ge
+  au BufWritePre *.lean %s/_7\( \|\W\|$\)/₇\1/ge
+  au BufWritePre *.lean %s/_8\( \|\W\|$\)/₈\1/ge
+  au BufWritePre *.lean %s/_9\( \|\W\|$\)/₉\1/ge
 augroup End
 
 function! DeleteWhiteSpaces()
