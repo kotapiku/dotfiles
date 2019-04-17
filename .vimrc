@@ -95,6 +95,8 @@ endfunction
 
 function! StylishHaskell()
   let pos = getpos(".")
+  normal M
+  let pos_middle = getpos(".")
   silent w
   let now = readfile(bufname(""))
   let result = systemlist("stylish-haskell " . bufname(""))
@@ -104,6 +106,7 @@ function! StylishHaskell()
     call writefile(result, bufname(""))
   endif
   e!
+  call setpos('.', pos_middle)
   call setpos('.', pos)
 endfunction
 
