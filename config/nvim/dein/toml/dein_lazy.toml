@@ -75,3 +75,19 @@ on_ft = 'toml'
 [[plugins]]
 repo = 'leanprover/lean.vim'
 on_ft = 'lean'
+
+[[plugins]]
+repo = 'lucas8/coquille'
+on_ft = 'coq'
+hook_source = '''
+au FileType coq call coquille#FNMapping()
+'''
+# [[plugins]]
+# repo = 'momohatt/coquille'
+# depends = ['vimbunsync']
+# on_ft = 'coq'
+#
+[[plugins]]
+repo = 'let-def/vimbufsync'
+on_source = ['coquille']
+

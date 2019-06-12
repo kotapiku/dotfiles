@@ -121,6 +121,8 @@ nnoremap <Space>bm :call OpenMiddleBuffer()<CR>
 nnoremap <Space>bl :bl<CR>
 nnoremap <Space>bd :bp<bar>bd#<CR>
 
+nnoremap <C-s> :CoqToCursor<CR>
+
 function! OpenMiddleBuffer()
   let ls = map(split(execute(":ls"), "\n"), "get(split(v:val), 0)")
   execute(":b" . str2nr(get(ls, (len(ls)-1)/2)))
@@ -136,10 +138,8 @@ nnoremap k   gk
 nnoremap j   gj
 vnoremap k   gk
 vnoremap j   gj
-nnoremap gk  k
-nnoremap gj  j
-vnoremap gk  k
-vnoremap gj  j
+nnoremap 0   g0
+nnoremap $   g$
 nnoremap ; :
 nnoremap : ;
 

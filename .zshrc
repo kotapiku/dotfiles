@@ -190,3 +190,6 @@ export LC_ALL='ja_JP.UTF-8'
 
 #再起動
 alias relogin='exec $SHELL -l'
+
+# for opam
+test -r ~/.opam/opam-init/init.zsh && . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
