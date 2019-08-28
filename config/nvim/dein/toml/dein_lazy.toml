@@ -12,9 +12,6 @@ hook_source = '''
   imap <C-k> <Plug>(neosnippet_expand_or_jump)
   smap <C-k> <Plug>(neosnippet_expand_or_jump)
   xmap <C-k> <Plug>(neosnippet_expand_target)
-  if has('conceal')
-    set conceallevel=2 concealcursor=niv
-  endif
 '''
 on_i  = 1
 on_ft = ['snippet']
@@ -29,16 +26,6 @@ on_source = ['neosnippet']
 repo = 'previm/previm'
 on_ft = 'markdown'
 hook_add = 'let g:previm_open_cmd = "google-chrome"'
-
-# for latex
-[[plugins]]
-repo = 'lervag/vimtex'
-on_ft = 'latex'
-hook_source = 'g:vimtex_compiler_progname = "nvr"'
-
-[[plugins]]
-repo = 'xuhdev/vim-latex-live-preview'
-on_ft = 'latex'
 
 # for languages
 [[plugins]]
@@ -82,12 +69,6 @@ on_ft = 'coq'
 hook_source = '''
 au FileType coq call coquille#FNMapping()
 '''
-# [[plugins]]
-# repo = 'momohatt/coquille'
-# depends = ['vimbunsync']
-# on_ft = 'coq'
-#
 [[plugins]]
 repo = 'let-def/vimbufsync'
 on_source = ['coquille']
-

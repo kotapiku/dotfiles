@@ -37,22 +37,22 @@ setopt hist_reduce_blanks    # ヒストリに保存するときに余分なス�
 autoload -Uz colors
 colors
 
-# Prompt
-PROMPT="%{${fg[blue]}%}[%n@%m]%{${reset_color}%} %~
-%# "
-
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
 
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "%F{red}!"
 zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
-zstyle ':vcs_info:*' formats '%F{yellow}%c%u[%b]%f'
-zstyle ':vcs_info:*' actionformats '%F{red}[%b|%a]%f'
+zstyle ':vcs_info:*' formats '%F{253}%c%u%b%f'
+zstyle ':vcs_info:*' actionformats '%F{red}%b|%a%f'
 
 function _update_vcs_info_msg() {
     LANG=en_US.UTF-8 vcs_info
-    RPROMPT="${vcs_info_msg_0_}"
+    if [ -z ${vcs_info_msg_0_} ]; then
+        PROMPT=$'\n%F{159} %~ > '
+    else
+        PROMPT=$'\n%F{159} %~ '"${vcs_info_msg_0_} > "
+    fi
 }
 add-zsh-hook precmd _update_vcs_info_msg
 

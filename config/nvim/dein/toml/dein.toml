@@ -59,7 +59,6 @@ hook_add = '''
     endfunction
 '''
 
-
 # status bar
 [[plugins]]
 repo = 'vim-airline/vim-airline'
@@ -72,8 +71,12 @@ hook_add = '''
 
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
+
+[[plugins]]
+repo = 'arcticicestudio/nord-vim'
 hook_add = '''
-    let g:airline_theme = 'cobalt2'
+  let g:nord_uniform_status_lines = 0
+  let g:airline_theme='nord'
 '''
 
 [[plugins]]
@@ -102,11 +105,3 @@ repo = 'machakann/vim-sandwich'
 [[plugins]]
 repo = 'christoomey/vim-tmux-navigator'
 hook_add = 'let g:tmux_navigator_save_on_switch = 1'
-
-# indent
-[[plugins]]
-repo = 'Yggdroot/indentLine'
-
-# # coq
-# [[plugins]]
-# repo = 'jvoorhis/coq.vim'

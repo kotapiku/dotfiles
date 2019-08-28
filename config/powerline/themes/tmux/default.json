@@ -6,18 +6,21 @@
       },
       {
         "function": "powerline.segments.common.time.date",
+        "args": {
+            "format": "%m/%d"
+        }
+      },
+      {
+        "function": "powerline.segments.common.time.date",
         "name": "time",
         "args": {
-            "format": "%Y/%m/%d %H:%M",
-            "istime": false
+            "format": "%H:%M",
+            "istime": true
         }
       }
 		],
 
     "left": [
-			{
-				"function": "powerline.segments.common.net.external_ip"
-			}
     ]
 	}
 }
