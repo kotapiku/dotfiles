@@ -49,9 +49,9 @@ zstyle ':vcs_info:*' actionformats '%F{red}%b|%a%f'
 function _update_vcs_info_msg() {
     LANG=en_US.UTF-8 vcs_info
     if [ -z ${vcs_info_msg_0_} ]; then
-        PROMPT=$'\n%F{159} %~ > '
+        PROMPT=$'\n%F{159} %~ %F{159}> '
     else
-        PROMPT=$'\n%F{159} %~ '"${vcs_info_msg_0_} > "
+        PROMPT=$'\n%F{159} %~ '"${vcs_info_msg_0_} %F{159}> "
     fi
 }
 add-zsh-hook precmd _update_vcs_info_msg
