@@ -183,6 +183,7 @@ if dein#load_state(s:dein_path)
  call dein#save_state()
 
  call map(dein#check_clean(), "delete(v:val, 'rf')")
+ call dein#recache_runtimepath()
 endif
 
 " Required:
