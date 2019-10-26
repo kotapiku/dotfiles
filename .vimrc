@@ -48,6 +48,7 @@ augroup vimrc
   au BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} setf markdown
   au BufNewFile,BufRead *.v setf coq
   au BufNewFile,BufRead *.lean setf lean
+  au BufNewFile,BufRead *.jl setf julia
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
   au FileType ocaml,vim set shiftwidth=2
 augroup End

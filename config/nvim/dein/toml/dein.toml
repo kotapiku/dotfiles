@@ -105,3 +105,8 @@ repo = 'machakann/vim-sandwich'
 [[plugins]]
 repo = 'christoomey/vim-tmux-navigator'
 hook_add = 'let g:tmux_navigator_save_on_switch = 1'
+
+# languages
+[[plugins]]
+repo = 'JuliaEditorSupport/julia-vim'
+on_source = ['julia']
