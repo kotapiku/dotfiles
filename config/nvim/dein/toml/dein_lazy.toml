@@ -73,3 +73,10 @@ au FileType coq call coquille#FNMapping()
 [[plugins]]
 repo = 'let-def/vimbufsync'
 on_source = ['coquille']
+
+[[plugins]]
+repo = 'lervag/vimtex'
+on_ft = 'tex'
+on_source = '''
+let g:vimtex_compiler_progname = 'nvr'
+'''

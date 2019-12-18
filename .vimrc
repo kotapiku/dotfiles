@@ -141,10 +141,7 @@ command! DeintomlLazy e ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml
 
 if has("mac")
   let g:python_host_prog='/usr/local/bin/python2'
-  let g:python3_host_prog='/Users/kotapiku/.pyenv/shims/python3'
-elseif has("unix")
-  let g:python_host_prog='/usr/bin/python'
-  let g:python3_host_prog='/usr/bin/python3'
+  let g:python3_host_prog='/Users/kotapiku/.pyenv/shims/python'
 endif
 
 if has("nvim")
