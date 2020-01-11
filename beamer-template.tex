@@ -1,13 +1,13 @@
-\documentclass[dvipdfmx,12pt]{beamer}% dvipdfmxしたい
-\usepackage{bxdpx-beamer}% dvipdfmxなので必要
-\usepackage{pxjahyper}% 日本語で'しおり'したい
-\usepackage{stmaryrd} % [| . |]
-\usepackage{amsmath}
+\documentclass[unicode,12pt]{beamer}% dvipdfmxしたい
+
+\usepackage{luatexja}
+\usepackage[ipaex]{luatexja-preset}
 \renewcommand{\kanjifamilydefault}{\gtdefault}% 既定をゴシック体に
 \usetheme[progressbar=frametitle]{metropolis}
-
-% あとは欧文の場合と同じ
 \usetheme{Copenhagen}
+
+\usepackage{stmaryrd} % [| . |]
+\usepackage{amsmath}
 
 \title{title}
 \author{郡 茉友子}
