@@ -1,6 +1,6 @@
 \documentclass[unicode,12pt]{beamer}
 
-\usetheme[progressbar=frametitle]{metropolis}
+\usetheme[progressbar=frametitle, block=fill, sectionpage=none, subsectionpage=simple]{metropolis}
 \usetheme{Copenhagen}
 
 \usepackage{fontspec}
@@ -10,6 +10,10 @@
 %
 \usepackage{stmaryrd} % [| . |]
 \usepackage{amsmath}
+
+\usepackage[backend=biber,style=authoryear]{biblatex}
+\addbibresource{myref.bib}
+\setbeamertemplate{bibliography item}[text] % index
 
 \title{title}
 \author{Mayuko Kori}
@@ -22,4 +26,8 @@
 hogehogehoge
 \end{frame}
 
+\begin{frame}[allowframebreaks]{References}
+  \nocite{*}
+  \printbibliography[heading=none]
+\end{frame}
 \end{document}
