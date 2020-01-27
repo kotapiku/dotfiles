@@ -5,6 +5,8 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 
+\usepackage[bookmarks=true, hidelinks, pdfencoding=auto]{hyperref}
+
 \newtheoremstyle{break}% name
   {}%         Space above, empty = `usual value'
   {}%         Space below
@@ -16,7 +18,11 @@
   {}%         Thm head spec
 
 \theoremstyle{break}
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}[definition]{Example}
+\newtheorem{prop}[definition]{Proposition}
+\newtheorem{lem}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
 
 \title{}
 \author{}
