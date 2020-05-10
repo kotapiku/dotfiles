@@ -1,2 +1,0 @@
-source	/opt/intel/bin/compilervars.sh intel64
-source	/var/mpi-selector/data/openmpi-2.1.2-intel-v17.0.6.sh
