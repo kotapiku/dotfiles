@@ -1,7 +1,4 @@
 [[plugins]]
-repo = 'morhetz/gruvbox.git'
-
-[[plugins]]
 repo = 'Shougo/dein.vim'
 
 [[plugins]]

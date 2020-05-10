@@ -1,6 +1,6 @@
 .idea
-config/nvim/dein/repos/
-config/nvim/.netrwhist
+.config/nvim/dein/repos/
+.config/nvim/.netrwhist
 .python-version
 .DS_Store
 config/configstore/

@@ -136,52 +136,43 @@ tnoremap <silent> jk <C-\><C-n>
 command! Zshrc e ~/.zshrc
 command! Vimrc e ~/.vimrc
 command! Tmuxconf e ~/.tmux.conf
-command! Deintoml e ~/dotfiles/config/nvim/dein/toml/dein.toml
-command! DeintomlLazy e ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml
+command! Deintoml e ~/dotfiles/.config/nvim/dein/toml/dein.toml
+command! DeintomlLazy e ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml
 
 if has("mac")
-  let g:python_host_prog='/usr/local/bin/python2'
-  let g:python3_host_prog='/Users/kotapiku/.pyenv/shims/python'
+  let g:python_host_prog='/usr/bin/python'
+  let g:python3_host_prog='/usr/bin/python3'
 endif
 
 if has("nvim")
 "dein Scripts-----------------------------
 if &compatible
-  set nocompatible               " Be iMproved
+  set nocompatible               " Be improved
 endif
 
 " Required:
-let s:dein_path = $HOME . '/dotfiles/config/nvim/dein'
-let s:dein_repo_path = s:dein_path . '/repos/github.com/Shougo/dein.vim'
-
-if !isdirectory(s:dein_repo_path)
-  execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_path
-endif
-
-execute 'set runtimepath^=' . s:dein_repo_path
+set runtimepath+=/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state(s:dein_path)
+if dein#load_state('/Users/kotapiku/.cache/dein')
+  call dein#begin('/Users/kotapiku/.cache/dein')
 
-" XDG base direcory compartible
- let g:dein#cache_directory = $HOME . '/.cache/dein'
+  " Let dein manage dein
+  " Required:
+  " call dein#add('/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim')
 
- " dein begin
- call dein#begin(s:dein_path)
- let s:toml_dir  = s:dein_path . '/toml'
- let s:toml      = s:toml_dir . '/dein.toml'
- let s:lazy_toml = s:toml_dir . '/dein_lazy.toml'
+  let s:toml_dir  = $HOME . '/dotfiles/.config/nvim/dein/toml'
 
- " TOML を読み込み、キャッシュしておく
- call dein#load_toml(s:toml,      {'lazy': 0})
- call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  " TOML を読み込み、キャッシュしておく
+  call dein#load_toml(s:toml_dir . '/dein.toml',      {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
 
- " Required:
- call dein#end()
- call dein#save_state()
+  " Required:
+  call dein#end()
+  call dein#save_state()
 
- call map(dein#check_clean(), "delete(v:val, 'rf')")
- call dein#recache_runtimepath()
+  call map(dein#check_clean(), "delete(v:val, 'rf')")
+  call dein#recache_runtimepath()
 endif
 
 " Required:

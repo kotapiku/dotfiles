@@ -1,20 +1,20 @@
 # Zplug
-if [ -e "${HOME}/.zplug" ]; then
-	source ~/.zplug/init.zsh
-	zplug "zsh-users/zsh-completions"
-	zplug "zsh-users/zsh-syntax-highlighting", defer:2
-	zplug "zsh-users/zsh-autosuggestions"
-	zplug "zsh-users/zsh-completions"
-	zplug "zsh-users/zsh-history-substring-search"
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
 
-	if ! zplug check --verbose; then
-	    printf 'Install? [y/N]: '
-        if read -q; then
-		    echo; zplug install
-		fi
-	fi
-	zplug load
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-history-substring-search"
+
+if ! zplug check --verbose; then
+    printf 'Install? [y/N]: '
+    if read -q; then
+        echo; zplug install
+    fi
 fi
+zplug load
 
 # Zplug setting
 bindkey -M vicmd 'k' history-substring-search-up
@@ -96,8 +96,11 @@ alias -s cpp=g++ -Wall -o
 alias zshrc='nvim ~/.zshrc'
 alias vimrc='nvim ~/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
-alias deintoml='nvim ~/dotfiles/config/nvim/dein/toml/dein.toml'
-alias deintoml_lazy='nvim ~/dotfiles/config/nvim/dein/toml/dein_lazy.toml'
+alias deintoml='nvim ~/dotfiles/.config/nvim/dein/toml/dein.toml'
+alias deintoml_lazy='nvim ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml'
+
+alias g='cd $(ghq root)/$(ghq list | peco)'
+alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
@@ -125,12 +128,6 @@ case ${OSTYPE} in
         function git(){hub "$@"}
         alias noti='terminal-notifier -message "おわった！"'
         export PATH="/usr/local/bin:$PATH"  # for brew
-
-        # === cool-peco init ===
-        FPATH="$FPATH:/Users/kotapiku/.ghq/github.com/ryoppy/cool-peco"
-        autoload -Uz cool-peco
-        cool-peco
-        # ======================
         ;;
     linux*)
         alias fcp='(){cat $1 | xsel --clipboard --input}'

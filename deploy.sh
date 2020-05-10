@@ -42,9 +42,20 @@ do
     [[ ${f} = ".tmux.conf_linux" ]] && continue
     [[ ${f} = ".tmux.conf_linux2" ]] && continue
     [[ ${f} = ".zshenv" ]] && continue
+    [[ ${f} = ".latexmkrc" ]] && continue
 
     ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
   fi
 done
+
+# download color scheme for vim
+if [ ! -e ${HOME}/.config/nvim/colors ]; then
+  cd ~/.config/nvim
+  curl -O https://github.com/morhetz/gruvbox/tree/master/colors
+fi
+
+# for dein
+curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
+sh ./installer.sh ~/.cache/dein
 
 echo "$(tput setaf 2)Dotfiles are deployed! ✔$(tput sgr0)"
