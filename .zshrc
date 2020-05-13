@@ -142,7 +142,8 @@ function extract() {
 	case $1 in
 		*.tar.gz|*.tgz) tar xzvf $1;;
 		*.tar.xz) tar Jxvf $1;;
-		*.zip) unzip $1;;
+		# *.zip) unzip $1;;
+		*.zip) unar $1;;
 		*.lzh) lha e $1;;
 		*.tar.bz2|*.tbz) tar xjvf $1;;
 		*.tar.Z) tar zxvf $1;;
