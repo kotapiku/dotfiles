@@ -108,14 +108,6 @@ function mktar () { tar cvzf $1.tar.gz $1 }
 # for yugen
 alias ip-add-yugen='curl ifconfig.me | xargs -I {} curl http://49.212.25.77/cgi-bin/ssh.cgi --data network={}'
 
-# for todolist
-alias ta='todolist a'
-alias tl='todolist l'
-alias tlp='todolist l by p'
-alias tlc='todolist l by c'
-alias te='todolist e'
-alias td='todolist d'
-
 # for atcoder
 function oj-d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
 function oj-url-d () { rm -rf test && oj d $1 }
@@ -169,28 +161,6 @@ path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'
 if type pyenv > /dev/null 2>&1; then
         eval "$(pyenv init -)"
 fi
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PATH="$HOME/Dropbox:$PATH"
-export PATH="$HOME/.cabal/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cache:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-
-export XDG_CONFIG_HOME=~/.config  # for neovim
-export RUST_BACKTRACE=1
-
-#envのpathの重複自動削除
-export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
-
-# for powerline-daemon
-export LC_ALL='ja_JP.UTF-8'
 
 #再起動
 alias relogin='exec $SHELL -l'
-
-# for opam
-test -r ~/.opam/opam-init/init.zsh && . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

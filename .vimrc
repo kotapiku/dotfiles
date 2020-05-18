@@ -36,6 +36,9 @@ nnoremap Y y$    " Yでカーソル位置から行末までコピー
 " clipboard
 set clipboard+=unnamed
 
+" fzf
+set rtp+=/usr/local/opt/fzf
+
 " ignore in completion
 set wildignorecase  " to ignorecase in e command
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.cmi,*.cmo,*.cma
