@@ -90,6 +90,7 @@ function mkcd () { mkdir -p $1 && cd $1 }
 
 alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
 alias vi='nvim'
+alias fvi='{ tmp=$(fzf); if [ "$tmp" = "" ]; then return 1; else nvim $tmp; fi }'  # fzfでファイルを探して開く
 
 alias -s py=python3
 alias -s cpp=g++ -Wall -o
@@ -100,7 +101,7 @@ alias tmuxconf='nvim ~/.tmux.conf'
 alias deintoml='nvim ~/dotfiles/.config/nvim/dein/toml/dein.toml'
 alias deintoml_lazy='nvim ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml'
 
-alias g='cd $(ghq root)/$(ghq list | peco)'
+alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
