@@ -10,16 +10,12 @@ syntax on
 set ruler           " display cursor position
 set wildmenu        " completion
 set nofoldenable    " disable fold
-if has('conceal')
-  set conceallevel=0 concealcursor=
-endif
 
 " indent
 set autoindent
 set expandtab    " replace tab with space
-
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 
 " search
 set incsearch    " incremental search
@@ -34,7 +30,7 @@ nnoremap N Nzz
 nnoremap Y y$    " Yでカーソル位置から行末までコピー
 
 " clipboard
-set clipboard+=unnamed
+set clipboard+=unnamedplus
 
 " fzf
 set rtp+=/usr/local/opt/fzf
@@ -53,44 +49,6 @@ augroup vimrc
   au BufNewFile,BufRead *.lean setf lean
   au BufNewFile,BufRead *.jl setf julia
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
-  au FileType ocaml,vim set shiftwidth=2
-augroup End
-
-augroup leanSetting
-  autocmd!
-  au BufWritePre *.lean %s/\( \|\W\|^\)not /\1¬/ge              " logical symbols
-  au BufWritePre *.lean %s/\( \|\W\|^\)and\( \|$\)/\1∧\2/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)or\( \|$\)/\1∨\2/ge
-  au BufWritePre *.lean %s/<->/↔/ge
-  au BufWritePre *.lean %s/->/→/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)forall/\1∀/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)exists/\1∃/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)fun/\1λ/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)~=/\1≠/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)nat\( \|$\)/\1ℕ\2/ge     " types
-  au BufWritePre *.lean %s/\( \|\W\|^\)int\( \|$\)/\1ℤ\2/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)rat\( \|$\)/\1ℚ\2/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)real\( \|$\)/\1ℝ\2/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)alpha/\1α/ge             " greek letters
-  au BufWritePre *.lean %s/\( \|\W\|^\)beta/\1β/ge
-  au BufWritePre *.lean %s/\( \|\W\|^\)gamma/\1γ/ge
-  au BufWritePre *.lean %s/?(\([^)]\))/⌞\1⌟/ge                  " brackets
-  au BufWritePre *.lean %s/{{/⦃/ge
-  au BufWritePre *.lean %s/}}/⦄/ge
-  au BufWritePre *.lean %s/\\<</⟪/ge
-  au BufWritePre *.lean %s/\\>>/⟫/ge
-  au BufWritePre *.lean %s/\\</⟨/ge
-  au BufWritePre *.lean %s/\\>/⟩/ge
-  au BufWritePre *.lean %s/}}/⦄/ge
-  au BufWritePre *.lean %s/_1\( \|\W\|$\)/₁\1/ge                " subscripts
-  au BufWritePre *.lean %s/_2\( \|\W\|$\)/₂\1/ge
-  au BufWritePre *.lean %s/_3\( \|\W\|$\)/₃\1/ge
-  au BufWritePre *.lean %s/_4\( \|\W\|$\)/₄\1/ge
-  au BufWritePre *.lean %s/_5\( \|\W\|$\)/₅\1/ge
-  au BufWritePre *.lean %s/_6\( \|\W\|$\)/₆\1/ge
-  au BufWritePre *.lean %s/_7\( \|\W\|$\)/₇\1/ge
-  au BufWritePre *.lean %s/_8\( \|\W\|$\)/₈\1/ge
-  au BufWritePre *.lean %s/_9\( \|\W\|$\)/₉\1/ge
 augroup End
 
 function! DeleteWhiteSpaces()
@@ -109,8 +67,6 @@ nnoremap <Space>bf :bf<CR>
 nnoremap <Space>bm :call OpenMiddleBuffer()<CR>
 nnoremap <Space>bl :bl<CR>
 nnoremap <Space>bd :bp<bar>bd#<CR>
-
-nnoremap <C-s> :CoqToCursor<CR>
 
 function! OpenMiddleBuffer()
   let ls = map(split(execute(":ls"), "\n"), "get(split(v:val), 0)")
@@ -160,10 +116,6 @@ set runtimepath+=/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim
 if dein#load_state('/Users/kotapiku/.cache/dein')
   call dein#begin('/Users/kotapiku/.cache/dein')
 
-  " Let dein manage dein
-  " Required:
-  " call dein#add('/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim')
-
   let s:toml_dir  = $HOME . '/dotfiles/.config/nvim/dein/toml'
 
   " TOML を読み込み、キャッシュしておく
@@ -192,5 +144,3 @@ endif
 
 set background=dark
 colorscheme gruvbox
-
-set clipboard=unnamedplus

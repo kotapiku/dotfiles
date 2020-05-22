@@ -32,7 +32,7 @@ hook_add = 'let g:previm_open_cmd = "google-chrome"'
 repo = 'rust-lang/rust.vim'
 on_ft = 'rust'
 hook_source = '''
-    let g:rustfmt_autosave = 1
+  let g:rustfmt_autosave = 1
 '''
 
 [[plugins]]
@@ -67,7 +67,8 @@ on_ft = 'lean'
 repo = 'lucas8/coquille'
 on_ft = 'coq'
 hook_source = '''
-au FileType coq call coquille#FNMapping()
+  au FileType coq call coquille#FNMapping()
+  nnoremap <C-s> :CoqToCursor<CR>
 '''
 
 [[plugins]]
