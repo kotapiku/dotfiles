@@ -50,7 +50,16 @@ if [ ! -e ${HOME}/.config/nvim/colors ]; then
 fi
 
 # for dein
-curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
-sh ./installer.sh ~/.cache/dein
+if [ ! -e ${HOME}/.cache ]; then
+  curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
+  sh ./installer.sh ~/.cache/dein
+  rm installer.sh
+fi
+
+# for tpm (tmux plugin manager)
+if [ ! -e ${HOME}/.tmux ]; then
+  mkdir ~/.tmux
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
 
 echo "$(tput setaf 2)Dotfiles are deployed! ✔$(tput sgr0)"
