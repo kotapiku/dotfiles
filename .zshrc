@@ -59,14 +59,11 @@ add-zsh-hook precmd _update_vcs_info_msg
 # Completion
 autoload -Uz compinit
 compinit
-
-zstyle ':completion:*:default' menu select=2    #completion select
-setopt print_eight_bit    #日本語ファイル名表示可能
-setopt interactive_comments    #'#' 以降をコメントとして扱う
-setopt auto_cd    #ディレクトリ名だけでcdする
+zstyle ':completion:*' menu select interactive
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'    # 補完で小文字でも大文字にマッチさせる
-zstyle ':completion:*' ignore-parents parent pwd ..    # ../ の後は今いるディレクトリを補完しない
-
+setopt globdots # for hidden files
+setopt menu_complete
+setopt auto_param_slash                       # 末尾に自動的に / を追加
 
 # Options
 setopt no_beep    # beep を無効にする
@@ -75,6 +72,7 @@ setopt ignore_eof    # Ctrl+Dでzshを終了しない
 setopt auto_pushd    # cd したら自動的にpushdする
 setopt pushd_ignore_dups    # 重複したディレクトリを追加しない
 setopt extended_glob    # 高機能なワイルドカード展開を使用する
+setopt auto_cd    #ディレクトリ名だけでcdする
 
 # Alias
 alias cdd="cd .."
@@ -87,10 +85,11 @@ alias mkdir='mkdir -p'
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 alias cat='bat'
 function mkcd () { mkdir -p $1 && cd $1 }
+function fcp () { cat $1 | pbcopy } # file copy
+alias noti='terminal-notifier -message "finish！"'
 
 alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
 alias vi='nvim'
-alias fvi='{ tmp=$(fzf); if [ "$tmp" = "" ]; then return 1; else nvim $tmp; fi }'  # fzfでファイルを探して開く
 
 alias -s py=python3
 alias -s cpp=g++ -Wall -o
@@ -102,7 +101,6 @@ alias deintoml='nvim ~/dotfiles/.config/nvim/dein/toml/dein.toml'
 alias deintoml_lazy='nvim ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml'
 
 alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
-alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
@@ -114,23 +112,6 @@ function oj-d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks
 function oj-url-d () { rm -rf test && oj d $1 }
 
 function ru () { rustc $1 -o a.out || return 1 ; oj test -i }
-
-case ${OSTYPE} in
-    darwin*)
-        function fcp () { cat $1 | pbcopy }
-        alias ctags="`brew --prefix`/bin/ctags"
-        function git(){hub "$@"}
-        alias noti='terminal-notifier -message "おわった！"'
-        export PATH="/usr/local/bin:$PATH"  # for brew
-        ;;
-    linux*)
-        alias fcp='(){cat $1 | xsel --clipboard --input}'
-        alias noti='notify-send "おわった！"'
-        export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"  # for brew
-        #OPAM configuration
-        . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-        ;;
-esac
 
 function extract() {
 	case $1 in
@@ -165,3 +146,5 @@ fi
 
 #再起動
 alias relogin='exec $SHELL -l'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

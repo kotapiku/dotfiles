@@ -143,4 +143,4 @@ endif
 endif
 
 set background=dark
-colorscheme gruvbox
+colorscheme hybrid
