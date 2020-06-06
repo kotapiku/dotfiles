@@ -1,32 +1,41 @@
-# Zplug
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
-
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-history-substring-search"
-
-if ! zplug check --verbose; then
-    printf 'Install? [y/N]: '
-    if read -q; then
-        echo; zplug install
-    fi
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+  print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+  command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+  command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+    print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
-zplug load
 
-# Zplug setting
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=30'
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+  zinit-zsh/z-a-as-monitor \
+  zinit-zsh/z-a-patch-dl \
+  zinit-zsh/z-a-bin-gem-node
+  ### End of Zinit's installer chunk
+
+  zinit ice blockf atpull'zinit creinstall -q .'
+  zinit light zsh-users/zsh-completions
+
+  autoload -U compinit
+  compinit
+
+  zinit light zdharma/fast-syntax-highlighting
+  zinit light zsh-users/zsh-autosuggestions
+  zinit light zsh-users/zsh-history-substring-search
+  zinit light wfxr/forgit # git + fzf
 
 # Character encoding
 export LANG=ja_JP.UTF-8
 
 # History
 HISTFILE=~/.zsh_history
-HISTSIZE=100000    #メモリ上に保存される件数
+HISTSIZE=10000    #メモリ上に保存される件数
 SAVEHIST=100000    #ファイルに保存される件数
 setopt hist_ignore_dups    #重複した履歴を保存しない
 setopt hist_ignore_space    #半角スペースを入れたコマンドは履歴に残さない
@@ -47,22 +56,21 @@ zstyle ':vcs_info:*' formats '%F{253}%c%u%b%f'
 zstyle ':vcs_info:*' actionformats '%F{red}%b|%a%f'
 
 function _update_vcs_info_msg() {
-    LANG=en_US.UTF-8 vcs_info
-    if [ -z ${vcs_info_msg_0_} ]; then
-        PROMPT=$'\n%F{159} %~ %F{159}> '
-    else
-        PROMPT=$'\n%F{159} %~ '"${vcs_info_msg_0_} %F{159}> "
-    fi
+  LANG=en_US.UTF-8 vcs_info
+  if [ -z ${vcs_info_msg_0_} ]; then
+    PROMPT=$'\n%F{159} %~ %F{159}> '
+  else
+    PROMPT=$'\n%F{159} %~ '"${vcs_info_msg_0_} %F{159}> "
+  fi
 }
 add-zsh-hook precmd _update_vcs_info_msg
 
 # Completion
-autoload -Uz compinit
-compinit
-zstyle ':completion:*' menu select interactive
+zstyle ':completion:*' menu select
+zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS} "ma=48;5;242;1" # highlight selected item
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'    # 補完で小文字でも大文字にマッチさせる
 setopt globdots # for hidden files
-setopt menu_complete
+setopt glob_complete # tab押したら候補が並ぶ
 setopt auto_param_slash                       # 末尾に自動的に / を追加
 
 # Options
@@ -84,9 +92,30 @@ alias mv='mv -i'    # 上書き前に確認
 alias mkdir='mkdir -p'
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 alias cat='bat'
+alias noti='terminal-notifier -message "finish！"'
 function mkcd () { mkdir -p $1 && cd $1 }
 function fcp () { cat $1 | pbcopy } # file copy
-alias noti='terminal-notifier -message "finish！"'
+
+alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
+
+function mktar () { tar cvzf $1.tar.gz $1 }
+
+function extract() {
+  case $1 in
+    *.tar.gz|*.tgz) tar xzvf $1;;
+    *.tar.xz) tar Jxvf $1;;
+    # *.zip) unzip $1;;
+    *.zip) unar $1;;
+    *.lzh) lha e $1;;
+    *.tar.bz2|*.tbz) tar xjvf $1;;
+    *.tar.Z) tar zxvf $1;;
+    *.gz) gzip -d $1;;
+    *.bz2) bzip2 -dc $1;;
+    *.Z) uncompress $1;;
+    *.tar) tar xvf $1;;
+    *.arj) unarj $1;;
+  esac
+}
 
 alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
 alias vi='nvim'
@@ -100,49 +129,22 @@ alias tmuxconf='nvim ~/.tmux.conf'
 alias deintoml='nvim ~/dotfiles/.config/nvim/dein/toml/dein.toml'
 alias deintoml_lazy='nvim ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml'
 
-alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
-
-function mktar () { tar cvzf $1.tar.gz $1 }
-
 # for yugen
 alias ip-add-yugen='curl ifconfig.me | xargs -I {} curl http://49.212.25.77/cgi-bin/ssh.cgi --data network={}'
-
-# for atcoder
-function oj-d () { rm -rf test && oj d https://beta.atcoder.jp/contests/$1/tasks/$1_$2 }
-function oj-url-d () { rm -rf test && oj d $1 }
-
-function ru () { rustc $1 -o a.out || return 1 ; oj test -i }
-
-function extract() {
-	case $1 in
-		*.tar.gz|*.tgz) tar xzvf $1;;
-		*.tar.xz) tar Jxvf $1;;
-		# *.zip) unzip $1;;
-		*.zip) unar $1;;
-		*.lzh) lha e $1;;
-		*.tar.bz2|*.tbz) tar xjvf $1;;
-		*.tar.Z) tar zxvf $1;;
-		*.gz) gzip -d $1;;
-		*.bz2) bzip2 -dc $1;;
-		*.Z) uncompress $1;;
-		*.tar) tar xvf $1;;
-		*.arj) unarj $1;;
-	esac
-}
 
 # vi mode
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode   # jkでvi-modeへ
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=30'
+bindkey '^N' expand-or-complete
+bindkey '^P' reverse-menu-complete
 
 #pathの追加・削除のための関数
 path_append ()  { path_remove $1; export PATH="$PATH:$1"; }
 path_prepend () { path_remove $1; export PATH="$1:$PATH"; }
 path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`; }
-
-# Export
-if type pyenv > /dev/null 2>&1; then
-        eval "$(pyenv init -)"
-fi
 
 #再起動
 alias relogin='exec $SHELL -l'

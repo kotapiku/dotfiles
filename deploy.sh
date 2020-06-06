@@ -43,12 +43,6 @@ do
   fi
 done
 
-# download color scheme for vim
-if [ ! -e ${HOME}/.config/nvim/colors ]; then
-  cd ~/.config/nvim
-  curl -O https://github.com/morhetz/gruvbox/tree/master/colors
-fi
-
 # for dein
 if [ ! -e ${HOME}/.cache ]; then
   curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
