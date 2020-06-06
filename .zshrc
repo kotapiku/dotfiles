@@ -92,9 +92,14 @@ alias mv='mv -i'    # 上書き前に確認
 alias mkdir='mkdir -p'
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 alias cat='bat'
+
 alias noti='terminal-notifier -message "finish！"'
 function mkcd () { mkdir -p $1 && cd $1 }
 function fcp () { cat $1 | pbcopy } # file copy
+
+alias gst='git status'
+alias gaa='git add -A'
+alias gc='git commit -m'
 
 alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
 
