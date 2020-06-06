@@ -100,6 +100,7 @@ function fcp () { cat $1 | pbcopy } # file copy
 alias gst='git status'
 alias gaa='git add -A'
 alias gc='git commit -m'
+alias gp='git push'
 
 alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
 
