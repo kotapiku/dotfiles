@@ -49,6 +49,7 @@ augroup vimrc
   au BufNewFile,BufRead *.lean setf lean
   au BufNewFile,BufRead *.jl setf julia
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
+  au FileType qf set nobuflisted  " remove quickfix from buffer list
 augroup End
 
 function! DeleteWhiteSpaces()
@@ -60,16 +61,16 @@ endfunction
 " buffer
 set hidden
 set nosol   " buffer間をカーソル位置を保存して移動
-nnoremap <Space>bp :bp<CR>
 nnoremap <Space>bn :bn<CR>
+nnoremap <Space>bp :bp<CR>
 nnoremap <Space>bb :b#<CR>
 nnoremap <Space>bf :bf<CR>
 nnoremap <Space>bm :call OpenMiddleBuffer()<CR>
 nnoremap <Space>bl :bl<CR>
-nnoremap <Space>bd :bp<bar>bd#<CR>
+nnoremap <Space>bd :bp<bar>bd#<CR>  " 1個前に行って元いたbufferを閉じる
 
 function! OpenMiddleBuffer()
-  let ls = map(split(execute(":ls"), "\n"), "get(split(v:val), 0)")
+  let ls = map(split(execute("buffers"), "\n"), "get(split(v:val), 0)")
   execute(":b" . str2nr(get(ls, (len(ls)-1)/2)))
 endfunction
 
