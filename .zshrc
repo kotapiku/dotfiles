@@ -17,18 +17,18 @@ zinit light-mode for \
   zinit-zsh/z-a-as-monitor \
   zinit-zsh/z-a-patch-dl \
   zinit-zsh/z-a-bin-gem-node
-  ### End of Zinit's installer chunk
+### End of Zinit's installer chunk
 
-  zinit ice blockf atpull'zinit creinstall -q .'
-  zinit light zsh-users/zsh-completions
+zinit ice blockf atpull'zinit creinstall -q .'
+zinit light zsh-users/zsh-completions
 
-  autoload -U compinit
-  compinit
+autoload -U compinit
+compinit
 
-  zinit light zdharma/fast-syntax-highlighting
-  zinit light zsh-users/zsh-autosuggestions
-  zinit light zsh-users/zsh-history-substring-search
-  zinit light wfxr/forgit # git + fzf
+zinit light zdharma/fast-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-history-substring-search
+zinit light wfxr/forgit # git + fzf
 
 # Character encoding
 export LANG=ja_JP.UTF-8
@@ -155,4 +155,5 @@ path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'
 #再起動
 alias relogin='exec $SHELL -l'
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
+. /usr/local/etc/profile.d/z.sh # for z

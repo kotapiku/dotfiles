@@ -78,6 +78,6 @@ on_source = ['coquille']
 [[plugins]]
 repo = 'lervag/vimtex'
 on_ft = 'tex'
-on_source = '''
-let g:vimtex_compiler_progname = 'nvr'
+hook_source = '''
+  let g:vimtex_quickfix_open_on_warning = 0
 '''
