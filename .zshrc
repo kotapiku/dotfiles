@@ -156,4 +156,4 @@ path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'
 alias relogin='exec $SHELL -l'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
-. /usr/local/etc/profile.d/z.sh # for z
+eval "$(zoxide init zsh)" # for zoxide

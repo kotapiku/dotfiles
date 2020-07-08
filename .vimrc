@@ -10,6 +10,7 @@ syntax on
 set ruler           " display cursor position
 set wildmenu        " completion
 set nofoldenable    " disable fold
+set termguicolors
 
 " indent
 set autoindent
