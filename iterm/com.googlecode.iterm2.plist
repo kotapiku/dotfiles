@@ -291,10 +291,12 @@
 	<string>0 163 224 275 0 0 1440 877 </string>
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>320 341 799 448 0 0 1440 877 </string>
+	<key>NSWindow Frame SUStatusFrame</key>
+	<string>-741 929 400 129 -1920 97 1920 1080 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>0 508 620 392 -1920 97 1920 1080 </string>
+	<string>-1270 613 620 392 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>-1494 582 570 402 -1920 97 1920 1080 </string>
+	<string>-1378 170 570 402 -1920 97 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>176 425 570 452 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
@@ -526,6 +528,8 @@
 				<key>Red Component</key>
 				<real>0.11772145330905914</real>
 			</dict>
+			<key>Cursor Type</key>
+			<integer>0</integer>
 			<key>Custom Command</key>
 			<string>No</string>
 			<key>Custom Directory</key>
@@ -933,6 +937,8 @@
 	<key>NoSyncAllAppVersions</key>
 	<array>
 		<string>3.3.9</string>
+		<string>3.3.11</string>
+		<string>3.3.12</string>
 	</array>
 	<key>NoSyncBFPFavorites</key>
 	<array>
@@ -945,14 +951,14 @@
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{-226, 900}, {1920, 1080}}</string>
+		<string>{{-1920, 97}, {1920, 1080}}</string>
 		<key>topLeft</key>
-		<string>{412, 1766}</string>
+		<string>{-1651, 692}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>70148E5B-E538-4E18-A19D-909AC16DC67A</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>10</integer>
+	<integer>13</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1741,13 +1747,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-06-09T07:06:28Z</date>
+	<date>2020-07-09T07:28:06Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
-	<integer>783760641</integer>
+	<integer>3807950943</integer>
 	<key>SUUpdateRelaunchingMarker</key>
-	<true/>
+	<false/>
 	<key>SoundForEsc</key>
 	<false/>
 	<key>VisualIndicatorForEsc</key>
@@ -1755,6 +1761,6 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.3.9</string>
+	<string>3.3.12</string>
 </dict>
 </plist>
