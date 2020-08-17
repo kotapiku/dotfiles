@@ -81,12 +81,10 @@ let mapleader = "]"
 inoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
 vnoremap gs  :s///g<Left><Left><Left>
-nnoremap k   gk
-nnoremap j   gj
-vnoremap k   gk
-vnoremap j   gj
-nnoremap 0   g0
-nnoremap $   g$
+noremap k   gk
+noremap j   gj
+noremap 0   g0
+noremap $   g$
 nnoremap ; :
 nnoremap : ;
 nnoremap == gg=G
