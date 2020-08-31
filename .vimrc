@@ -62,13 +62,13 @@ endfunction
 " buffer
 set hidden
 set nosol   " buffer間をカーソル位置を保存して移動
-nnoremap <Space>bn :bn<CR>
-nnoremap <Space>bp :bp<CR>
-nnoremap <Space>bb :b#<CR>
-nnoremap <Space>bf :bf<CR>
-nnoremap <Space>bm :call OpenMiddleBuffer()<CR>
-nnoremap <Space>bl :bl<CR>
-nnoremap <Space>bd :bp<bar>bd#<CR>  " 1個前に行って元いたbufferを閉じる
+nnoremap <Space>hn :bn<CR>
+nnoremap <Space>hp :bp<CR>
+nnoremap <Space>hb :b#<CR>
+nnoremap <Space>hf :bf<CR>
+nnoremap <Space>hm :call OpenMiddleBuffer()<CR>
+nnoremap <Space>hl :bl<CR>
+nnoremap <Space>hd :bp<bar>bd#<CR>  " 1個前に行って元いたbufferを閉じる
 
 function! OpenMiddleBuffer()
   let ls = map(split(execute("buffers"), "\n"), "get(split(v:val), 0)")
