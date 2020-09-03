@@ -296,13 +296,15 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>-1270 613 620 392 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>-1378 170 570 402 -1920 97 1920 1080 </string>
+	<string>-918 304 570 402 -1920 97 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>176 425 570 452 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
 			<key>ASCII Anti Aliased</key>
+			<true/>
+			<key>ASCII Ligatures</key>
 			<true/>
 			<key>Ambiguous Double Width</key>
 			<false/>
@@ -554,7 +556,7 @@
 			<key>Guid</key>
 			<string>FA6E4687-74E8-4817-98EA-948F9143C69E</string>
 			<key>Horizontal Spacing</key>
-			<real>1</real>
+			<real>1.01</real>
 			<key>Idle Code</key>
 			<integer>0</integer>
 			<key>Jobs to Ignore</key>
@@ -942,23 +944,32 @@
 	</array>
 	<key>NoSyncBFPFavorites</key>
 	<array>
-		<string>Monaco</string>
+		<string>Roboto Mono for Powerline</string>
 	</array>
 	<key>NoSyncBFPRecents</key>
 	<array>
 		<string>Roboto Mono for Powerline</string>
+		<string>JetBrains Mono</string>
+		<string>JetBrains Mono NL</string>
 	</array>
+	<key>NoSyncFrame_SessionsPreferences</key>
+	<dict>
+		<key>screenFrame</key>
+		<string>{{-1920, 97}, {1920, 1080}}</string>
+		<key>topLeft</key>
+		<string>{-1263, 1043}</string>
+	</dict>
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
 		<string>{{-1920, 97}, {1920, 1080}}</string>
 		<key>topLeft</key>
-		<string>{-1651, 692}</string>
+		<string>{-1842, 825}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>70148E5B-E538-4E18-A19D-909AC16DC67A</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>13</integer>
+	<integer>14</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1701,6 +1712,8 @@
 	</dict>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>610697010.09521401</real>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -1736,6 +1749,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/kotapiku/dotfiles/iterm</string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>QuitWhenAllWindowsClosed</key>
 	<false/>
 	<key>SUEnableAutomaticChecks</key>
@@ -1747,7 +1762,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-07-09T07:28:06Z</date>
+	<date>2020-09-02T02:39:18Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
