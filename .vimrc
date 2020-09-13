@@ -76,7 +76,7 @@ function! OpenMiddleBuffer()
 endfunction
 
 " keymap
-let mapleader = "]"
+let mapleader = "\\"
 
 inoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
