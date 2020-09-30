@@ -147,12 +147,16 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=30'
 bindkey '^N' expand-or-complete
 bindkey '^P' reverse-menu-complete
 
-#pathの追加・削除のための関数
+# pathの追加・削除のための関数
 path_append ()  { path_remove $1; export PATH="$PATH:$1"; }
 path_prepend () { path_remove $1; export PATH="$1:$PATH"; }
 path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`; }
 
-#再起動
+# desktop icon
+alias killdeskon="defaults write com.apple.finder CreateDesktop false && killall Finder"
+alias killdeskoff="defaults delete com.apple.finder CreateDesktop && killall Finder"
+
+# reboot
 alias relogin='exec $SHELL -l'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
