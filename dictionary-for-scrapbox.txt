@@ -1,0 +1,3 @@
+；ー	[/icons/hr.icon]	名詞	
+；だ	[/icons/done.icon]	名詞	
+；け	[/icons/kento.icon]	名詞	
