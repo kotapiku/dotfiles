@@ -1,6 +1,6 @@
 [core]
     excludesfile = ~/.gitignore_global
-    editor = neovim
+    editor = nvim
 [user]
     name = kotapiku
     email = ice08235523@gmail.com
