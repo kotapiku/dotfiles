@@ -101,6 +101,7 @@ alias gst='git status'
 alias gaa='git add -A'
 alias gc='git commit -m'
 alias gp='git push'
+alias gl='git log -p -2'
 
 alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
 
