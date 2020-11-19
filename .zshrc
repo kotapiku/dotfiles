@@ -46,25 +46,6 @@ setopt hist_reduce_blanks    # ヒストリに保存するときに余分なス�
 autoload -Uz colors
 colors
 
-autoload -Uz vcs_info
-autoload -Uz add-zsh-hook
-
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' stagedstr "%F{red}!"
-zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
-zstyle ':vcs_info:*' formats '%F{253}%c%u%b%f'
-zstyle ':vcs_info:*' actionformats '%F{red}%b|%a%f'
-
-function _update_vcs_info_msg() {
-  LANG=en_US.UTF-8 vcs_info
-  if [ -z ${vcs_info_msg_0_} ]; then
-    PROMPT=$'\n%F{159} %~ %F{159}> '
-  else
-    PROMPT=$'\n%F{159} %~ '"${vcs_info_msg_0_} %F{159}> "
-  fi
-}
-add-zsh-hook precmd _update_vcs_info_msg
-
 # Completion
 zstyle ':completion:*' menu select
 zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS} "ma=48;5;242;1" # highlight selected item
@@ -163,3 +144,4 @@ alias relogin='exec $SHELL -l'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
 unalias zi # to resolve conflict between zinit and zoxide
 eval "$(zoxide init zsh)" # for zoxide
+eval "$(starship init zsh)" # for starship
