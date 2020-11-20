@@ -144,4 +144,4 @@ if has("nvim")
 endif
 
 set background=dark
-colorscheme hybrid
+colorscheme molokai
