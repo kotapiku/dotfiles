@@ -1,4 +1,4 @@
-export PYTHONPATH="$HOME/Library/Python/3.8/lib/python/site-packages"
+export PYTHONPATH="/usr/local/lib/python3.9/site-packages"
 export PATH="$HOME/.cache:$PATH"  # for dein
 export XDG_CONFIG_HOME=~/.config  # for neovim
 
