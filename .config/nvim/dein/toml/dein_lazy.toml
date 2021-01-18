@@ -2,7 +2,7 @@
 repo = 'Shougo/deoplete.nvim'
 hook_source = '''
   let g:deoplete#enable_at_startup = 1
-  let g:deoplete#disable_auto_complete = false
+  let g:deoplete#disable_auto_complete = true
 '''
 on_i = 1
 

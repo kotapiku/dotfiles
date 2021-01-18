@@ -90,6 +90,13 @@ noremap $   g$
 nnoremap ; :
 nnoremap : ;
 nnoremap == gg=G
+nnoremap ta :call JumpRefToLabel()<CR>
+
+function! JumpRefToLabel()
+  normal "ayi{
+  let ref = @a
+  execute("/label{" . ref . "}")
+endfunction
 
 " terminal mode
 tnoremap <silent> jk <C-\><C-n>
