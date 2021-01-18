@@ -20,7 +20,6 @@ set shiftwidth=2
 
 " search
 set incsearch    " incremental search
-set hlsearch     " highlight
 set ignorecase
 set smartcase    " 大文字含んでいたら区別
 set wrapscan
@@ -28,7 +27,9 @@ set wrapscan
 set noswapfile    " swapファイルをつくらない
 nnoremap n nzz    " 検索時にカーソル位置を中央に
 nnoremap N Nzz
-nnoremap Y y$    " Yでカーソル位置から行末までコピー
+nnoremap Y y$     " Yでカーソル位置から行末までコピー
+
+set hlsearch      " highlight
 
 " clipboard
 set clipboard+=unnamedplus
@@ -146,3 +147,6 @@ endif
 
 set background=dark
 colorscheme molokai
+
+hi IncSearch guifg=#00D0D0 " highlight color when gc
+hi IncSearch guibg=#000000
