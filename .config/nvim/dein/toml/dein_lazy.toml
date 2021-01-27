@@ -65,4 +65,5 @@ repo = 'lervag/vimtex'
 on_ft = 'tex'
 hook_source = '''
   let g:vimtex_quickfix_open_on_warning = 0
+  let g:tex_flavor='latex'
 '''

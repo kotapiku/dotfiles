@@ -4,13 +4,18 @@ scriptencoding utf-8
 set fileencodings=utf-8
 
 " appearence
-set number
 set title
 syntax on
 set ruler           " display cursor position
 set wildmenu        " completion
 set nofoldenable    " disable fold
 set termguicolors
+
+if winwidth('%') <= 78 " show number only when window width is small
+  set nonumber
+else
+  set number
+endif
 
 " indent
 set autoindent
@@ -97,6 +102,10 @@ function! JumpRefToLabel()
   let ref = @a
   execute("/label{" . ref . "}")
 endfunction
+
+" spell check
+set spell
+nnoremap \s ]s
 
 " terminal mode
 tnoremap <silent> jk <C-\><C-n>

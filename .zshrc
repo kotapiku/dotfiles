@@ -86,6 +86,8 @@ alias gl='git log -p -2'
 
 alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd $tmp; fi }'
 
+alias ctags="`brew --prefix`/bin/ctags"
+
 function mktar () { tar cvzf $1.tar.gz $1 }
 
 function extract() {

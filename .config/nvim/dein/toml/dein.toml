@@ -64,3 +64,7 @@ hook_add = '''
   nnoremap <silent> ,h :History<CR>
   nnoremap <silent> ,m :Mark<CR>
 '''
+
+# (), {}, ""
+[[plugins]]
+repo = 'tpope/vim-surround'

@@ -2,6 +2,7 @@
 .config/nvim/dein/repos/
 .config/htop
 .config/nvim/.netrwhist
+.config/nvim/spell
 .python-version
 .DS_Store
 
