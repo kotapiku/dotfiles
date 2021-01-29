@@ -43,6 +43,17 @@ do
   fi
 done
 
+# for ctags
+if [ ! -e ${HOME}/.ctags.d ]; then
+  mkdir ${HOME}/.ctags.d
+fi
+for f in *.ctags
+do
+  if [ ! -e ${HOME}/.ctags.d/${f} ]; then
+    ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/.ctags.d/${f}
+  fi
+done
+
 # for dein
 if [ ! -e ${HOME}/.cache ]; then
   curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh

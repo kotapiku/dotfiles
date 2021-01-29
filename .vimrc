@@ -42,6 +42,9 @@ set clipboard+=unnamedplus
 " fzf
 set rtp+=/usr/local/opt/fzf
 
+" ctags
+set tags=./tags;,tags;
+
 " ignore in completion
 set wildignorecase  " to ignorecase in e command
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.cmi,*.cmo,*.cma
@@ -57,6 +60,7 @@ augroup vimrc
   au BufNewFile,BufRead *.jl setf julia
   au BufNewFile,BufRead *.tex setf tex
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
+  au BufWritePre * silent !`brew --prefix`/bin/ctags
   au FileType qf set nobuflisted  " remove quickfix from buffer list
 augroup End
 
@@ -94,14 +98,6 @@ noremap 0   g0
 noremap $   g$
 nnoremap ; :
 nnoremap : ;
-nnoremap == gg=G
-nnoremap ta :call JumpRefToLabel()<CR>
-
-function! JumpRefToLabel()
-  normal "ayi{
-  let ref = @a
-  execute("/label{" . ref . "}")
-endfunction
 
 " spell check
 set spell
