@@ -38,10 +38,10 @@ hook_add = '''
 
 # brackets
 [[plugins]]
-repo = 'itmammoth/doorboy.vim'
+repo = 'itmammoth/doorboy.vim' # auto completion
 
 [[plugins]]
-repo = 'machakann/vim-sandwich'
+repo = 'machakann/vim-sandwich' # saiw(, sdb, sd(, srb(, sr"(
 
 # tmux
 [[plugins]]
@@ -64,7 +64,3 @@ hook_add = '''
   nnoremap <silent> ,h :History<CR>
   nnoremap <silent> ,m :Mark<CR>
 '''
-
-# (), {}, ""
-[[plugins]]
-repo = 'tpope/vim-surround'
