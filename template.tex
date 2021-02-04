@@ -1,29 +1,38 @@
+\RequirePackage{luatex85} % for xy
 \documentclass{article}
 \usepackage{luatexja}
 
 \usepackage{amsmath, nccmath}
-\usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{color, ifthen} % for todo
+\usepackage[all]{xy} \SelectTips{cm}{}  % Tips (of arrows) are in accordance with Computer Modern
 
 \usepackage[bookmarks=true, hidelinks, pdfencoding=auto]{hyperref}
 
-\newtheoremstyle{break}% name
-  {}%         Space above, empty = `usual value'
-  {}%         Space below
-  {}% Body font
-  {}%         Indent amount (empty = no indent, \parindent = para indent)
-  {\bfseries}% Thm head font
-  {}%        Punctuation after thm head
-  {\newline}% Space after thm head: \newline = linebreak
-  {}%         Thm head spec
-
-\theoremstyle{break}
-\newtheorem{definition}{Definition}[section]
-\newtheorem{example}[definition]{Example}
-\newtheorem{prop}[definition]{Proposition}
-\newtheorem{lem}[definition]{Lemma}
-\newtheorem{theorem}[definition]{Theorem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% theorem/proof environment (suited for IEEEtran.cls)
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{mydefinition}{Definition}[section]
+\theoremstyle{plain}
+\newtheorem{mylemma}[mydefinition]{Lemma}
+\newtheorem{myproposition}[mydefinition]{Proposition}
+\newtheorem{mytheorem}[mydefinition]{Theorem}
+\newtheorem{mycorollary}[mydefinition]{Corollary}
+\newtheorem{mysublemma}[mydefinition]{Sublemma}
+\theoremstyle{definition}
+\newtheorem{myremark}[mydefinition]{Remark}
+\newtheorem{myremarks}[mydefinition]{Remarks}
+\newtheorem{myexample}[mydefinition]{Example}
+\newtheorem{mynonexample}[mydefinition]{(Non)example}
+\newtheorem{myexamples}[mydefinition]{Examples}
+\newtheorem{mynotation}[mydefinition]{Notation}
+\newtheorem{myconvention}[mydefinition]{Convention}
+\newtheorem{myrequirements}[mydefinition]{Requirements}
+\theoremstyle{remark}
+\newtheorem*{myproof}{Proof}
+\def\myqed{\qed}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\todo}[1][]{
 \ifthenelse{\equal{#1}{}}{\color{red}TODO\color{black}}{
