@@ -10,6 +10,21 @@
 \usepackage[bookmarks=true, hidelinks, pdfencoding=auto]{hyperref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newif\ifdraft\drafttrue
+ % \newif\ifdraft\draftfalse
+
+\ifdraft
+\usepackage{todonotes}
+\newcommand\kori[1]{\textcolor{blue}{#1}}
+\newcommand{\conf}[1]{\textcolor{red}{#1\%}}
+\else
+\usepackage[disable]{todonotes}
+\newcommand\kori[1]{#1}
+\newcommand{\conf}[1]{}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % theorem/proof environment (suited for IEEEtran.cls)
 \usepackage{amsthm}
 \theoremstyle{definition}
@@ -43,6 +58,8 @@
 
 \begin{document}
 \maketitle
+
+\section{}
 
 \bibliographystyle{plain}
 \bibliography{mybib}
