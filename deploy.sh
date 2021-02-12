@@ -38,6 +38,7 @@ do
     [[ ${f} = ".DS_Store" ]] && continue
     [[ ${f} = ".lvimrc" ]] && continue
     [[ ${f} = ".latexmkrc" ]] && continue
+    [[ ${f} = ".latexmkrc_pdflatex" ]] && continue
 
     ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
   fi
