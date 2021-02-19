@@ -1,8 +1,8 @@
 .idea
-.config/nvim/dein/repos/
 .config/htop
+.config/iterm2
+.config/nvim/dein/repos/
 .config/nvim/.netrwhist
 .config/nvim/spell
 .python-version
 .DS_Store
-
