@@ -1,6 +1,15 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
+# completion
+[[plugins]]
+repo = 'ycm-core/YouCompleteMe'
+hook_add = '''
+  let g:ycm_auto_triger=1
+  let g:ycm_min_num_of_chars_for_completion=1
+  let g:ycm_autoclose_preview_window_after_insertion=1
+'''
+
 # status bar
 [[plugins]]
 repo = 'vim-airline/vim-airline'

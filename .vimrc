@@ -45,7 +45,7 @@ set rtp+=/usr/local/opt/fzf
 " ctags
 set tags=./tags;,tags;
 
-" ignore in completion
+" completion
 set wildignorecase  " to ignorecase in e command
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.cmi,*.cmo,*.cma
 
@@ -114,8 +114,7 @@ command! Deintoml e ~/dotfiles/.config/nvim/dein/toml/dein.toml
 command! DeintomlLazy e ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml
 
 if has("mac")
-  let g:python_host_prog='/usr/bin/python'
-  let g:python3_host_prog='/usr/bin/python3'
+  let g:python3_host_prog='/opt/homebrew/bin/python3'
 endif
 
 if has("nvim")
