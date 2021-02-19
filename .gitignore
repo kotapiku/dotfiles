@@ -1,7 +1,6 @@
 .idea
-.config/htop
-.config/iterm2
-.config/nvim/.netrwhist
-.config/nvim/spell
+.config/*
+!.config/nvim/colors
+!.config/nvim/dein
 .python-version
 .DS_Store
