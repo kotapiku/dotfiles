@@ -4,3 +4,5 @@
 [user]
     name = kotapiku
     email = ice08235523@gmail.com
+[pull]
+    rebase = false
