@@ -79,7 +79,7 @@ nnoremap <Space>hb :b#<CR>
 nnoremap <Space>hf :bf<CR>
 nnoremap <Space>hm :call OpenMiddleBuffer()<CR>
 nnoremap <Space>hl :bl<CR>
-nnoremap <Space>hd :bp<bar>bd#<CR>  " 1個前に行って元いたbufferを閉じる
+nnoremap <Space>hd :bp<bar>bd#<CR>
 
 function! OpenMiddleBuffer()
   let ls = map(split(execute("buffers"), "\n"), "get(split(v:val), 0)")
