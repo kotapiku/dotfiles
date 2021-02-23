@@ -1,7 +1,8 @@
-.idea
 .config/*
-!.config/nvim/init.vim
-!.config/nvim/colors
-!.config/nvim/dein
+!.config/nvim
+.config/nvim/spell/*
+.config/nvim/dein/repos/*
 .python-version
 .DS_Store
+.idea
+.netrwhist
