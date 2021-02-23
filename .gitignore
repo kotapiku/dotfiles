@@ -1,5 +1,6 @@
 .idea
 .config/*
+!.config/nvim/init.vim
 !.config/nvim/colors
 !.config/nvim/dein
 .python-version
