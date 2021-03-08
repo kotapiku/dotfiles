@@ -148,3 +148,7 @@ alias relogin='exec $SHELL -l'
 unalias zi # to resolve conflict between zinit and zoxide
 eval "$(zoxide init zsh)" # for zoxide
 eval "$(starship init zsh)" # for starship
+
+# for pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PATH"
