@@ -89,7 +89,7 @@ alias g='{ tmp=$(ghq list -p | fzf); if [ "$tmp" = "" ]; then return 1; else cd 
 
 alias ctags="`brew --prefix`/bin/ctags"
 
-alias wlog="python3 ~/dev/weeklog.py > ~/dev/log.txt && open ~/dev/log.txt"
+function wlog () { python3 ~/dev/weeklog.py $1 > ~/dev/log.txt && open ~/dev/log.txt }
 
 function mktar () { tar cvzf $1.tar.gz $1 }
 
@@ -97,7 +97,6 @@ function extract() {
   case $1 in
     *.tar.gz|*.tgz) tar xzvf $1;;
     *.tar.xz) tar Jxvf $1;;
-    # *.zip) unzip $1;;
     *.zip) unar $1;;
     *.lzh) lha e $1;;
     *.tar.bz2|*.tbz) tar xjvf $1;;
