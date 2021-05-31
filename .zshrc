@@ -110,7 +110,7 @@ function extract() {
 }
 
 alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
-alias vi='nvim'
+alias vi='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim' # for synctex
 
 alias -s py=python3
 alias -s cpp=g++ -Wall -o
