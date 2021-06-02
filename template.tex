@@ -10,6 +10,20 @@
 \usepackage[bookmarks=true, hidelinks, pdfencoding=auto]{hyperref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% new auxproof environment realized by comment.sty
+%
+% WARNING 1: \begin{auxproof} / \end{auxproof}
+% SHOULD APPEAR WITHOUT HEADING SPACE
+% WARNING 2: NO NESTING OF auxproof ENVIRONMENT
+%
+% To make auxproof diappear, use "\excludecomment{auxproof}" below
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{comment}
+\specialcomment{auxproof}
+{\mbox{}\newline\textbf{BEGIN: AUX-PROOF}\dotfill\newline}
+{\mbox{}\newline\textbf{END: AUX-PROOF}\dotfill\newline}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newif\ifdraft\drafttrue
  % \newif\ifdraft\draftfalse
 
