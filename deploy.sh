@@ -39,6 +39,7 @@ do
     [[ ${f} = ".lvimrc" ]] && continue
     [[ ${f} = ".latexmkrc" ]] && continue
     [[ ${f} = ".latexmkrc_pdflatex" ]] && continue
+    [[ ${f} = ".vimrc_vscode" ]] && continue
 
     ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
   fi
