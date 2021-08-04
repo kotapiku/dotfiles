@@ -1,5 +1,6 @@
 export PATH="$HOME/.cache:$PATH"  # for dein
 export XDG_CONFIG_HOME=~/.config  # for neovim
+export EDITOR=/opt/homebrew/bin/nvim # for crontab
 
 # for fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
