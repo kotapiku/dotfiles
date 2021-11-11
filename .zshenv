@@ -1,7 +1,7 @@
 export PATH="$HOME/.cache:$PATH"  # for dein
 export XDG_CONFIG_HOME=~/.config  # for neovim
 export EDITOR=/opt/homebrew/bin/nvim # for crontab
-export PATH="/opt/homebrew/bin:$PATH" # for pyenv
+export PATH="/opt/homebrew/bin:$PATH" # for brew
 
 # for fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
@@ -20,3 +20,4 @@ export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include"
 
 #envのpathの重複自動削除
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
+

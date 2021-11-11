@@ -29,6 +29,7 @@ zinit light zdharma/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
 zinit light wfxr/forgit # git + fzf
+zinit light spaceship-prompt/spaceship-prompt # for prompt
 
 # Character encoding
 export LANG=ja_JP.UTF-8
@@ -120,6 +121,7 @@ alias vimrc='nvim ~/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
 alias deintoml='nvim ~/dotfiles/.config/nvim/dein/toml/dein.toml'
 alias deintoml_lazy='nvim ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml'
+alias relogin='exec $SHELL -l' # reboot
 
 # for yugen
 alias ip-add-yugen='curl ifconfig.me | xargs -I {} curl http://49.212.25.77/cgi-bin/ssh.cgi --data network={}'
@@ -142,14 +144,15 @@ path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'
 alias killdeskon="defaults write com.apple.finder CreateDesktop false && killall Finder"
 alias killdeskoff="defaults delete com.apple.finder CreateDesktop && killall Finder"
 
-# reboot
-alias relogin='exec $SHELL -l'
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
-unalias zi # to resolve conflict between zinit and zoxide
-eval "$(zoxide init zsh)" # for zoxide
-eval "$(starship init zsh)" # for starship
+# for prompt
+autoload -U promptinit; promptinit
+prompt spaceship
 
 # for pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/shims:$PATH"
+eval "$(pyenv init -)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
+unalias zi # to resolve conflict between zinit and zoxide
+eval "$(zoxide init zsh)" # for zoxide
