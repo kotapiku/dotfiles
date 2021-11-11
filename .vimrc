@@ -113,10 +113,6 @@ command! Tmuxconf e ~/.tmux.conf
 command! Deintoml e ~/dotfiles/.config/nvim/dein/toml/dein.toml
 command! DeintomlLazy e ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml
 
-if has("mac")
-  let g:python3_host_prog='/opt/homebrew/bin/python3'
-endif
-
 if has("nvim")
   "dein Scripts-----------------------------
   if &compatible

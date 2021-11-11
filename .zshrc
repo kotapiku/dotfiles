@@ -29,7 +29,6 @@ zinit light zdharma/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
 zinit light wfxr/forgit # git + fzf
-zinit light spaceship-prompt/spaceship-prompt # for prompt
 
 # Character encoding
 export LANG=ja_JP.UTF-8
@@ -144,10 +143,6 @@ path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'
 alias killdeskon="defaults write com.apple.finder CreateDesktop false && killall Finder"
 alias killdeskoff="defaults delete com.apple.finder CreateDesktop && killall Finder"
 
-# for prompt
-autoload -U promptinit; promptinit
-prompt spaceship
-
 # for pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/shims:$PATH"
@@ -156,3 +151,4 @@ eval "$(pyenv init -)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
 unalias zi # to resolve conflict between zinit and zoxide
 eval "$(zoxide init zsh)" # for zoxide
+eval "$(starship init zsh)" # for prompt
