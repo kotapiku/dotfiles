@@ -21,3 +21,5 @@ export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include"
 #envのpathの重複自動削除
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 
+# for poetry
+export PATH="$HOME/.poetry/bin:$PATH"
