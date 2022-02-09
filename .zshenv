@@ -18,5 +18,5 @@ export PATH="$HOME/dev/git-fuzzy/bin:$PATH"
 #envのpathの重複自動削除
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 
-# for poetry
-export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH" # for poetry
+. "$HOME/.cargo/env" # for cargo (rust)
