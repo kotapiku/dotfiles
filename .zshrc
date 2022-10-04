@@ -116,6 +116,7 @@ alias -s py=python3
 alias -s cpp=g++ -Wall -o
 
 alias zshrc='nvim ~/.zshrc'
+alias zshenv='nvim ~/.zshenv'
 alias vimrc='nvim ~/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
 alias deintoml='nvim ~/dotfiles/.config/nvim/dein/toml/dein.toml'
