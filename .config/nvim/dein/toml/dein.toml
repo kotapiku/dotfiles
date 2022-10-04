@@ -1,15 +1,6 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-# completion
-[[plugins]]
-repo = 'ycm-core/YouCompleteMe'
-hook_add = '''
-  let g:ycm_auto_triger=1
-  let g:ycm_min_num_of_chars_for_completion=1
-  let g:ycm_autoclose_preview_window_after_insertion=1
-'''
-
 # status bar
 [[plugins]]
 repo = 'vim-airline/vim-airline'
@@ -51,11 +42,6 @@ repo = 'itmammoth/doorboy.vim' # auto completion
 
 [[plugins]]
 repo = 'machakann/vim-sandwich' # saiw(, sdb, sd(, srb(, sr"(
-
-# tmux
-[[plugins]]
-repo = 'christoomey/vim-tmux-navigator'
-hook_add = 'let g:tmux_navigator_save_on_switch = 1'
 
 [[plugins]]
 repo = 'junegunn/fzf'

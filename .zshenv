@@ -20,3 +20,4 @@ export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 
 # for poetry
 export PATH="$HOME/.poetry/bin:$PATH"
+. "$HOME/.cargo/env"
