@@ -1,35 +1,3 @@
-### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-  print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-  command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-  command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-    print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
-
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-  zinit-zsh/z-a-as-monitor \
-  zinit-zsh/z-a-patch-dl \
-  zinit-zsh/z-a-bin-gem-node
-### End of Zinit's installer chunk
-
-zinit ice blockf atpull'zinit creinstall -q .'
-zinit light zsh-users/zsh-completions
-
-autoload -U compinit
-compinit
-
-zinit light zdharma/fast-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-history-substring-search
-zinit light wfxr/forgit # git + fzf
-
 # Character encoding
 export LANG=ja_JP.UTF-8
 
@@ -63,17 +31,52 @@ setopt pushd_ignore_dups    # 重複したディレクトリを追加しない
 setopt extended_glob    # 高機能なワイルドカード展開を使用する
 setopt auto_cd    #ディレクトリ名だけでcdする
 
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+  print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+  command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+  command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+    print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+zinit light-mode for \
+  zinit-zsh/z-a-as-monitor \
+  zinit-zsh/z-a-patch-dl \
+  zinit-zsh/z-a-bin-gem-node
+
+zinit light zsh-users/zsh-completions
+zinit light zdharma/fast-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-history-substring-search
+zinit light wfxr/forgit # git + fzf
+
+autoload -U compinit
+compinit
+
+
 # Alias
 alias cdd="cd .."
-alias ls='ls -G -F' # 色付けして表示, 名前の末尾に記号(種類)を表示
-alias la='ls -a'
-alias ll='ls -l'
 alias cp='cp -i'    # コピー先に同名のファイルが存在したとき確認
 alias mv='mv -i'    # 上書き前に確認
 alias mkdir='mkdir -p'
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 alias cat='bat'
 alias diff='icdiff'
+
+# amane
+export HOMEBREW_NO_AUTO_UPDATE=1
+if [[ $(command -v exa) ]]; then
+  alias ls='exa --icons --git'
+  alias ll='exa --icons --git -l'
+  alias la='exa --icons --git -a'
+  alias lt='exa -T -L 2 -a -I "node_modules|.git|.cache|.venv|__pycache__|.pytest_cache" --icons --group-directories-first'
+  alias ltl='exa -T -L 2 -a -I "node_modules|.git|.cache|.venv|__pycache__|.pytest_cache" -l --icons --group-directories-first --time-style long-iso'
+fi
 
 alias noti='terminal-notifier -message "finish！"'
 function mkcd () { mkdir -p $1 && cd $1 }
@@ -112,9 +115,6 @@ function extract() {
 alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
 alias vi='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim' # for synctex
 
-alias -s py=python3
-alias -s cpp=g++ -Wall -o
-
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'
 alias vimrc='nvim ~/.vimrc'
@@ -140,16 +140,11 @@ path_append ()  { path_remove $1; export PATH="$PATH:$1"; }
 path_prepend () { path_remove $1; export PATH="$1:$PATH"; }
 path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`; }
 
-# desktop icon
-alias killdeskon="defaults write com.apple.finder CreateDesktop false && killall Finder"
-alias killdeskoff="defaults delete com.apple.finder CreateDesktop && killall Finder"
-
 # for pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/shims:$PATH"
 eval "$(pyenv init -)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
-unalias zi # to resolve conflict between zinit and zoxide
 eval "$(zoxide init zsh)" # for zoxide
 eval "$(starship init zsh)" # for prompt
