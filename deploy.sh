@@ -63,10 +63,9 @@ if [ ! -e ${HOME}/.cache ]; then
   rm installer.sh
 fi
 
-# for tpm (tmux plugin manager)
-if [ ! -e ${HOME}/.tmux ]; then
-  mkdir ~/.tmux
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-fi
+# for brew
+if [[ !$(command -v brew)  ]]; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  brew bundle
 
 echo "$(tput setaf 2)Dotfiles are deployed! ✔$(tput sgr0)"
