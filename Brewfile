@@ -31,7 +31,7 @@ cask "cheatsheet", args: { appdir: "/Applications" }
 cask "deepl", args: { appdir: "/Applications" }
 cask "detexify", args: { appdir: "/Applications" }
 cask "docker"
-cask "font-hack-nerd-font", args: { appdir: "/Applications" }
+cask "font-fira-code-nerd-font", args: { appdir: "/Applications" }
 cask "google-chrome", args: { appdir: "/Applications" }
 cask "google-drive", args: { appdir: "/Applications" }
 cask "google-japanese-ime", args: { appdir: "/Applications" }
