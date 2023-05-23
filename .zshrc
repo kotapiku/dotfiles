@@ -148,3 +148,24 @@ eval "$(pyenv init -)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
 eval "$(zoxide init zsh)" # for zoxide
 eval "$(starship init zsh)" # for prompt
+
+# opam configuration
+[[ ! -r /Users/kotapiku/.opam/opam-init/init.zsh ]] || source /Users/kotapiku/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+# for asdf (node)
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/kotapiku/.pyenv/versions/miniforge3-4.10.3-10/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/kotapiku/.pyenv/versions/miniforge3-4.10.3-10/etc/profile.d/conda.sh" ]; then
+        . "/Users/kotapiku/.pyenv/versions/miniforge3-4.10.3-10/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/kotapiku/.pyenv/versions/miniforge3-4.10.3-10/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

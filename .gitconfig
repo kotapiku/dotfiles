@@ -2,9 +2,10 @@
     excludesfile = ~/.gitignore_global
     editor = nvim
 [user]
-  	name = kotapiku
+    name = kotapiku
     email = ice08235523@gmail.com
 [pull]
     rebase = false
-[credential]
-	helper = osxkeychain
+[push]
+    autoSetupRemote = true
+    default = current

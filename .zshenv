@@ -14,9 +14,13 @@ export PATH="$HOME/dev/git-fuzzy/bin:$PATH"
 
 # for haskell (ghcup)
 [ -f "/Users/kotapiku/.ghcup/env" ] && source "/Users/kotapiku/.ghcup/env" # ghcup-env
+export PATH="/opt/homebrew/opt/llvm@12/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm@12/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm@12/include"
 
 #envのpathの重複自動削除
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 
 export PATH="$HOME/.poetry/bin:$PATH" # for poetry
 . "$HOME/.cargo/env" # for cargo (rust)
+export PATH=$PATH:$(go env GOPATH)/bin
