@@ -23,6 +23,7 @@ brew "terminal-notifier"
 brew "tree"
 brew "wget"
 brew "zoxide"
+brew "starship"
 cask "alfred", args: { appdir: "/Applications" }
 cask "cheatsheet", args: { appdir: "/Applications" }
 cask "deepl", args: { appdir: "/Applications" }

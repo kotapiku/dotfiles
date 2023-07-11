@@ -68,4 +68,21 @@ if [[ !$(command -v brew)  ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   brew bundle
 
+# for mac setting
+defaults write -g InitialKeyRepeat -int 25 # initial key repeat time
+defaults write -g KeyRepeat -int 2 # key repeat time
+defaults write -g AppleWindowTabbingMode -string "always" # prefer tab always
+defaults write com.apple.dock autohide -bool false # dockを自動で隠さない
+defaults write com.apple.AppleMultitouchTrackpad Clicking -int 1 # クリックでタップ
+defaults write com.apple.trackpad.scaling scaling -float true # マウスの移動速度を最大に
+defaults write com.apple.finder AppleShowAllFiles -bool true # finderで隠しファイル/フォルダを表示
+defaults write com.apple.finder ShowPathbar -bool true # パスバーを表示
+defaults write com.apple.finder ShowStatusBar -bool true # ステータスバーを表示
+defaults write com.apple.NSGlobalDomain AppleShowAllExtensions -bool true # finderで拡張子を表示
+defaults write com.apple.menuextra.battery ShowPercent -string "YES" # バッテリの%を表示
+defaults write com.apple.screencapture disable-shadow -bool true # スクショの影を消す
+defaults write com.apple.Siri StatusMenuVisible -int 0 # メニューバーからsiriを消す
+defaults write com.apple.Siri VoiceTriggerUserEnabled -int 0 # disable ask siri
+defaults write com.apple.universalaccess mouseDriverCursorSize -float 2.5 # large cursor size
+
 echo "$(tput setaf 2)Dotfiles are deployed! ✔$(tput sgr0)"
