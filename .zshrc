@@ -147,6 +147,7 @@ eval "$(pyenv init -)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
 eval "$(zoxide init zsh)" # for zoxide
+eval "$(starship init zsh)"
 
 # opam configuration
 [[ ! -r /Users/kotapiku/.opam/opam-init/init.zsh ]] || source /Users/kotapiku/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
