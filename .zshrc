@@ -152,7 +152,7 @@ eval "$(starship init zsh)"
 # opam configuration
 [[ ! -r /Users/kotapiku/.opam/opam-init/init.zsh ]] || source /Users/kotapiku/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 # for asdf (node)
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+. $(brew --prefix asdf)/asdf.sh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
