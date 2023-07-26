@@ -10,4 +10,4 @@
     autoSetupRemote = true
     default = current
 [init]
-	defaultBranch = main
+    defaultBranch = main
