@@ -79,3 +79,4 @@ defaults write com.apple.Siri VoiceTriggerUserEnabled -int 0 # disable ask siri
 defaults write com.apple.universalaccess mouseDriverCursorSize -float 2.5 # large cursor size
 
 echo "$(tput setaf 2)Dotfiles are deployed! ✔$(tput sgr0)"
+
