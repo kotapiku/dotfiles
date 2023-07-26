@@ -56,13 +56,6 @@ do
   fi
 done
 
-# for dein
-if [ ! -e ${HOME}/.cache ]; then
-  curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
-  sh ./installer.sh ~/.cache/dein
-  rm installer.sh
-fi
-
 # for brew
 if [[ !$(command -v brew)  ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
