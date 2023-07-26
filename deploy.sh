@@ -60,6 +60,7 @@ done
 if [[ !$(command -v brew)  ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   brew bundle
+fi
 
 # for mac setting
 defaults write -g InitialKeyRepeat -int 25 # initial key repeat time
