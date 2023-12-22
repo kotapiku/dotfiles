@@ -39,6 +39,7 @@ cask "google-drive", args: { appdir: "/Applications" }
 cask "google-japanese-ime", args: { appdir: "/Applications" }
 cask "grammarly", args: { appdir: "/Applications" }
 cask "mactex"
+cask "alfred", args: { appdir: "/Applications" }
 cask "qmk-toolbox", args: { appdir: "/Applications" }
 cask "skim", args: { appdir: "/Applications" }
 cask "slack", args: { appdir: "/Applications" }

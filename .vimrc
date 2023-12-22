@@ -20,6 +20,8 @@ endif
 " indent
 set autoindent
 set expandtab    " replace tab with space
+set tabstop=2
+set shiftwidth=2
 
 " search
 set incsearch    " incremental search

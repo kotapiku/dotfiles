@@ -20,3 +20,4 @@ export PATH="$HOME/dev/git-fuzzy/bin:$PATH"
 export PATH=`echo $PATH | tr ':' '\n' | sort -u | paste -d: -s -`;
 
 export PATH="$HOME/.poetry/bin:$PATH" # for poetry (python)
+. "$HOME/.cargo/env" # for rust
