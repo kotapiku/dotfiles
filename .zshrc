@@ -145,9 +145,12 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/shims:$PATH"
 eval "$(pyenv init -)"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # for fzf
+# for fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)" # for zoxide
 eval "$(starship init zsh)"
+
+export HOMEBREW_DEVELOPER=1 # to silence macOS warnings of brew
 
 # opam configuration
 [[ ! -r /Users/kotapiku/.opam/opam-init/init.zsh ]] || source /Users/kotapiku/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null

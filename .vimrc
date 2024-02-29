@@ -96,6 +96,7 @@ noremap 0   g0
 noremap $   g$
 nnoremap ; :
 nnoremap : ;
+nnoremap <C-A-j> \\lv
 
 " spell check
 set spell
@@ -151,7 +152,7 @@ if has("nvim")
 endif
 
 set background=dark
-colorscheme molokai
+colorscheme hybrid
 
 hi IncSearch guifg=#00D0D0 " highlight color when gc
 hi IncSearch guibg=#000000
