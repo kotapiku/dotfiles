@@ -10,4 +10,14 @@
     autoSetupRemote = true
     default = current
 [init]
-	defaultBranch = main
+    defaultBranch = main
+
+[diff]
+    tool = difftastic
+    external = difft
+[difftool]
+    prompt = false
+[difftool "difftastic"]
+    cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+    difftool = true

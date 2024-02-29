@@ -2,7 +2,10 @@ tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
+brew "asdf"
+brew "ag"
 brew "bat"
+brew "difftastic"
 brew "exa"
 brew "fzf"
 brew "ghostscript"
@@ -17,6 +20,7 @@ brew "imagemagick"
 brew "lazygit"
 brew "neovim"
 brew "nkf"
+brew "npm"
 brew "pyenv"
 brew "ripgrep"
 brew "rlwrap"
@@ -36,6 +40,8 @@ cask "google-chrome", args: { appdir: "/Applications" }
 cask "google-drive", args: { appdir: "/Applications" }
 cask "google-japanese-ime", args: { appdir: "/Applications" }
 cask "grammarly", args: { appdir: "/Applications" }
+cask "mactex"
+cask "alfred", args: { appdir: "/Applications" }
 cask "qmk-toolbox", args: { appdir: "/Applications" }
 cask "skim", args: { appdir: "/Applications" }
 cask "slack", args: { appdir: "/Applications" }

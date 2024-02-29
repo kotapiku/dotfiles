@@ -20,6 +20,8 @@ endif
 " indent
 set autoindent
 set expandtab    " replace tab with space
+set tabstop=2
+set shiftwidth=2
 
 " search
 set incsearch    " incremental search
@@ -111,6 +113,23 @@ command! Vimrc e ~/.vimrc
 command! Tmuxconf e ~/.tmux.conf
 command! Deintoml e ~/dotfiles/.config/nvim/dein/toml/dein.toml
 command! DeintomlLazy e ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml
+
+" install dein
+let $CACHE = expand('~/.cache')
+if !isdirectory($CACHE)
+  call mkdir($CACHE, 'p')
+endif
+if &runtimepath !~# '/dein.vim'
+  let s:dein_dir = fnamemodify('dein.vim', ':p')
+  if !isdirectory(s:dein_dir)
+    let s:dein_dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'
+    if !isdirectory(s:dein_dir)
+      execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
+    endif
+  endif
+  execute 'set runtimepath^=' .. substitute(
+        \ fnamemodify(s:dein_dir, ':p') , '[/\\]$', '', '')
+endif
 
 if has("nvim")
   "dein Scripts-----------------------------
