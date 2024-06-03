@@ -57,7 +57,6 @@ alias mv='mv -i'    # 上書き前に確認
 alias mkdir='mkdir -p'
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 alias cat='bat'
-alias diff='icdiff'
 
 # amane
 export HOMEBREW_NO_AUTO_UPDATE=1
