@@ -5,6 +5,7 @@ tap "homebrew/core"
 brew "asdf"
 brew "ag"
 brew "bat"
+brew "bitwarden-cli" # for raycast extension
 brew "difftastic"
 brew "exa"
 brew "fzf"
