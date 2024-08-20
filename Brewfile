@@ -30,7 +30,6 @@ brew "tree"
 brew "wget"
 brew "zoxide"
 brew "starship"
-cask "cheatsheet", args: { appdir: "/Applications" }
 cask "deepl", args: { appdir: "/Applications" }
 cask "detexify", args: { appdir: "/Applications" }
 cask "docker"
