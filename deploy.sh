@@ -56,6 +56,9 @@ do
   fi
 done
 
+# apple setting
+defaults write -g ApplePressAndHoldEnabled -bool false
+
 # for brew
 if [[ !$(command -v brew)  ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
