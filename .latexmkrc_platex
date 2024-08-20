@@ -1,0 +1,8 @@
+# .tex -> .dvi に使うコマンド
+$latex = 'platex %O %S';
+
+# .dvi -> pdf に使うコマンド
+$dvipdf = 'dvipdfmx %O -o %D %S';
+
+# コンパイル後にPDFを生成するモードにしておく
+$pdf_mode = 3;
