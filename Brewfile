@@ -37,7 +37,6 @@ cask "flux"
 cask "font-fira-code-nerd-font", args: { appdir: "/Applications" }
 cask "google-drive", args: { appdir: "/Applications" }
 cask "google-japanese-ime", args: { appdir: "/Applications" }
-cask "grammarly", args: { appdir: "/Applications" }
 cask "mactex"
 cask "raycast", args: { appdir: "/Applications" }
 cask "qmk-toolbox", args: { appdir: "/Applications" }
