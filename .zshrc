@@ -57,15 +57,6 @@ alias mv='mv -i'    # 上書き前に確認
 alias mkdir='mkdir -p'
 alias sudo='sudo '    # sudo の後のコマンドでエイリアスを有効にする
 
-# amane
-export HOMEBREW_NO_AUTO_UPDATE=1
-if [[ $(command -v exa) ]]; then
-  alias ls='exa --icons --git'
-  alias ll='exa --icons --git -l'
-  alias la='exa --icons --git -a'
-  alias lt='exa -T -L 2 -a -I "node_modules|.git|.cache|.venv|__pycache__|.pytest_cache" --icons --group-directories-first'
-  alias ltl='exa -T -L 2 -a -I "node_modules|.git|.cache|.venv|__pycache__|.pytest_cache" -l --icons --group-directories-first --time-style long-iso'
-fi
 
 alias noti='terminal-notifier -message "finish！"'
 function mkcd () { mkdir -p $1 && cd $1 }
