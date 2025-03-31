@@ -2,28 +2,15 @@
 
 \usepackage{amsmath, nccmath}
 \usepackage{amsfonts}
+\usepackage{mathtools}
 \usepackage{color, ifthen} % for todo
 \usepackage[all]{xy} \SelectTips{cm}{}  % Tips (of arrows) are in accordance with Computer Modern
 
 \usepackage[bookmarks=true, hidelinks, pdfencoding=auto]{hyperref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% new auxproof environment realized by comment.sty
-%
-% WARNING 1: \begin{auxproof} / \end{auxproof}
-% SHOULD APPEAR WITHOUT HEADING SPACE
-% WARNING 2: NO NESTING OF auxproof ENVIRONMENT
-%
-% To make auxproof diappear, use "\excludecomment{auxproof}" below
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{comment}
-\specialcomment{auxproof}
-{\mbox{}\newline\textbf{BEGIN: AUX-PROOF}\dotfill\newline}
-{\mbox{}\newline\textbf{END: AUX-PROOF}\dotfill\newline}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newif\ifdraft\drafttrue
- % \newif\ifdraft\draftfalse
+%  \newif\ifdraft\draftfalse
 
 \ifdraft
 \usepackage{todonotes}
@@ -40,27 +27,45 @@
 % theorem/proof environment (suited for IEEEtran.cls)
 \usepackage{amsthm}
 \theoremstyle{definition}
-\newtheorem{mydefinition}{Definition}[section]
+\newtheorem{definition}{Definition}[section]
 \theoremstyle{plain}
-\newtheorem{mylemma}[mydefinition]{Lemma}
-\newtheorem{myproposition}[mydefinition]{Proposition}
-\newtheorem{mytheorem}[mydefinition]{Theorem}
-\newtheorem{mycorollary}[mydefinition]{Corollary}
-\newtheorem{mysublemma}[mydefinition]{Sublemma}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{sublemma}[definition]{Sublemma}
 \theoremstyle{definition}
-\newtheorem{myremark}[mydefinition]{Remark}
-\newtheorem{myremarks}[mydefinition]{Remarks}
-\newtheorem{myexample}[mydefinition]{Example}
-\newtheorem{mynonexample}[mydefinition]{(Non)example}
-\newtheorem{myexamples}[mydefinition]{Examples}
-\newtheorem{mynotation}[mydefinition]{Notation}
-\newtheorem{myconvention}[mydefinition]{Convention}
-\newtheorem{myconjecture}[mydefinition]{Conjecture}
-\newtheorem{myrequirements}[mydefinition]{Requirements}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{remarks}[definition]{Remarks}
+\newtheorem{example}[definition]{Example}
+\newtheorem{nonexample}[definition]{(Non)example}
+\newtheorem{examples}[definition]{Examples}
+\newtheorem{notation}[definition]{Notation}
+\newtheorem{convention}[definition]{Convention}
+\newtheorem{conjecture}[definition]{Conjecture}
+\newtheorem{requirements}[definition]{Requirements}
 \theoremstyle{remark}
-\newtheorem*{myproof}{Proof}
-\def\myqed{\qed}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Pf}{\mathcal{P}}
+\newcommand{\multito}[1]{\xrightarrow{#1} \hspace{-3pt}^*}
+\newcommand{\final}{\mathrm{final}}
+\newcommand{\RelO}{\mathbf{Rel}_\Omega}
+\newcommand{\id}{\mathrm{id}}
+
+\newcommand{\pullbackmark}[2]{\save ;p+<.8pc,0pc>:(0,-1)::%
+(#1) *{\phantom{Z}} %
+;p+(#2)-(0,0) **@{-}%
+;p-(#1)+(0,0) *{\phantom{Z}} **@{-} \restore}
+\newcommand{\rloop}[2][-]{\save \POS!R(.7) \ar@(ru,rd)^#1{#2} \restore}
+\newcommand{\lloop}[2][-]{\save \POS!L(.7) \ar@(lu,ld)_#1{#2} \restore}
+\makeatletter
+\newcommand{\dotminus}{\mathbin{\text{\@dotminus}}}
+
+\newcommand{\@dotminus}{%
+  \ooalign{\hidewidth\raise1ex\hbox{.}\hidewidth\cr$\m@th-$\cr}%
+}
 
 
 \title{}
