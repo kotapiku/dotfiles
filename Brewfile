@@ -4,6 +4,7 @@ tap "homebrew/cask-fonts"
 tap "homebrew/core"
 brew "asdf"
 brew "ag"
+brew "arxiv_latex_cleaner"
 brew "bat"
 brew "bitwarden-cli" # for raycast extension
 brew "difftastic"
