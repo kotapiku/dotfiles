@@ -94,7 +94,7 @@ function extract() {
 }
 
 alias ocaml="rlwrap ocaml"  # ocamlでカーソル有効
-alias vi='NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim' # for synctex
+alias vi='nvim'
 
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'
