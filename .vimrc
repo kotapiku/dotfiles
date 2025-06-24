@@ -59,7 +59,7 @@ augroup vimrc
   au BufNewFile,BufRead *.lean setf lean
   au BufNewFile,BufRead *.jl setf julia
   au BufNewFile,BufRead *.tex setf tex
-  au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
+  " au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
   au BufWritePre *.{tex,bib} silent !`brew --prefix`/bin/ctags
   au FileType qf set nobuflisted  " remove quickfix from buffer list
 augroup End
