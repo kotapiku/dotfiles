@@ -7,7 +7,6 @@
 \usepackage[all]{xy} \SelectTips{cm}{}  % Tips (of arrows) are in accordance with Computer Modern
 
 \usepackage[bookmarks=true, hidelinks, pdfencoding=auto]{hyperref}
-\usepackage[capitalise,nameinlink]{cleveref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newif\ifdraft\drafttrue
@@ -27,6 +26,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % theorem/proof environment (suited for IEEEtran.cls)
 \usepackage{amsthm}
+\usepackage[capitalise,nameinlink]{cleveref}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \crefname{definition}{Def.}{Defs}
