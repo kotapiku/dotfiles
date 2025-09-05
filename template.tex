@@ -57,6 +57,10 @@
 \newcommand{\final}{\mathrm{final}}
 \newcommand{\RelO}{\mathbf{Rel}_\Omega}
 \newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Coalg}[1]{\mathrm{Coalg}(#1)}
+\newcommand{\Alg}[1]{\mathrm{Alg}(#1)}
+\newcommand{\cat}[1]{\mathbb{#1}}
 
 \newcommand{\pullbackmark}[2]{\save ;p+<.8pc,0pc>:(0,-1)::%
 (#1) *{\phantom{Z}} %
@@ -64,6 +68,8 @@
 ;p-(#1)+(0,0) *{\phantom{Z}} **@{-} \restore}
 \newcommand{\rloop}[2][-]{\save \POS!R(.7) \ar@(ru,rd)^#1{#2} \restore}
 \newcommand{\lloop}[2][-]{\save \POS!L(.7) \ar@(lu,ld)_#1{#2} \restore}
+\newcommand{\uloop}[2][-]{\save \POS!U(.7) \ar@(lu,ru)^(.8){#2} \restore}
+\newcommand{\dloop}[2][-]{\save \POS!D(.7) \ar@(rd,ld)^(.8){#2} \restore}
 \makeatletter
 \newcommand{\dotminus}{\mathbin{\text{\@dotminus}}}
 
