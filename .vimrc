@@ -99,7 +99,13 @@ noremap $   g$
 nnoremap ; :
 nnoremap : ;
 nnoremap <C-A-j> \\lv
+
 nnoremap <leader>rw "_ciw<C-r>+<Esc>
+nnoremap <leader>r" "_ci"<C-r>+<Esc>
+nnoremap <leader>r' "_ci'<C-r>+<Esc>
+nnoremap <leader>r( "_ci(<C-r>+<Esc>
+nnoremap <leader>r[ "_ci[<C-r>+<Esc>
+nnoremap <leader>r{ "_ci{<C-r>+<Esc>
 
 " spell check
 set spell
