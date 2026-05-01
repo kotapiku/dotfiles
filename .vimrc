@@ -99,6 +99,7 @@ noremap $   g$
 nnoremap ; :
 nnoremap : ;
 nnoremap <C-A-j> \\lv
+nnoremap <leader>rw "_ciw<C-r>+<Esc>
 
 " spell check
 set spell

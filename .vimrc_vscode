@@ -31,6 +31,8 @@ set wrapscan
 
 set noswapfile    " swapファイルをつくらない
 nnoremap Y y$     " Yでカーソル位置から行末までコピー
+nnoremap <leader>rw "_ciw<C-r>+<Esc>
+
 
 set hlsearch      " highlight
 
