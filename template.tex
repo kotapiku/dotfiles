@@ -9,17 +9,20 @@
 \usepackage[bookmarks=true, hidelinks, pdfencoding=auto]{hyperref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newif\ifarxiv\arxivtrue
+\newif\ifarxiv\arxivfalse
+
 \newif\ifdraft\drafttrue
 %  \newif\ifdraft\draftfalse
 
 \ifdraft
 \usepackage{todonotes}
-\newcommand\kori[1]{\textcolor{blue}{#1}}
-\newcommand{\conf}[1]{\textcolor{red}{#1\%}}
+\newcommand\kori[1]{%
+  \textcolor{blue}{\ignorespaces#1\unskip}%
+}
 \else
 \usepackage[disable]{todonotes}
-\newcommand\kori[1]{#1}
-\newcommand{\conf}[1]{}
+\newcommand\kori[1]{\ignorespaces#1\unskip}
 \fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
