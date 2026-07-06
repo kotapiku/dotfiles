@@ -185,5 +185,5 @@ endif
 set background=dark
 colorscheme molokai
 
-hi IncSearch guifg=#00D0D0 " highlight color when gc
-hi IncSearch guibg=#000000
+" VSCodeVim ignores :highlight for editor decorations.
+" Search and substitution colors are configured in VS Code settings.json.

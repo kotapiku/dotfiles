@@ -180,5 +180,6 @@ endif
 set background=dark
 colorscheme hybrid
 
-hi IncSearch guifg=#00D0D0 " highlight color when gc
-hi IncSearch guibg=#000000
+" Highlight the match currently being confirmed by :s///gc.
+hi IncSearch guifg=#000000 guibg=#FFD75F gui=bold ctermfg=16 ctermbg=221 cterm=bold term=bold,reverse
+hi CurSearch guifg=#000000 guibg=#FFD75F gui=bold ctermfg=16 ctermbg=221 cterm=bold term=bold,reverse
