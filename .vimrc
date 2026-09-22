@@ -1,21 +1,12 @@
+" Resolve the checkout even when this file is loaded through a symlink.
+let s:dotfiles_dir = fnamemodify(resolve(expand("<sfile>:p")), ":h")
+execute "set runtimepath^=" . fnameescape(s:dotfiles_dir . "/.config/nvim")
+execute "set runtimepath+=" . fnameescape(s:dotfiles_dir . "/.config/nvim/after")
+
 " encoding
 set encoding=utf-8
 scriptencoding utf-8
 set fileencodings=utf-8
-
-" appearence
-set title
-syntax on
-set ruler           " display cursor position
-set wildmenu        " completion
-set nofoldenable    " disable fold
-set termguicolors
-
-if winwidth('%') <= 78 " show number only when window width is small
-  set nonumber
-else
-  set number
-endif
 
 " indent
 set autoindent
@@ -29,18 +20,22 @@ set ignorecase
 set smartcase    " 大文字含んでいたら区別
 set wrapscan
 
-set noswapfile    " swapファイルをつくらない
-nnoremap n nzz    " 検索時にカーソル位置を中央に
+" Recover unsaved edits with swap; retain undo history across Neovim sessions.
+set swapfile
+if has("nvim")
+  set undofile
+endif
+
+" 検索時にカーソル位置を中央に
+nnoremap n nzz
 nnoremap N Nzz
-nnoremap Y y$     " Yでカーソル位置から行末までコピー
+" Yでカーソル位置から行末までコピー
+nnoremap Y y$
 
 set hlsearch      " highlight
 
 " clipboard
 set clipboard+=unnamedplus
-
-" fzf
-set rtp+=/usr/local/opt/fzf
 
 " ctags
 set tags=./tags;,tags;
@@ -60,7 +55,6 @@ augroup vimrc
   au BufNewFile,BufRead *.jl setf julia
   au BufNewFile,BufRead *.tex setf tex
   " au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
-  au BufWritePre *.{tex,bib} silent !`brew --prefix`/bin/ctags
   au FileType qf set nobuflisted  " remove quickfix from buffer list
 augroup End
 
@@ -88,6 +82,7 @@ endfunction
 
 " keymap
 let mapleader = "\\"
+let maplocalleader = "\\"
 
 inoremap jk <Esc>
 nnoremap gs  :<C-u>%s///g<Left><Left><Left>
@@ -98,7 +93,6 @@ noremap 0   g0
 noremap $   g$
 nnoremap ; :
 nnoremap : ;
-nnoremap <C-A-j> \\lv
 
 nnoremap <leader>rw "_ciw<C-r>+<Esc>
 nnoremap <leader>r" "_ci"<C-r>+<Esc>
@@ -107,8 +101,12 @@ nnoremap <leader>r( "_ci(<C-r>+<Esc>
 nnoremap <leader>r[ "_ci[<C-r>+<Esc>
 nnoremap <leader>r{ "_ci{<C-r>+<Esc>
 
-" spell check
-set spell
+" Spell checking is useful for prose, including TeX (after/ftplugin/tex.vim).
+set nospell
+augroup prose_spell
+  autocmd!
+  autocmd FileType markdown,text setlocal spell
+augroup END
 nnoremap \s ]s
 
 " terminal mode
@@ -118,68 +116,11 @@ tnoremap <silent> jk <C-\><C-n>
 command! Zshrc e ~/.zshrc
 command! Vimrc e ~/.vimrc
 command! Tmuxconf e ~/.tmux.conf
-command! Deintoml e ~/dotfiles/.config/nvim/dein/toml/dein.toml
-command! DeintomlLazy e ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml
-
-" install dein
-let $CACHE = expand('~/.cache')
-if !isdirectory($CACHE)
-  call mkdir($CACHE, 'p')
-endif
-if &runtimepath !~# '/dein.vim'
-  let s:dein_dir = fnamemodify('dein.vim', ':p')
-  if !isdirectory(s:dein_dir)
-    let s:dein_dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'
-    if !isdirectory(s:dein_dir)
-      execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
-    endif
-  endif
-  execute 'set runtimepath^=' .. substitute(
-        \ fnamemodify(s:dein_dir, ':p') , '[/\\]$', '', '')
-endif
+command! Deintoml execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein.toml")
+command! DeintomlLazy execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein_lazy.toml")
 
 if has("nvim")
-  "dein Scripts-----------------------------
-  if &compatible
-    set nocompatible               " Be improved
-  endif
-
-  " Required:
-  set runtimepath+=/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim
-
-  " Required:
-  if dein#load_state('/Users/kotapiku/.cache/dein')
-    call dein#begin('/Users/kotapiku/.cache/dein')
-
-    let s:toml_dir  = $HOME . '/dotfiles/.config/nvim/dein/toml'
-
-    " TOML を読み込み、キャッシュしておく
-    call dein#load_toml(s:toml_dir . '/dein.toml',      {'lazy': 0})
-    call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
-
-    " Required:
-    call dein#end()
-    call dein#save_state()
-
-    call map(dein#check_clean(), "delete(v:val, 'rf')")
-    call dein#recache_runtimepath()
-  endif
-
-  " Required:
-  filetype plugin indent on
-  syntax enable
-
-  " If you want to install not installed plugins on startup.
-  if dein#check_install()
-    call dein#install()
-  endif
-
-  "End dein Scripts-------------------------
+  execute "source " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/setup.vim")
 endif
 
-set background=dark
-colorscheme hybrid
-
-" Highlight the match currently being confirmed by :s///gc.
-hi IncSearch guifg=#000000 guibg=#FFD75F gui=bold ctermfg=16 ctermbg=221 cterm=bold term=bold,reverse
-hi CurSearch guifg=#000000 guibg=#FFD75F gui=bold ctermfg=16 ctermbg=221 cterm=bold term=bold,reverse
+execute "source " . fnameescape(s:dotfiles_dir . "/.config/nvim/appearance.vim")

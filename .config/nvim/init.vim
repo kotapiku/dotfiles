@@ -1,1 +1,1 @@
-/Users/kotapiku/dotfiles/.vimrc
+../../.vimrc

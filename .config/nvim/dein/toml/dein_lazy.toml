@@ -51,19 +51,3 @@ hook_source = '''
 [[plugins]]
 repo = 'let-def/vimbufsync'
 on_source = ['coquille']
-
-[[plugins]]
-repo = 'lervag/vimtex'
-on_ft = 'tex'
-hook_source = '''
-  let g:vimtex_quickfix_open_on_warning = 0
-  let g:tex_flavor='latex'
-
-  " for synctex
-  let g:vimtex_view_method = 'skim'
-  let g:vimtex_compiler_progname = 'nvr'
-
-  let g:vimtex_view_skim_sync = 1
-  let g:vimtex_view_skim_activate = 1
-  let g:vimtex_view_general_options = '-r @line @pdf @tex'
-'''

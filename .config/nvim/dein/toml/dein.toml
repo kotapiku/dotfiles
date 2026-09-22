@@ -6,9 +6,23 @@ repo = 'Shougo/dein.vim'
 repo = 'vim-airline/vim-airline'
 depends = ['vim-airline-themes']
 hook_add = '''
-  let g:airline_powerline_fonts = 1
+  let g:airline_powerline_fonts = 0
+  let g:airline_left_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_left_alt_sep = '│'
+  let g:airline_right_alt_sep = '│'
+  let g:airline_skip_empty_sections = 1
+  let g:airline_stl_path_style = 'short'
+  let g:airline_section_z = '%l:%c  %p%%'
+  let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
   let g:airline#extensions#tabline#enabled = 1
-  set laststatus=2
+  let g:airline#extensions#tabline#formatter = 'unique_tail'
+  let g:airline#extensions#tabline#show_tab_count = 0
+  let g:airline#extensions#tabline#show_tab_type = 0
+  let g:airline#extensions#tabline#show_close_button = 0
+  let g:airline#extensions#tabline#left_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = '│'
+  set laststatus=2 noshowmode
 '''
 
 [[plugins]]
@@ -64,3 +78,24 @@ hook_add = '''
   nnoremap <silent> <C-]> :call fzf#vim#tags(expand('<cword>'))<CR>
   let g:fzf_buffers_jump = 1
 '''
+
+# LaTeX: load the global inverse-search command even without a TeX buffer.
+[[plugins]]
+repo = 'lervag/vimtex'
+# Keep the installed version compatible with Neovim 0.11.3.
+# Revisit this pin when upgrading Neovim; do not update VimTeX independently.
+rev = '877de3ba5de5f766e5bfa1c3fb0d2ecfcd18f868'
+hook_add = '''
+  let g:tex_flavor = 'latex'
+  let g:vimtex_quickfix_open_on_warning = 0
+  let g:vimtex_view_method = 'skim'
+  let g:vimtex_view_skim_sync = 1
+  let g:vimtex_view_skim_activate = 1
+  let g:vimtex_fold_enabled = 1
+  let g:vimtex_fold_manual = 1
+'''
+
+# Explicit Tab expansion with a small set of LaTeX snippets.
+[[plugins]]
+repo = 'L3MON4D3/LuaSnip'
+rev = 'v2.4.1'
