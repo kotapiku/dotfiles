@@ -1,8 +1,11 @@
 .config/*
 !.config/nvim
+!.config/starship.toml
 .config/nvim/spell/*
 .config/nvim/dein/repos/*
 .python-version
 .DS_Store
 .idea
 .netrwhist
+.nvimlog
+__pycache__/

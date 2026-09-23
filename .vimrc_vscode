@@ -1,3 +1,7 @@
+" Resolve the checkout even when this file is loaded through a symlink.
+let s:dotfiles_dir = fnamemodify(resolve(expand("<sfile>:p")), ":h")
+execute "set runtimepath^=" . fnameescape(s:dotfiles_dir . "/.config/nvim")
+
 " encoding
 set encoding=utf-8
 scriptencoding utf-8
@@ -44,9 +48,6 @@ set hlsearch      " highlight
 
 " clipboard
 set clipboard+=unnamedplus
-
-" fzf
-set rtp+=/usr/local/opt/fzf
 
 " ctags
 set tags=./tags;,tags;
@@ -121,11 +122,11 @@ tnoremap <silent> jk <C-\><C-n>
 command! Zshrc e ~/.zshrc
 command! Vimrc e ~/.vimrc
 command! Tmuxconf e ~/.tmux.conf
-command! Deintoml e ~/dotfiles/.config/nvim/dein/toml/dein.toml
-command! DeintomlLazy e ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml
+command! Deintoml execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein.toml")
+command! DeintomlLazy execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein_lazy.toml")
 
-if has("mac")
-  let g:python3_host_prog='/opt/homebrew/bin/python3'
+if has("nvim") && executable("python3")
+  let g:python3_host_prog = exepath("python3")
 endif
 
 if exists('g:vscode')
@@ -136,49 +137,7 @@ if exists('g:vscode')
   onoremap ae :normal vae<cr>
 endif
 if has("nvim")
-  "dein Scripts-----------------------------
-  if &compatible
-    set nocompatible               " Be improved
-  endif
-
-  " Required:
-  set runtimepath+=/Users/kotapiku/.cache/dein/repos/github.com/Shougo/dein.vim
-
-  " Required:
-  if dein#load_state('/Users/kotapiku/.cache/dein')
-    call dein#begin('/Users/kotapiku/.cache/dein')
-
-    let s:toml_dir  = $HOME . '/dotfiles/.config/nvim/dein/toml'
-
-    if exists('g:vscode')
-      call dein#add('Shougo/dein.vim')
-      call dein#add('tyru/caw.vim')
-      nmap <Leader>c <Plug>(caw:hatpos:toggle)
-      vmap <Leader>c <Plug>(caw:hatpos:toggle)
-    else
-      " TOML を読み込み、キャッシュしておく
-      call dein#load_toml(s:toml_dir . '/dein.toml',      {'lazy': 0})
-      call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
-    endif
-
-    " Required:
-    call dein#end()
-    call dein#save_state()
-
-    " call map(dein#check_clean(), "delete(v:val, 'rf')")
-    call dein#recache_runtimepath()
-  endif
-
-  " Required:
-  filetype plugin indent on
-  syntax enable
-
-  " If you want to install not installed plugins on startup.
-  if dein#check_install()
-    call dein#install()
-  endif
-
-  "End dein Scripts-------------------------
+  execute "source " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/setup.vim")
 endif
 
 

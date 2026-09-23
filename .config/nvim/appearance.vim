@@ -39,14 +39,29 @@ function! s:apply_highlights() abort
   if get(g:, 'colors_name', '') !=# 'nord'
     return
   endif
-  " A little more contrast for comments and numbers than the stock palette.
-  highlight Comment guifg=#8995AA gui=italic ctermfg=246 cterm=italic
-  highlight LineNr guifg=#738099 guibg=NONE ctermfg=244 ctermbg=NONE
-  highlight CursorLine guibg=#353D4A gui=NONE ctermbg=237 cterm=NONE
+  " Keep Nord's muted hues, with clearer text against a deeper background.
+  highlight Normal guifg=#E5E9F0 guibg=#242933 ctermfg=254 ctermbg=235
+  highlight! link NormalNC Normal
+  highlight Comment guifg=#A1ADC0 gui=italic ctermfg=248 cterm=italic
+  highlight LineNr guifg=#8793A6 guibg=NONE ctermfg=246 ctermbg=NONE
+  highlight CursorLine guibg=#303846 gui=NONE ctermbg=237 cterm=NONE
   highlight CursorLineNr guifg=#88C0D0 guibg=NONE gui=bold ctermfg=110 ctermbg=NONE cterm=bold
-  highlight SignColumn guibg=#2E3440 ctermbg=236
+  highlight SignColumn guibg=#242933 ctermbg=235
   highlight VertSplit guifg=#4C566A guibg=NONE gui=NONE ctermfg=240 ctermbg=NONE cterm=NONE
   highlight! link WinSeparator VertSplit
+
+  " Lift common syntax colors too, so commands stay as legible as prose.
+  highlight Statement guifg=#A6C1DC ctermfg=153
+  highlight Keyword guifg=#A6C1DC ctermfg=153
+  highlight Function guifg=#A6C1DC ctermfg=153
+  highlight PreProc guifg=#A6C1DC ctermfg=153
+  highlight Type guifg=#A6C1DC ctermfg=153
+  highlight Identifier guifg=#A4D0CF ctermfg=152
+  highlight Constant guifg=#C3A6BD ctermfg=182
+  highlight Number guifg=#C3A6BD ctermfg=182
+  highlight String guifg=#B4CBA2 ctermfg=151
+  highlight Special guifg=#E5E9F0 ctermfg=254
+  highlight Delimiter guifg=#BCC8D9 ctermfg=152
 
   " Soft search matches; the current match / :s///gc confirmation stays clear.
   highlight Search guifg=#ECEFF4 guibg=#4C566A gui=NONE ctermfg=255 ctermbg=240 cterm=NONE
@@ -59,9 +74,9 @@ function! s:apply_highlights() abort
   highlight! link SpellLocal SpellBad
   highlight! link SpellRare SpellBad
 
-  highlight NormalFloat guifg=#D8DEE9 guibg=#3B4252 ctermfg=253 ctermbg=237
-  highlight FloatBorder guifg=#738099 guibg=#3B4252 ctermfg=244 ctermbg=237
-  highlight Pmenu guifg=#D8DEE9 guibg=#3B4252 ctermfg=253 ctermbg=237
+  highlight NormalFloat guifg=#E5E9F0 guibg=#303846 ctermfg=254 ctermbg=237
+  highlight FloatBorder guifg=#8793A6 guibg=#303846 ctermfg=246 ctermbg=237
+  highlight Pmenu guifg=#E5E9F0 guibg=#303846 ctermfg=254 ctermbg=237
   highlight PmenuSel guifg=#2E3440 guibg=#88C0D0 gui=bold ctermfg=236 ctermbg=110 cterm=bold
 
   " Make LaTeX structure stand out without coloring whole environments.

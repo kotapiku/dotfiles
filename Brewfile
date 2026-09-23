@@ -1,4 +1,3 @@
-tap "homebrew/bundle"
 brew "arxiv_latex_cleaner"
 brew "bat"
 brew "bitwarden-cli" # for raycast extension
@@ -20,6 +19,7 @@ brew "nkf"
 brew "ripgrep" # better grep
 brew "rlwrap"
 brew "terminal-notifier"
+brew "universal-ctags"
 brew "wget"
 brew "zoxide"
 brew "starship"

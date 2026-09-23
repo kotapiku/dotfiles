@@ -106,13 +106,15 @@ alias gl='git log -p -2'
 
 alias ocaml='rlwrap ocaml'
 alias vi='nvim'
+# Open Markdown files in Warp.
+alias md='open -a Warp'
 
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'
 alias vimrc='nvim ~/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
-alias deintoml='nvim ~/dotfiles/.config/nvim/dein/toml/dein.toml'
-alias deintoml_lazy='nvim ~/dotfiles/.config/nvim/dein/toml/dein_lazy.toml'
+alias deintoml='nvim "$XDG_CONFIG_HOME/nvim/dein/toml/dein.toml"'
+alias deintoml_lazy='nvim "$XDG_CONFIG_HOME/nvim/dein/toml/dein_lazy.toml"'
 alias relogin='exec "$SHELL" -l'
 
 # for yugen

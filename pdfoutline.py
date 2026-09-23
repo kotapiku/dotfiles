@@ -1,89 +1,110 @@
-# pdfoutline.py in.pdf in.toc offset out.pdf
-# https://www.planetpdf.com/planetpdf/pdfs/primer.pdf
-# https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdfmarkreference.pdf
+"""Add PDF bookmarks from a UTF-8 table of contents using Ghostscript."""
 
-import sys
+import argparse
+from dataclasses import dataclass, field
+from pathlib import Path
 import re
 import subprocess
-
-class Entry():
-    def __init__(self, name, page, children):
-        self.name = name
-        self.page = page
-        self.children = children # Entry list
-
-def toc_to_elist(toc, TAB = '    '):
-    lines = list(filter(bool, toc.split('\n'))) # filter empty string
-    cur_entry = [[]] # current entries by depth
-    for line in lines:
-        depth = line.count(TAB)
-        pagestr = re.findall(r'\d+$', line)[0]
-        page = int(pagestr)
-        name = line[depth * len(TAB):-(len(pagestr)+1)]
-
-        cur_entry = cur_entry[:depth+1] + [[]]
-        cur_entry[depth].append(Entry(name, page, cur_entry[depth+1]))
-    return cur_entry[0]
+import tempfile
 
 
-# distructive
-def offset_elist(elist, offset):
+@dataclass
+class Entry:
+    name: str
+    page: int
+    children: list = field(default_factory=list)
+
+
+def toc_to_elist(toc, TAB="    "):
+    """Parse ``title page`` lines; each indentation unit adds one level."""
+    if not TAB or not TAB.isspace():
+        raise ValueError("indentation must be a nonempty whitespace string")
+    entries = []
+    levels = [entries]
+    for line_number, line in enumerate(toc.splitlines(), start=1):
+        if not line.strip():
+            continue
+        content = line.lstrip(" \t")
+        indent = line[:len(line) - len(content)]
+        depth, remainder = divmod(len(indent), len(TAB))
+        if remainder or indent != TAB * depth:
+            raise ValueError(f"line {line_number}: indent with groups of {len(TAB)} spaces")
+        if depth >= len(levels):
+            raise ValueError(f"line {line_number}: indentation skips a parent level")
+        match = re.fullmatch(r"(.+?)\s+([0-9]+)", content.rstrip())
+        if not match:
+            raise ValueError(f"line {line_number}: expected 'title page' with a numeric page")
+        name, page_text = match.groups()
+        page = int(page_text)
+        if page < 1:
+            raise ValueError(f"line {line_number}: page must be at least 1")
+        entry = Entry(name.rstrip(), page)
+        levels = levels[:depth + 1]
+        levels[depth].append(entry)
+        levels.append(entry.children)
+    if not entries:
+        raise ValueError("table of contents is empty")
+    return entries
+
+
+def _walk_entries(elist):
     for entry in elist:
+        yield entry
+        yield from _walk_entries(entry.children)
+
+
+def offset_elist(elist, offset):
+    """Apply an offset in place after validating all resulting page numbers."""
+    entries = list(_walk_entries(elist))
+    for entry in entries:
+        if entry.page + offset < 1:
+            raise ValueError(f"{entry.name!r}: page after offset must be at least 1")
+    for entry in entries:
         entry.page += offset
-        offset_elist(entry.children, offset)
+
 
 def elist_to_gs(elist):
     def pdfmark_string(value):
-        return '<%s>' % ('\ufeff' + value).encode('utf-16-be').hex().upper()
+        return "<" + ("\ufeff" + value).encode("utf-16-be").hex().upper() + ">"
 
-    def rec_elist_to_gslist(elist):
-        gs_list = []
-        for entry in elist:
-            gs_list.append("[/Page %d /View [/XYZ null null null] /Title %s /Count %d /OUT pdfmark" \
-                    % (entry.page, pdfmark_string(entry.name), len(entry.children)))
-            gs_list += rec_elist_to_gslist(entry.children)
-        return gs_list
-    return '\n'.join(rec_elist_to_gslist(elist))
-
-def test():
-    toc = \
-'''
-foo0 4
-foo1 5
-    buz 7
-    buzz 8
-        buzzz9
-    boo 10
-foo2 12
-    yamm 20
-        yaam 30
-            yo 40
-    yeah 5
-foo3 3
-'''
-    elist =toc_to_elist(toc)
-    print("toc_to_elist: " + str(elist[2].children[0].page == 20))
-    offset_elist(elist, 3)
-    print("offset_elist: " + str(elist[2].children[0].page == 23))
+    return "\n".join(
+        f"[/Page {entry.page} /View [/XYZ null null null] "
+        f"/Title {pdfmark_string(entry.name)} /Count {len(entry.children)} /OUT pdfmark"
+        for entry in _walk_entries(elist)
+    )
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 5:
-        print('usage: pdfoutline in.pdf in.toc offset out.pdf')
-        exit(1)
-    inpdf = sys.argv[1]
-    toc_filename = sys.argv[2]
-    offset = int(sys.argv[3])
-    outpdf = sys.argv[4]
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("inpdf", type=Path)
+    parser.add_argument("toc", type=Path, help="UTF-8: title and page, indented by four spaces")
+    parser.add_argument("offset", type=int)
+    parser.add_argument("outpdf", type=Path)
+    args = parser.parse_args(argv)
 
-    with open(toc_filename, encoding='utf-8') as f:
-        toc = f.read()
+    try:
+        if not args.inpdf.is_file():
+            raise ValueError(f"input PDF does not exist: {args.inpdf}")
+        if args.inpdf.resolve() == args.outpdf.resolve() or (
+            args.outpdf.exists() and args.inpdf.samefile(args.outpdf)
+        ):
+            raise ValueError("input and output PDF must be different files")
+        entries = toc_to_elist(args.toc.read_text(encoding="utf-8"))
+        offset_elist(entries, args.offset)
+        with tempfile.TemporaryDirectory(prefix="pdfoutline-") as temporary_directory:
+            marks = Path(temporary_directory) / "outline.gs"
+            marks.write_text(elist_to_gs(entries), encoding="ascii")
+            subprocess.run(
+                ["gs", "-o", str(args.outpdf.resolve()), "-sDEVICE=pdfwrite",
+                 str(marks), "-f", str(args.inpdf.resolve())],
+                check=True,
+            )
+    except subprocess.CalledProcessError as error:
+        parser.exit(1, f"pdfoutline: Ghostscript exited with status {error.returncode}\n")
+    except (OSError, ValueError) as error:
+        parser.exit(1, f"pdfoutline: {error}\n")
+    return 0
 
-    elist = toc_to_elist(toc)
-    offset_elist(elist, offset)
-    gs_command = elist_to_gs(elist)
 
-    with open('/tmp/tmp.gs', 'w') as out:
-        out.write(gs_command)
-    subprocess.run(
-        ['gs', '-o', outpdf, '-sDEVICE=pdfwrite', '/tmp/tmp.gs' , '-f', inpdf])
+if __name__ == "__main__":
+    raise SystemExit(main())
