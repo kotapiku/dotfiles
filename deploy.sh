@@ -17,7 +17,7 @@ Usage: deploy.sh [options]
   -f, --force       Back up conflicting files before replacing them with links
   -n, --dry-run     Print planned changes without changing files or settings
   --skip-brew       Skip Homebrew installation and brew bundle
-  --skip-macos      Skip macOS keyboard settings
+  --skip-macos      Skip macOS keyboard and Skim tab settings
   --target DIR     Deploy into an absolute directory (config goes in DIR/.config)
   -h, --help        Show this help
 EOF
@@ -130,6 +130,7 @@ done
 
 if [[ "$SKIP_MACOS" != true && "$(uname -s)" = Darwin ]]; then
   run defaults write -g ApplePressAndHoldEnabled -bool false
+  run defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
 fi
 
 find_brew() {

@@ -16,7 +16,8 @@ deploy は macOS 標準の Bash 3.2 で動作します。
 Homebrew の導入済み・未導入にかかわらず、このリポジトリの Brewfile に対して
 `brew bundle` を実行します。Brewfile には MacTeX などのアプリも含まれます。
 Mac App Store のアプリにはサインインが必要です。
-macOS ではキー長押しのアクセント選択を無効にします。
+macOS ではキー長押しのアクセント選択を無効にし、Skim で書類を常にタブで開く設定
+（`AppleWindowTabbingMode=always`）を適用します。
 
 設定のリンクだけを作る場合:
 
