@@ -36,19 +36,26 @@ let g:nord_italic_comments = 1
 let g:nord_uniform_status_lines = 0
 
 function! s:apply_highlights() abort
-  if get(g:, 'colors_name', '') !=# 'nord'
+  if index(['nord', 'hybrid'], get(g:, 'colors_name', '')) < 0
     return
   endif
-  " Keep Nord's muted hues, with clearer text against a deeper background.
-  highlight Normal guifg=#E5E9F0 guibg=#242933 ctermfg=254 ctermbg=235
+  " Apply the same contrast in Nord and the plain Vim / first-start fallback.
+  highlight Normal guifg=#F0F3F8 guibg=#1B2029 gui=NONE ctermfg=255 ctermbg=234 cterm=NONE
   highlight! link NormalNC Normal
-  highlight Comment guifg=#A1ADC0 gui=italic ctermfg=248 cterm=italic
-  highlight LineNr guifg=#8793A6 guibg=NONE ctermfg=246 ctermbg=NONE
+  highlight Comment guifg=#B4BFCE gui=italic ctermfg=250 cterm=italic
+  highlight LineNr guifg=#98A7BC guibg=NONE ctermfg=248 ctermbg=NONE
   highlight CursorLine guibg=#303846 gui=NONE ctermbg=237 cterm=NONE
   highlight CursorLineNr guifg=#88C0D0 guibg=NONE gui=bold ctermfg=110 ctermbg=NONE cterm=bold
-  highlight SignColumn guibg=#242933 ctermbg=235
+  highlight SignColumn guibg=#1B2029 ctermbg=234
   highlight VertSplit guifg=#4C566A guibg=NONE gui=NONE ctermfg=240 ctermbg=NONE cterm=NONE
   highlight! link WinSeparator VertSplit
+  highlight NonText guifg=#98A7BC guibg=NONE ctermfg=248 ctermbg=NONE
+  highlight! link SpecialKey NonText
+  highlight Folded guifg=#B4BFCE guibg=#303846 ctermfg=250 ctermbg=237
+
+  " Keep selected text and matching brackets readable over their highlights.
+  highlight Visual guifg=#F0F3F8 guibg=#46556B gui=NONE ctermfg=255 ctermbg=239 cterm=NONE
+  highlight MatchParen guifg=#1B2029 guibg=#EBCB8B gui=bold ctermfg=234 ctermbg=222 cterm=bold
 
   " Lift common syntax colors too, so commands stay as legible as prose.
   highlight Statement guifg=#A6C1DC ctermfg=153
@@ -74,9 +81,9 @@ function! s:apply_highlights() abort
   highlight! link SpellLocal SpellBad
   highlight! link SpellRare SpellBad
 
-  highlight NormalFloat guifg=#E5E9F0 guibg=#303846 ctermfg=254 ctermbg=237
-  highlight FloatBorder guifg=#8793A6 guibg=#303846 ctermfg=246 ctermbg=237
-  highlight Pmenu guifg=#E5E9F0 guibg=#303846 ctermfg=254 ctermbg=237
+  highlight NormalFloat guifg=#F0F3F8 guibg=#303846 ctermfg=255 ctermbg=237
+  highlight FloatBorder guifg=#98A7BC guibg=#303846 ctermfg=248 ctermbg=237
+  highlight Pmenu guifg=#F0F3F8 guibg=#303846 ctermfg=255 ctermbg=237
   highlight PmenuSel guifg=#2E3440 guibg=#88C0D0 gui=bold ctermfg=236 ctermbg=110 cterm=bold
 
   " Make LaTeX structure stand out without coloring whole environments.
@@ -88,10 +95,10 @@ function! s:apply_highlights() abort
   highlight! link texEnvMArgName texEnvArgName
   highlight! link texCmdNewenv texCmdEnv
   highlight! link texCmdNewthm texCmdEnv
-  highlight texCmdPart guifg=#B48EAD gui=bold ctermfg=139 cterm=bold
+  highlight texCmdPart guifg=#C3A6BD gui=bold ctermfg=182 cterm=bold
   highlight texPartArgTitle guifg=#ECEFF4 gui=bold ctermfg=255 cterm=bold
-  highlight texCmdRef guifg=#8FBCBB gui=bold ctermfg=109 cterm=bold
-  highlight texRefArg guifg=#A3BE8C gui=NONE ctermfg=144 cterm=NONE
+  highlight texCmdRef guifg=#A4D0CF gui=bold ctermfg=152 cterm=bold
+  highlight texRefArg guifg=#B4CBA2 gui=NONE ctermfg=151 cterm=NONE
 endfunction
 
 augroup dotfiles_appearance
