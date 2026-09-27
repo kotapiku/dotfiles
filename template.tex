@@ -33,6 +33,12 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \crefname{definition}{Def.}{Defs}
+\newtheorem{example}[definition]{Example}
+\crefname{example}{Example}{Examples}
+\newtheorem{nonexample}[definition]{(Non)example}
+\newtheorem{convention}[definition]{Convention}
+\newtheorem{requirements}[definition]{Requirements}
+
 \theoremstyle{plain}
 \newtheorem{lemma}[definition]{Lemma}
 \crefname{lemma}{Lem.}{Lemmas}
@@ -42,16 +48,12 @@
 \crefname{theorem}{Thm.}{Theorems}
 \newtheorem{corollary}[definition]{Corollary}
 \crefname{corollary}{Cor.}{Corollaries}
+\newtheorem{conjecture}[definition]{Conjecture}
+
+\theoremstyle{remark}
 \newtheorem{remark}[definition]{Remark}
 \crefname{remark}{Rem.}{Remarks}
-\newtheorem{example}[definition]{Example}
-\crefname{example}{Example}{Examples}
-\newtheorem{nonexample}[definition]{(Non)example}
 \newtheorem{notation}[definition]{Notation}
-\newtheorem{convention}[definition]{Convention}
-\newtheorem{conjecture}[definition]{Conjecture}
-\newtheorem{requirements}[definition]{Requirements}
-\theoremstyle{remark}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\Set}{\mathbf{Set}}
@@ -79,6 +81,7 @@
 \newcommand{\@dotminus}{%
   \ooalign{\hidewidth\raise1ex\hbox{.}\hidewidth\cr$\m@th-$\cr}%
 }
+\makeatother
 
 
 \title{}
@@ -90,6 +93,7 @@
 
 \section{}
 
-\bibliographystyle{plain}
-\bibliography{mybib}
+% Uncomment when using a bibliography.
+% \bibliographystyle{plain}
+% \bibliography{mybib}
 \end{document}
