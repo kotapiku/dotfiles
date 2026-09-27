@@ -113,34 +113,23 @@ gd HEAD~1 HEAD     # コミット間の変更
 [Difftastic のコマンド単位での切り替え](https://difftastic.wilfred.me.uk/git.html#difftastic-by-default)
 に沿って設定しています。
 
-## Markdown を Warp で開く
-
-Zsh では `md` で Markdown ファイルを Warp に開けます。複数ファイルも指定できます。
-設定変更後は新しいシェルを開くか、`source ~/.zshrc` で読み直してください。
-
-```sh
-md README.md
-md README.md .config/nvim/README.md
-```
-
-`md` は `open -a Warp` のエイリアスです。複数ファイルを1つのペイン内のタブにまとめるには、
-Warp の Settings → Code → Editor and Code Review で
-「Group files into single editor pane」をオンにします。
-Warp 上部の別タブに開く場合は、同じ画面の「Choose a layout to open files in Warp」を
-「New tab」にします。これらの表示設定は Warp 側で変更します。
-詳しくは [Warp の公式ガイド](https://docs.warp.dev/code/code-editor#tabbed-file-viewer) を参照してください。
-
 ## Markdown をブラウザで表示する
 
 Node.js が使える環境では、表示したい Markdown ファイルのあるディレクトリで
-`npx mdts` を実行すると、ブラウザで Markdown をプレビューできます。
+`md` を実行すると、ブラウザで Markdown をプレビューできます。
 
 ```sh
-npx mdts
+md                  # 8521 が使用中なら、8522 以降の空きポートで起動
+md --port 9000      # ポートを明示して起動（短縮形: md -p 9000）
+md ./docs           # 指定したディレクトリを表示
 ```
 
 ローカルサーバーが起動してブラウザが自動で開き、現在のディレクトリ内の Markdown を
-ツリーから選んで表示できます。詳しくは [mdts の公式 README](https://github.com/unhappychoice/mdts) を参照してください。
+ツリーから選んで表示できます。`md` は `npx mdts --port auto` のエイリアスで、
+既定の `8521` が使用中なら最大 `8531` まで順に試します。`--port` で番号を指定した場合は、
+そのポートを使用します。
+変更後は新しいシェルを開くか、`source ~/.zshrc` で設定を読み直してください。
+詳しくは [mdts の公式 README](https://github.com/unhappychoice/mdts) を参照してください。
 
 ## LaTeX
 

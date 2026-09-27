@@ -117,6 +117,8 @@ alias gl='git log -p -2'
 alias ocaml='rlwrap ocaml'
 alias vi='nvim'
 
+alias md='npx mdts --port auto'
+
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'
 alias vimrc='nvim "$XDG_CONFIG_HOME/nvim/init.lua"'
