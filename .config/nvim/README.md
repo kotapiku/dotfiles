@@ -50,6 +50,20 @@
 TeX は単語の途中を避けて画面上で折り返し、スペルチェックを有効にします。
 折り返しによって原稿に改行を書き込むことはありません。
 
+## Skim のタブで PDF を開く
+
+`\ll` の初回コンパイル後と `\lv` では、Skim を前面にしてから PDF を開きます。
+macOS の「書類を開くときはタブで開く」を「常に」にすると、既存ウィンドウに
+タブとして追加されます。Skim だけに設定する場合は、Skim を終了してから次を実行します。
+
+```sh
+defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
+```
+
+表示処理は `autoload/vimtex/view/skim_tabs.vim` にあり、VimTeX の Skim ビューアーを
+継承しています。保存後の PDF 更新と SyncTeX による往復は引き続き利用できます。
+変更を反映するには Neovim を再起動してください。
+
 ## Skim から原稿へ戻る
 
 Skim の設定 → Sync → PDF-TeX Sync を Custom にして設定します。

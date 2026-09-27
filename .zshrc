@@ -57,6 +57,16 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
 zinit light wfxr/forgit
 
+# gd: keep +/- markers and Git's colors in the preview. Difftastic's
+# automatic color detection disables colors when forgit pipes its output.
+export FORGIT_DIFF_GIT_OPTS='--no-ext-diff'
+export FORGIT_DIFF_FZF_OPTS='
+--height=90%
+--preview-window=down:75%:wrap
+--bind="ctrl-d:preview-page-down,ctrl-u:preview-page-up"
+--header="Enter: full diff | Ctrl-D/U: scroll | Alt-W: wrap"
+'
+
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -106,8 +116,6 @@ alias gl='git log -p -2'
 
 alias ocaml='rlwrap ocaml'
 alias vi='nvim'
-# Open Markdown files in Warp.
-alias md='open -a Warp'
 
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'

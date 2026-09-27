@@ -87,6 +87,30 @@ mv "$HOME/.dotfiles-backups/日時.ランダム文字列/.zshrc" "$HOME/.zshrc"
 Neovim のバックアップは同じバックアップディレクトリの `.config/nvim` にあります。
 Homebrew のインストール・更新や macOS の設定は、このバックアップには含まれません。
 
+## `gd` で差分を見る
+
+`gd`（forgit）は、ファイル一覧の下に横幅いっぱいの差分を表示します。
+削除行は赤い `-`、追加行は緑の `+` で示し、長い行は折り返します。
+`gd` では Git 標準の差分形式を使います。通常の `git diff` は従来どおり Difftastic を使います。
+変更後は新しいシェルを開くか、`source ~/.zshrc` で設定を読み直してください。
+
+```sh
+gd                 # 未ステージの変更
+gd --staged        # ステージ済みの変更
+gd HEAD~1 HEAD     # コミット間の変更
+```
+
+- `↑` / `↓`: ファイルを選択
+- `Ctrl-D` / `Ctrl-U`: 差分をページ単位でスクロール
+- `Alt-W`: 長い行の折り返しを切り替え
+- `Enter`: 選択したファイルの差分を全画面表示（`q` で一覧へ戻る）
+- `Esc`: 終了
+
+設定は `.zshrc` の `FORGIT_DIFF_GIT_OPTS` と `FORGIT_DIFF_FZF_OPTS` にあります。
+[forgit の設定仕様](https://github.com/wfxr/forgit#options) と
+[Difftastic のコマンド単位での切り替え](https://difftastic.wilfred.me.uk/git.html#difftastic-by-default)
+に沿って設定しています。
+
 ## Markdown を Warp で開く
 
 Zsh では `md` で Markdown ファイルを Warp に開けます。複数ファイルも指定できます。
@@ -103,6 +127,18 @@ Warp の Settings → Code → Editor and Code Review で
 Warp 上部の別タブに開く場合は、同じ画面の「Choose a layout to open files in Warp」を
 「New tab」にします。これらの表示設定は Warp 側で変更します。
 詳しくは [Warp の公式ガイド](https://docs.warp.dev/code/code-editor#tabbed-file-viewer) を参照してください。
+
+## Markdown をブラウザで表示する
+
+Node.js が使える環境では、表示したい Markdown ファイルのあるディレクトリで
+`npx mdts` を実行すると、ブラウザで Markdown をプレビューできます。
+
+```sh
+npx mdts
+```
+
+ローカルサーバーが起動してブラウザが自動で開き、現在のディレクトリ内の Markdown を
+ツリーから選んで表示できます。詳しくは [mdts の公式 README](https://github.com/unhappychoice/mdts) を参照してください。
 
 ## LaTeX
 
