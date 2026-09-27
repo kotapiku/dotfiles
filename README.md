@@ -73,7 +73,57 @@ Neovim は `.config/nvim/init.lua`、通常の Vim は `.vimrc` を読み込み�
 Neovim のプラグインは lazy.nvim で管理し、`$XDG_DATA_HOME/nvim/lazy`
 （既定は `~/.local/share/nvim/lazy`）に取得します。バージョンは
 `.config/nvim/lazy-lock.json` に固定しています。Neovim 0.12.4 以上が必要です。
-初回の Zsh / Neovim 起動時には、プラグインの取得にネットワーク接続が必要です。
+Neovim は初回起動時にプラグインを取得します。Zsh のプラグインは、導入後に新しいシェルで
+`zsh-plugins-install` を実行して取得します。いずれも取得時にはネットワーク接続が必要です。
+
+## Zsh
+
+`.zshenv` には PATH・エディター・ページャーなどの環境変数を置き、
+補完・履歴・fzf・プラグインは対話シェル用の `.zshrc` にまとめています。
+Starship・mise・zoxide と、既存のエイリアス・vi モードを利用します。
+
+通常の起動では導入済みプラグインを直接読み込み、ダウンロードを行いません。
+Zinit は導入・更新などの管理コマンドを使ったときに読み込みます。
+プラグイン未導入でも起動でき、vi コマンドモードの `k` / `j` は標準の履歴検索になります。
+初回導入や不足しているプラグインの取得は、対話シェルで実行してください。
+
+```sh
+zsh-plugins-install
+relogin
+```
+
+導入先は `$XDG_DATA_HOME/zinit`（既定は `~/.local/share/zinit`）です。
+既存の Zinit のプラグインをそのまま利用します。更新は手動で行います。
+
+```sh
+zinit self-update
+zinit update --all
+relogin
+```
+
+履歴はメモリー内で最大 20 万件、ファイルに最大 10 万件を保持し、コマンド終了後に追記します。
+先頭が空白のコマンドは保存しません。他のターミナルの履歴を自動で取り込む設定は無効です。
+補完には Homebrew の補完定義も含め、キャッシュを `$XDG_CACHE_HOME/zsh`
+（既定は `~/.cache/zsh`）に置きます。補完ファイルの権限チェックは毎回行います。
+
+| 操作 | 動作 |
+| --- | --- |
+| `Ctrl-R` | fzf で履歴検索 |
+| `Ctrl-T` | ファイルを検索してパスを挿入、bat でプレビュー |
+| `Alt-C` | ディレクトリを検索して移動、eza でプレビュー |
+| `g` | ghq のリポジトリを検索して移動 |
+| `Ctrl-/` | 上記のファイル・ディレクトリ検索でプレビューを開閉 |
+| `jk` | vi 挿入モードからコマンドモードへ（入力間隔は 0.2 秒以内） |
+| `k` / `j` | vi コマンドモードで履歴の部分一致検索 |
+| `Ctrl-N` / `Ctrl-P` | vi 挿入モードで補完・逆順の補完 |
+
+ファイル用プレビューはファイル・ディレクトリ検索にだけ設定し、`Ctrl-R` や
+任意のテキストを渡した `fzf` には適用しません。プレビューには Brewfile の bat / eza を使います。
+設定変更後は `relogin` または新しいターミナルで反映します。
+
+設定の仕様は [Zsh の履歴オプション](https://zsh.sourceforge.io/Doc/Release/Options.html#History)、
+[補完の初期化](https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Use-of-compinit)、
+[fzf のシェル連携](https://github.com/junegunn/fzf#key-bindings-for-command-line) を参照してください。
 
 ## バックアップから戻す
 
