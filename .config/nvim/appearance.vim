@@ -7,6 +7,8 @@ set title
 syntax on
 set ruler wildmenu nofoldenable
 set termguicolors background=dark
+" Keep a file tab visible even when only one file is open (including plain Vim).
+set showtabline=2
 
 " Keep the text in place when Git signs appear, and give the cursor some room.
 set number norelativenumber numberwidth=4
@@ -35,6 +37,25 @@ let g:nord_italic = 1
 let g:nord_italic_comments = 1
 let g:nord_uniform_status_lines = 0
 
+" Use the same tab colors in Airline and Vim's built-in tab bar.
+function! DotfilesAirlineTheme(palette) abort
+  if get(g:, 'airline_theme', '') !=# 'nord'
+    return
+  endif
+  let a:palette.tabline = {
+        \ 'airline_tab': ['#B4BFCE', '#303846', 250, 237, ''],
+        \ 'airline_tabsel': ['#1B2029', '#88C0D0', 234, 110, 'bold'],
+        \ 'airline_tabmod': ['#1B2029', '#EBCB8B', 234, 222, 'bold'],
+        \ 'airline_tabmod_unsel': ['#EBCB8B', '#303846', 222, 237, ''],
+        \ 'airline_tabhid': ['#B4BFCE', '#303846', 250, 237, ''],
+        \ 'airline_tabfill': ['#98A7BC', '#1B2029', 248, 234, ''],
+        \ }
+  for name in ['airline_tab', 'airline_tabsel', 'airline_tabmod', 'airline_tabmod_unsel', 'airline_tabhid']
+    let a:palette.tabline[name . '_right'] = copy(a:palette.tabline[name])
+  endfor
+endfunction
+let g:airline_theme_patch_func = 'DotfilesAirlineTheme'
+
 function! s:apply_highlights() abort
   if index(['nord', 'hybrid'], get(g:, 'colors_name', '')) < 0
     return
@@ -52,6 +73,10 @@ function! s:apply_highlights() abort
   highlight NonText guifg=#98A7BC guibg=NONE ctermfg=248 ctermbg=NONE
   highlight! link SpecialKey NonText
   highlight Folded guifg=#B4BFCE guibg=#303846 ctermfg=250 ctermbg=237
+
+  highlight TabLine guifg=#B4BFCE guibg=#303846 gui=NONE ctermfg=250 ctermbg=237 cterm=NONE
+  highlight TabLineSel guifg=#1B2029 guibg=#88C0D0 gui=bold ctermfg=234 ctermbg=110 cterm=bold
+  highlight TabLineFill guifg=#98A7BC guibg=#1B2029 gui=NONE ctermfg=248 ctermbg=234 cterm=NONE
 
   " Keep selected text and matching brackets readable over their highlights.
   highlight Visual guifg=#F0F3F8 guibg=#46556B gui=NONE ctermfg=255 ctermbg=239 cterm=NONE
