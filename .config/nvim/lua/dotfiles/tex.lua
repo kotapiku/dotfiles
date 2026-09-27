@@ -51,7 +51,7 @@ function M.setup_buffer()
   if ft == 'tex' then
     local ok, err = pcall(require('dotfiles.tex_snippets').setup_buffer, bufnr)
     if not ok then
-      warn_once('snippets', 'LuaSnip could not be loaded. Run :call dein#install().\n' .. tostring(err))
+      warn_once('snippets', 'LuaSnip could not be loaded. Run :Lazy restore.\n' .. tostring(err))
     end
   end
 

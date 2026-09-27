@@ -82,7 +82,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 (( $+commands[mise] )) && eval "$(mise activate zsh)"
 
 # fzf
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+(( $+commands[fzf] )) && source <(fzf --zsh)
 
 # zoxide / starship
 (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
@@ -119,10 +119,9 @@ alias vi='nvim'
 
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'
-alias vimrc='nvim ~/.vimrc'
+alias vimrc='nvim "$XDG_CONFIG_HOME/nvim/init.lua"'
 alias tmuxconf='nvim ~/.tmux.conf'
-alias deintoml='nvim "$XDG_CONFIG_HOME/nvim/dein/toml/dein.toml"'
-alias deintoml_lazy='nvim "$XDG_CONFIG_HOME/nvim/dein/toml/dein_lazy.toml"'
+alias nvim_plugins='nvim "$XDG_CONFIG_HOME/nvim/lua/plugins"'
 alias relogin='exec "$SHELL" -l'
 
 # for yugen

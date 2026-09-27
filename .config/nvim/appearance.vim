@@ -4,7 +4,11 @@ if exists('g:vscode')
 endif
 
 set title
-syntax on
+" In Neovim, leave syntax initialization to startup after plugin setup.
+" Enabling it here triggers TeX ftplugins too early for `nvim file.tex`.
+if !has('nvim')
+  syntax on
+endif
 set ruler wildmenu nofoldenable
 set termguicolors background=dark
 " Keep a file tab visible even when only one file is open (including plain Vim).
@@ -133,7 +137,7 @@ augroup dotfiles_appearance
   autocmd WinLeave * setlocal nocursorline
 augroup END
 
-" Nord is installed by dein. Keep first startup / plain Vim usable without it.
+" Nord is installed by lazy.nvim. Keep first startup / plain Vim usable without it.
 try
   colorscheme nord
 catch /^Vim\%((\a\+)\)\=:E185/

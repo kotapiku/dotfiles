@@ -1,0 +1,15 @@
+{
+  "LuaSnip": { "branch": "master", "commit": "5a1e39223db9a0498024a77b8441169d260c8c25" },
+  "doorboy.vim": { "branch": "master", "commit": "be1ad244e7e5cb1f45efc1482fa4b989a4038df0" },
+  "fzf-lua": { "branch": "main", "commit": "78b85d2a522b1e6a2d154216b3e532a1df1ad6d7" },
+  "gitsigns.nvim": { "branch": "main", "commit": "070a5d7b985546cc57e1fc61e5bc507fecac6045" },
+  "lazy.nvim": { "branch": "main", "commit": "85c7ff3711b730b4030d03144f6db6375044ae82" },
+  "nord": { "branch": "main", "commit": "f13f5dfbb784deddbc1d8195f34dfd9ec73e2295" },
+  "previm": { "branch": "master", "commit": "29524dba1dfad1e77a8670b8c133af96f31582a7" },
+  "vim-airline": { "branch": "master", "commit": "ae24f4aca06731d5d7224df1fc5415975331b214" },
+  "vim-airline-themes": { "branch": "master", "commit": "77aab8c6cf7179ddb8a05741da7e358a86b2c3ab" },
+  "vim-localvimrc": { "branch": "main", "commit": "b249c5a6bf324b0d5e62ccacfffcd36c6a703d84" },
+  "vim-sandwich": { "branch": "master", "commit": "74cf93d58ccc567d8e2310a69860f1b93af19403" },
+  "vimtex": { "branch": "master", "commit": "cb1374f1f3f9717ea91787c54dc11031d673aea5" },
+  "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" }
+}

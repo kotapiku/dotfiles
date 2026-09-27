@@ -55,24 +55,31 @@ end
 
 function M.setup_buffer(bufnr)
   local ls = M.setup()
+  local function feed(keys)
+    vim.api.nvim_feedkeys(vim.keycode(keys), 'ni', false)
+  end
+  -- Run after preceding typed characters are inserted. An expr mapping can
+  -- inspect an incomplete trigger when characters and Tab arrive together.
   vim.keymap.set({ 'i', 's' }, '<Tab>', function()
     if vim.fn.pumvisible() == 1 then
-      return '<C-n>'
+      feed('<C-n>')
     elseif ls.expandable() then
-      return '<Plug>luasnip-expand-snippet'
+      ls.expand()
     elseif ls.locally_jumpable(1) then
-      return '<Plug>luasnip-jump-next'
+      ls.jump(1)
+    else
+      feed('<Tab>')
     end
-    return '<Tab>'
-  end, { buffer = bufnr, expr = true, silent = true, desc = 'LaTeX snippet: expand / next field' })
+  end, { buffer = bufnr, silent = true, desc = 'LaTeX snippet: expand / next field' })
   vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
     if vim.fn.pumvisible() == 1 then
-      return '<C-p>'
+      feed('<C-p>')
     elseif ls.locally_jumpable(-1) then
-      return '<Plug>luasnip-jump-prev'
+      ls.jump(-1)
+    else
+      feed('<S-Tab>')
     end
-    return '<S-Tab>'
-  end, { buffer = bufnr, expr = true, silent = true, desc = 'LaTeX snippet: previous field' })
+  end, { buffer = bufnr, silent = true, desc = 'LaTeX snippet: previous field' })
 end
 
 return M

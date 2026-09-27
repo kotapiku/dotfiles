@@ -19,6 +19,7 @@ brew "nkf"
 brew "ripgrep" # better grep
 brew "rlwrap"
 brew "terminal-notifier"
+brew "texlab"
 brew "universal-ctags"
 brew "wget"
 brew "zoxide"

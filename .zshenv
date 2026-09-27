@@ -19,7 +19,6 @@ fi
 typeset -U path PATH
 
 path=(
-  "$HOME/.cache"              # dein
   "$HOME/go/bin"              # golang
   "$HOME/dev/git-fuzzy/bin"
   "$HOME/.poetry/bin"

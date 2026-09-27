@@ -218,9 +218,9 @@ TeX の `Ctrl+x` → `Ctrl+o` は引き続き VimTeX の補完です。
 診断は下線と行頭の記号で表示し、本文の横にはメッセージを常時表示しません。
 接続直後は解析に少し時間がかかる場合があります。
 
-## ファイル・行・履歴の検索（fzf）
+## ファイル・行・履歴の検索（fzf-lua）
 
-[dein.toml](dein/toml/dein.toml) に設定しているキーです。大文字と小文字を区別します。
+[search.lua](lua/plugins/search.lua) に設定しているキーです。大文字と小文字を区別します。
 
 | キー | 操作 |
 | --- | --- |
@@ -232,15 +232,19 @@ TeX の `Ctrl+x` → `Ctrl+o` は引き続き VimTeX の補完です。
 | `,L` | 開いている全バッファの行を検索 |
 | `,h` | 最近開いたファイルから選ぶ |
 | `,m` | マーク一覧から移動先を選ぶ |
+| `,r` | プロジェクト内の全文検索 |
+| `,d` / `,D` | 現在の文書／ワークスペースの診断一覧 |
+| `,s` | 文書内のシンボル一覧（TexLab 接続時） |
+| `,R` | カーソル位置の参照検索（TexLab 接続時） |
 | `Ctrl+]` | カーソル下の単語でタグを検索してジャンプ |
 
 候補画面では文字を入力して絞り込み、`Enter` で決定、`Esc` で閉じます。
 `Ctrl+]` のタグ検索には、あらかじめ生成した `tags` ファイルが必要です。
 TeX の `tags` はファイルを開いたときになければ生成し、保存後に自動更新します。
 
-## Git の変更箇所（vim-gitgutter）
+## Git の変更箇所（gitsigns）
 
-Git 管理下のファイルで使う、プラグインの標準キーです。
+Git 管理下のファイルで使う、[git.lua](lua/plugins/git.lua) のキーです。
 変更のひとまとまりを「ハンク」と呼びます。
 
 | キー | モード | 操作 |
@@ -249,6 +253,7 @@ Git 管理下のファイルで使う、プラグインの標準キーです。
 | `\hp` | 通常 | 現在の変更箇所をプレビュー |
 | `\hs` | 通常・選択 | 現在の変更箇所／選択した変更をステージする |
 | `\hu` | 通常 | 現在の変更箇所を取り消し、作業中の変更を破棄する |
+| `\hb` | 通常 | 現在行の Git blame を表示 |
 
 `\hp` とバッファ移動の `Space hp` は、最初に押すキーが異なります。
 
@@ -266,14 +271,14 @@ Git 管理下のファイルで使う、プラグインの標準キーです。
 | `Space hl` | 最後のバッファ |
 | `Space hd` | 前のバッファへ移動して元のバッファを閉じる |
 
-`Space hd` は保存を行わないため、変更は先に `:w` で保存してください。
+`Space hd` は未保存のバッファを閉じずに通知します。先に `:w` で保存してください。
 
 ## 原稿内の移動・検索・置換
 
 | キー・入力 | モード | 操作 |
 | --- | --- | --- |
-| `j` / `k` | 通常・選択・演算待ち | 折り返しを含む画面上の1行下／上へ移動（独自） |
-| `0` / `$` | 通常・選択・演算待ち | 画面上の行頭／行末へ移動（独自） |
+| `j` / `k` | 通常・選択・演算待ち | TeX・Markdown・テキストでは画面上の1行下／上。`3j` などの回数指定時とコードでは実際の行を移動 |
+| `0` / `$` | 通常・選択・演算待ち | TeX・Markdown・テキストでは画面上の行頭／行末。それ以外と回数指定時は通常の移動 |
 | `gg` / `G` | 通常 | ファイルの先頭／末尾へ移動（標準） |
 | `/検索語` → `Enter` | 通常 | 前方検索（標準） |
 | `n` / `N` | 通常 | 次／前の一致箇所へ移動し、画面中央に表示（独自） |
@@ -311,12 +316,14 @@ Git 管理下のファイルで使う、プラグインの標準キーです。
 
 ## コメント・括弧・引用符
 
-### コメント（caw）
+### コメント（Neovim 標準）
 
 | キー | モード | 操作 |
 | --- | --- | --- |
 | `\c` | 通常 | 現在行のコメント化／解除（独自） |
 | `\c` | 選択 | 選択した行のコメント化／解除（独自） |
+| `gcc` / `gc{移動}` | 通常 | 現在行／移動範囲のコメント化／解除（標準） |
+| `gc` | 選択 | 選択した行のコメント化／解除（標準） |
 
 ### 囲みの追加・削除・変更（vim-sandwich）
 
@@ -364,28 +371,22 @@ TeX・Markdown・テキストで有効です。
 
 | 入力 | 開くもの |
 | --- | --- |
-| `:Vimrc` | `~/.vimrc` |
+| `:Vimrc` | Neovim の `init.lua` |
 | `:Zshrc` | `~/.zshrc` |
 | `:Tmuxconf` | `~/.tmux.conf` |
-| `:Deintoml` | 通常読み込むプラグインの設定 |
-| `:DeintomlLazy` | 遅延読み込みするプラグインの設定 |
+| `:Plugins` | `lua/plugins` のプラグイン設定 |
+| `:Keybindings` | このキー一覧 |
+| `:Lazy` | プラグインの状態・更新・復元 |
 
 この一覧を Neovim で開くには、`:e ~/.config/nvim/KEYBINDINGS.md` → `Enter`。
 
-## Coq 用の設定
+## キー案内・Markdown プレビュー
 
-LaTeX とは別に、[dein_lazy.toml](dein/toml/dein_lazy.toml) に Coq 用の設定が残っています。
-利用には coquille と対応する Coq・Python 環境が必要です。この環境での実行は未検証です。
+`\`・Space・`,` で始まる操作は、途中で少し待つと which-key が続きの候補を表示します。
+`\?` は現在のバッファのキー一覧です。
 
-| キー | モード・条件 | 設定されている操作 |
-| --- | --- | --- |
-| `Ctrl+s` | Coq プラグイン読み込み後・通常 | カーソル位置まで証明を進める（`CoqToCursor`） |
-| `F2` | Coq 用関数キーマップ・通常／挿入 | 1ステップ戻す（`CoqUndo`） |
-| `F3` | Coq 用関数キーマップ・通常／挿入 | 次へ進める（`CoqNext`） |
-| `F4` | Coq 用関数キーマップ・通常／挿入 | カーソル位置まで進める（`CoqToCursor`） |
-
-`Ctrl+s` は保存用には設定されていません。また、この Coq 用割り当てには
-バッファ限定の指定がないため、読み込み後は他のバッファでも有効になります。
+Markdown を開いて `:PrevimOpen` を実行すると、macOS の既定ブラウザでプレビューします。
+保存すると内容が更新されます。
 
 ## VS Code 用の追加割り当て
 
@@ -431,11 +432,12 @@ Neovim 内では、以下のコマンドで実際の割り当てと設定元を�
 
 ## 照合した設定
 
-- [共有 .vimrc](../../.vimrc)：基本キー・置換・バッファ・ターミナル・設定コマンド
-- [dein.toml](dein/toml/dein.toml)：fzf・コメント・VimTeX
-- [dein_lazy.toml](dein/toml/dein_lazy.toml)：Coq
+- [keymaps.lua](lua/dotfiles/keymaps.lua)：基本キー・コメント・置換・バッファ・設定コマンド
+- [search.lua](lua/plugins/search.lua)：fzf-lua
+- [git.lua](lua/plugins/git.lua)：gitsigns
+- [tex.lua](lua/plugins/tex.lua)：VimTeX・LuaSnip
 - [tex.vim](after/ftplugin/tex.vim)：TeX 専用 PDF 表示キー・折りたたみ
 - [tex.lua](lua/dotfiles/tex.lua)：TexLab の接続
 - [tex_snippets.lua](lua/dotfiles/tex_snippets.lua)：スニペットと Tab キー
 - [.vimrc_vscode](../../.vimrc_vscode)：VS Code 専用の追加割り当て
-- インストール済み VimTeX・vim-sandwich・doorboy・vim-gitgutter・coquille のヘルプと実装
+- インストール済み VimTeX・vim-sandwich・doorboy・gitsigns のヘルプと実装

@@ -69,7 +69,7 @@ augroup vimrc
   au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
   au BufWritePre *.{tex,bib} silent !`brew --prefix`/bin/ctags
   au FileType qf set nobuflisted  " remove quickfix from buffer list
-augroup End
+augroup END
 
 function! DeleteWhiteSpaces()
   let pos = getpos(".")
@@ -122,12 +122,9 @@ tnoremap <silent> jk <C-\><C-n>
 command! Zshrc e ~/.zshrc
 command! Vimrc e ~/.vimrc
 command! Tmuxconf e ~/.tmux.conf
-command! Deintoml execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein.toml")
-command! DeintomlLazy execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein_lazy.toml")
-
-if has("nvim") && executable("python3")
-  let g:python3_host_prog = exepath("python3")
-endif
+" Neovim's built-in commenting needs no plugin manager in VS Code.
+nmap <Leader>c gcc
+xmap <Leader>c gc
 
 if exists('g:vscode')
   nnoremap <C-a>r :call VSCodeNotify('workbench.action.reloadWindow')<cr>
@@ -136,9 +133,7 @@ if exists('g:vscode')
   xnoremap ae :call VSCodeNotify('latex-workshop.select-envcontent')<cr>
   onoremap ae :normal vae<cr>
 endif
-if has("nvim")
-  execute "source " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/setup.vim")
-endif
+filetype plugin indent on
 
 
 set background=dark

@@ -39,7 +39,9 @@ class DeployTests(unittest.TestCase):
         link = self.target / ".zshrc"
         inode = link.lstat().st_ino
         self.assertEqual(link.resolve(), self.checkout / ".zshrc")
-        self.assertEqual((self.target / ".config/nvim/init.vim").resolve(), self.checkout / ".vimrc")
+        self.assertEqual((self.target / ".config/nvim/init.lua").resolve(),
+                         self.checkout / ".config/nvim/init.lua")
+        self.assertFalse((self.target / ".config/nvim/init.vim").exists())
         self.assertFalse((self.target / ".ctags.d").exists())
         self.deploy("--force")
         self.assertEqual(link.lstat().st_ino, inode)
@@ -135,37 +137,37 @@ class DeployTests(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which("nvim"), "Neovim is not installed")
     def test_neovim_configs_load_from_relocated_checkout(self):
-        cache = self.root / "cache with spaces"
-        autoload = cache / "dein/repos/github.com/Shougo/dein.vim/autoload"
-        autoload.mkdir(parents=True)
-        (autoload / "dein.vim").write_text("""
-function! dein#load_state(path) abort
-  let g:test_dein_base = a:path
-  let g:test_tomls = []
-  return 1
-endfunction
-function! dein#load_toml(path, options) abort
-  call add(g:test_tomls, a:path)
-endfunction
-function! dein#check_install() abort
-  return 0
-endfunction
-""" + "\n".join(
-            f"function! dein#{name}(...) abort\nendfunction"
-            for name in ("begin", "end", "save_state", "recache_runtimepath", "add")
-        ))
+        data = self.root / "data with spaces"
+        lazy = data / "nvim/lazy/lazy.nvim/lua"
+        lazy.mkdir(parents=True)
+        (lazy / "lazy.lua").write_text("""
+return { setup = function(options)
+  vim.g.test_lazy_lockfile = options.lockfile
+  vim.g.test_lazy_import = options.spec[1].import
+end }
+""")
         def quote(value):
             return "'" + str(value).replace("'", "''") + "'"
 
-        env = dict(os.environ, XDG_CACHE_HOME=str(cache), XDG_DATA_HOME=str(self.root / "data"),
+        env = dict(os.environ, XDG_DATA_HOME=str(data), XDG_CACHE_HOME=str(self.root / "cache"),
                    XDG_STATE_HOME=str(self.root / "state"), XDG_CONFIG_HOME=str(self.root / "config"))
-        for config, vscode in ((".config/nvim/init.vim", False), (".vimrc_vscode", True)):
-            with self.subTest(config=config):
-                assertions = [
-                    f"call assert_equal({quote(cache / 'dein')}, g:test_dein_base)",
-                    f"call assert_equal({0 if vscode else 2}, len(g:test_tomls))",
-                    "Deintoml",
-                    f"call assert_equal({quote(self.checkout / '.config/nvim/dein/toml/dein.toml')}, expand('%:p'))",
+        for config, vscode in ((".config/nvim/init.lua", False),
+                               (".config/nvim/init.lua", True), (".vimrc_vscode", True)):
+            with self.subTest(config=config, vscode=vscode):
+                if vscode:
+                    assertions = ["call assert_false(exists('g:test_lazy_lockfile'))",
+                                  "call assert_equal('gcc', maparg('\\c', 'n'))"]
+                else:
+                    assertions = [
+                        f"call assert_equal({quote(self.checkout / '.config/nvim/lazy-lock.json')}, g:test_lazy_lockfile)",
+                        "call assert_equal('plugins', g:test_lazy_import)",
+                        "call assert_true(&undofile)",
+                        "call assert_equal('gcc', maparg('\\c', 'n'))",
+                        "Vimrc",
+                        f"call assert_equal({quote(self.checkout / '.config/nvim/init.lua')}, expand('%:p'))",
+                    ]
+                assertions += [
+                    "call assert_equal('', v:errmsg)",
                     "if !empty(v:errors) | echoerr join(v:errors, '\\n') | cquit | endif",
                     "qa!",
                 ]

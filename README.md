@@ -65,12 +65,14 @@ macOS ではキー長押しのアクセント選択を無効にし、Skim で書
 
 `.latexmkrc`、`.vimrc_vscode` は自動配置しません。
 LaTeX 設定はプロジェクトで選択し、VS Code 用設定は拡張機能側から指定します。
-Neovim の起動設定はリポジトリ内の相対リンクで `.vimrc` を参照するため、
-clone 先やユーザー名が変わっても利用できます。
+Neovim は `.config/nvim/init.lua`、通常の Vim は `.vimrc` を読み込みます。
+設定内でリポジトリの場所を解決するため、clone 先やユーザー名が変わっても利用できます。
 リポジトリ自体を移動した場合は、移動先の `deploy.sh` を `--force` で再実行して
 ホーム側のリンクを更新してください。
 
-Neovim の dein キャッシュは `$XDG_CACHE_HOME/dein`（既定は `~/.cache/dein`）に作成します。
+Neovim のプラグインは lazy.nvim で管理し、`$XDG_DATA_HOME/nvim/lazy`
+（既定は `~/.local/share/nvim/lazy`）に取得します。バージョンは
+`.config/nvim/lazy-lock.json` に固定しています。Neovim 0.12.4 以上が必要です。
 初回の Zsh / Neovim 起動時には、プラグインの取得にネットワーク接続が必要です。
 
 ## バックアップから戻す
@@ -150,7 +152,8 @@ latexmk -r /path/to/dotfiles/.latexmkrc main.tex
 
 pLaTeX 用は `.latexmkrc_platex` を指定します。
 標準の `.latexmkrc` は従来どおり `-shell-escape` を有効にしています。
-Neovim の設定が使う Universal Ctags は Brewfile に含めています。
+Neovim の設定が使う Universal Ctags と TexLab は Brewfile に含めています。
+LaTeX・Markdown の設定と更新方法は [Neovim の README](.config/nvim/README.md) を参照してください。
 
 ## PDF の目次を追加する
 

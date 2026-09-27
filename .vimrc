@@ -56,7 +56,7 @@ augroup vimrc
   au BufNewFile,BufRead *.tex setf tex
   " au BufWritePre * call DeleteWhiteSpaces()  " delete whitespace in end of line
   au FileType qf set nobuflisted  " remove quickfix from buffer list
-augroup End
+augroup END
 
 function! DeleteWhiteSpaces()
   let pos = getpos(".")
@@ -116,11 +116,7 @@ tnoremap <silent> jk <C-\><C-n>
 command! Zshrc e ~/.zshrc
 command! Vimrc e ~/.vimrc
 command! Tmuxconf e ~/.tmux.conf
-command! Deintoml execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein.toml")
-command! DeintomlLazy execute "edit " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/toml/dein_lazy.toml")
-
-if has("nvim")
-  execute "source " . fnameescape(s:dotfiles_dir . "/.config/nvim/dein/setup.vim")
-endif
+" Plain Vim fallback. Neovim loads .config/nvim/init.lua independently.
+filetype plugin indent on
 
 execute "source " . fnameescape(s:dotfiles_dir . "/.config/nvim/appearance.vim")
