@@ -16,8 +16,8 @@ set shiftwidth=2
 
 " search
 set incsearch    " incremental search
-set ignorecase
-set smartcase    " 大文字含んでいたら区別
+set noignorecase
+set nosmartcase
 set wrapscan
 
 " Recover unsaved edits with swap; retain undo history across Neovim sessions.

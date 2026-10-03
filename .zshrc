@@ -196,6 +196,7 @@ alias gl='git log -p -2'
 
 alias ocaml='rlwrap ocaml'
 alias vi='nvim'
+alias fv='(file=$(fzf) && nvim -- "$file")'
 
 alias md='npx mdts --port auto'
 

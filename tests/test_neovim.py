@@ -10,6 +10,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import time
 import unittest
 
 
@@ -105,7 +106,7 @@ assert(vim.fn.line('.') == 2, 'code should use logical lines')
                 self.nvim(r"""
 assert(vim.bo.filetype == 'tex')
 assert(package.loaded.luasnip, 'LuaSnip did not load for the initial file')
-assert(vim.bo.omnifunc == 'vimtex#complete#omnifunc')
+assert(vim.bo.omnifunc == 'dotfiles#tex_complete#omnifunc')
 assert(vim.wo.foldenable and vim.wo.foldlevel == 99)
 assert(vim.fn.maparg('<Tab>', 'i', false, true).buffer == 1)
 vim.api.nvim_buf_set_lines(0, 4, 5, false, { '$$' })
@@ -115,17 +116,125 @@ vim.api.nvim_feedkeys(vim.keycode('iff<Tab><Esc>'), 'xt', false)
 assert(vim.api.nvim_get_current_line():find([[\frac{]], 1, true), 'initial-file snippet did not expand')
 """, files=[main], default_config=default_config)
 
+    def test_inverse_search_switches_to_tex_in_another_tab(self):
+        main = self.tex_project()
+        other = self.root / "other project/other.tex"
+        other.parent.mkdir()
+        other.write_text(main.read_text())
+        self.nvim("local main = " + json.dumps(str(main)) + "\n"
+                  + "local other = " + json.dumps(str(other)) + "\n" + r"""
+vim.cmd.edit(main)
+local main_win = vim.api.nvim_get_current_win()
+vim.cmd.tabedit(other)
+local other_win = vim.api.nvim_get_current_win()
+-- Keep an unrelated split selected in the destination tab.
+vim.cmd.vnew()
+vim.bo.filetype = 'text'
+vim.api.nvim_win_set_buf(0, vim.fn.bufadd('notes.txt'))
+vim.api.nvim_set_current_win(main_win)
+vim.api.nvim_buf_set_lines(0, 3, 4, false, { 'Unsaved text in the original tab.' })
+local main_buf = vim.api.nvim_get_current_buf()
+assert(vim.fn['vimtex#view#inverse_search'](4, other, 3) == 0)
+assert(vim.api.nvim_get_current_win() == other_win, 'inverse search did not select the existing TeX window')
+assert(vim.api.nvim_buf_get_name(0) == other)
+assert(vim.deep_equal(vim.api.nvim_win_get_cursor(0), { 4, 2 }))
+assert(#vim.api.nvim_list_tabpages() == 2, 'inverse search duplicated a tab')
+assert(vim.bo[main_buf].modified, 'inverse search discarded unsaved changes')
+assert(vim.api.nvim_buf_get_lines(main_buf, 3, 4, false)[1] == 'Unsaved text in the original tab.')
+
+-- Reverse search also works while a non-TeX tab is selected.
+vim.cmd.tabnew()
+vim.bo.filetype = 'text'
+assert(vim.fn['vimtex#view#inverse_search'](3, main) == 0)
+assert(vim.api.nvim_get_current_win() == main_win)
+assert(vim.fn.line('.') == 3)
+assert(#vim.api.nvim_list_tabpages() == 3)
+
+-- A PDF belonging to another Neovim session must leave this session alone.
+local cursor = vim.api.nvim_win_get_cursor(0)
+assert(vim.fn['vimtex#view#inverse_search'](4, vim.fn.getcwd() .. '/unrelated.tex') == -2)
+assert(vim.api.nvim_get_current_win() == main_win)
+assert(vim.deep_equal(vim.api.nvim_win_get_cursor(0), cursor))
+""")
+
+    def test_inverse_search_command_from_another_process(self):
+        main = self.tex_project()
+        other = self.root / 'other project/other.tex'
+        other.parent.mkdir()
+        other.write_text(main.read_text())
+        ready = self.root / 'ready'
+        setup = self.root / 'receiver.lua'
+        setup.write_text('vim.cmd.edit(' + json.dumps(str(main)) + ')\n'
+                         + 'vim.cmd.edit(' + json.dumps(str(other)) + ')\n'
+                         + 'vim.fn.writefile({vim.v.servername}, ' + json.dumps(str(ready)) + ')\n')
+        command = [shutil.which('nvim'), '--headless', '-n', '-i', 'NONE']
+        receiver = subprocess.Popen(
+            command + ['-c', 'lua dofile(' + json.dumps(str(setup)) + ')'],
+            env=self.env, cwd=self.root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        )
+        try:
+            deadline = time.monotonic() + 10
+            while not ready.exists() and receiver.poll() is None and time.monotonic() < deadline:
+                time.sleep(0.02)
+            self.assertTrue(ready.exists(), 'Neovim receiver did not initialize')
+            server = ready.read_text().strip()
+            self.assertTrue(server, 'Neovim RPC server did not start')
+            # Run the exact command used by Skim while the receiver's event loop is idle.
+            request = subprocess.run(
+                command + ['-c', "VimtexInverseSearch 4 '" + str(main) + "'"],
+                env=self.env, cwd=self.root, capture_output=True, text=True, timeout=10,
+            )
+            self.assertEqual(request.returncode, 0, request.stderr)
+            state = subprocess.run(
+                [shutil.which('nvim'), '--server', server, '--remote-expr',
+                 "json_encode([expand('%:p'), line('.'), tabpagenr('$')])"],
+                env=self.env, cwd=self.root, capture_output=True, text=True, timeout=10,
+            )
+            self.assertEqual(state.returncode, 0, state.stderr)
+            self.assertEqual(json.loads(state.stdout), [str(main), 4, 1])
+        finally:
+            receiver.terminate()
+            try:
+                receiver.communicate(timeout=5)
+            except subprocess.TimeoutExpired:
+                receiver.kill()
+                receiver.communicate()
+
+    def test_inverse_search_switches_to_hidden_tex_buffer(self):
+        main = self.tex_project()
+        other = self.root / 'other.tex'
+        other.write_text(main.read_text())
+        self.nvim('local main = ' + json.dumps(str(main)) + '\n'
+                  + 'local other = ' + json.dumps(str(other)) + '\n' + r"""
+vim.cmd.edit(main)
+local main_buf = vim.api.nvim_get_current_buf()
+vim.cmd.edit(other)
+local other_buf = vim.api.nvim_get_current_buf()
+vim.api.nvim_buf_set_lines(0, 3, 4, false, { 'Keep these unsaved changes.' })
+assert(#vim.fn.win_findbuf(main_buf) == 0, 'target must be hidden')
+assert(vim.fn['vimtex#view#inverse_search'](4, main, 3) == 0)
+assert(vim.api.nvim_get_current_buf() == main_buf, 'inverse search did not select the hidden buffer')
+assert(vim.deep_equal(vim.api.nvim_win_get_cursor(0), { 4, 2 }))
+assert(#vim.api.nvim_list_tabpages() == 1, 'inverse search created an unnecessary tab')
+assert(vim.bo[other_buf].modified)
+assert(vim.api.nvim_buf_get_lines(other_buf, 3, 4, false)[1] == 'Keep these unsaved changes.')
+-- The previous source becomes hidden and must still be reachable in reverse.
+assert(vim.fn['vimtex#view#inverse_search'](3, other) == 0)
+assert(vim.api.nvim_get_current_buf() == other_buf)
+assert(vim.fn.line('.') == 3)
+""")
+
     def test_texlab_snippets_tags_and_filetype_cleanup(self):
         main = self.tex_project()
         self.nvim("vim.cmd.edit(" + json.dumps(str(main)) + ")\n" + r"""
 assert(vim.bo.filetype == 'tex')
-assert(vim.bo.omnifunc == 'vimtex#complete#omnifunc')
+assert(vim.bo.omnifunc == 'dotfiles#tex_complete#omnifunc')
 assert(vim.b.vimtex.viewer._start ~= nil, 'custom Skim viewer must load')
 assert(vim.wait(10000, function()
   local client = vim.lsp.get_clients({ bufnr = 0, name = 'texlab' })[1]
   return client and client.initialized
 end, 50), 'TexLab did not initialize')
-assert(vim.bo.omnifunc == 'vimtex#complete#omnifunc', 'LSP replaced VimTeX completion')
+assert(vim.bo.omnifunc == 'dotfiles#tex_complete#omnifunc', 'LSP replaced VimTeX completion')
 assert(vim.bo.tagfunc == 'v:lua.vim.lsp.tagfunc')
 assert(vim.wait(5000, function() return vim.fn.filereadable('tags') == 1 end, 50))
 local tags = table.concat(vim.fn.readfile('tags'), '\n')
@@ -214,6 +323,67 @@ end, 50), 'fzf file picker did not show the project file')
 local job = vim.b[terminal].terminal_job_id
 require('fzf-lua').hide()
 vim.fn.jobstop(job)
+""")
+
+    def test_tex_file_picker_defers_folds_until_requested(self):
+        main = self.tex_project()
+        main.write_text("\\documentclass{article}\n\\begin{document}\n"
+                        + "".join(f"\\section{{Section {n}}}\nText.\nMore text.\n"
+                                  for n in range(200))
+                        + "\\end{document}\n")
+        self.nvim('local main = ' + json.dumps(str(main)) + '\n' + r"""
+vim.cmd('normal ,f')
+local terminal
+assert(vim.wait(5000, function()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[buf].buftype == 'terminal' then
+      local text = table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), '\n')
+      if text:find('main.tex', 1, true) then terminal = buf; return true end
+    end
+  end
+end, 50), 'fzf did not show the TeX file')
+-- Accept through the terminal, including fzf's close and file-open actions.
+vim.api.nvim_chan_send(vim.b[terminal].terminal_job_id, 'main.tex')
+vim.wait(200)
+vim.api.nvim_chan_send(vim.b[terminal].terminal_job_id, '\r')
+assert(vim.wait(5000, function()
+  return vim.api.nvim_buf_get_name(0) == main and vim.bo.filetype == 'tex'
+end, 50), 'fzf did not open the selected TeX file')
+vim.cmd.stopinsert()
+vim.cmd('normal! 4G')
+vim.api.nvim_exec_autocmds('CursorMoved', { buffer = 0 })
+vim.cmd.redraw()
+assert(vim.wo.foldmethod == 'manual')
+assert(vim.fn.foldlevel(4) == 0, 'opening/moving the cursor eagerly computed folds')
+assert(vim.bo.omnifunc == 'dotfiles#tex_complete#omnifunc')
+
+-- A second window exists before the first window computes its fold ranges.
+local first = vim.api.nvim_get_current_win()
+vim.cmd.vsplit()
+local second = vim.api.nvim_get_current_win()
+vim.api.nvim_set_current_win(first)
+vim.cmd('normal za')
+assert(vim.fn.foldclosed(4) == 3, 'za did not compute and close the section')
+vim.cmd('normal za')
+assert(vim.fn.foldclosed(4) == -1, 'za did not reopen the section')
+vim.api.nvim_set_current_win(second)
+vim.cmd('normal zM')
+assert(vim.fn.foldclosed(4) == 3, 'folds were not initialized in the other split')
+vim.cmd('normal zR')
+assert(vim.fn.foldclosed(4) == -1)
+vim.cmd('normal 2zm')
+assert(vim.wo.foldlevel == 0, 'folding lost the command count')
+vim.cmd('normal zR')
+
+vim.api.nvim_buf_set_lines(0, 3, 3, false, { 'Inserted text.' })
+vim.cmd('normal zx')
+vim.cmd('normal zM')
+assert(vim.fn.foldclosedend(4) == 6, 'zx did not refresh ranges after editing')
+vim.bo.filetype = 'text'
+for _, key in ipairs({ 'za', 'zM', 'zx', 'zj', '[z' }) do
+  assert(vim.fn.maparg(key, 'n', false, true).buffer ~= 1, key .. ' leaked into text')
+end
+assert(vim.wo.foldexpr ~= 'vimtex#fold#level(v:lnum)')
 """)
 
 

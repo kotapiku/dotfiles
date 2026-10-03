@@ -1,7 +1,10 @@
+" Avoid whole-document fold scans while opening a file (including from ,f).
+call dotfiles#tex_fold#setup()
+
 " Keep prose readable without inserting hard line breaks into the source.
 setlocal spell linebreak
 
-" Start with all folds open; zx refreshes VimTeX's manual folds after edits.
+" Start with all folds open; folding keys compute ranges on first use.
 setlocal foldenable foldlevel=99
 
 " Forward search directly, independent of leader mappings.
@@ -19,6 +22,9 @@ augroup END
 call dotfiles#tex_tags#update(0)
 
 if has('nvim') && !exists('g:vscode')
+  " Show VimTeX's omni candidates while typing, without inserting a choice.
+  setlocal omnifunc=dotfiles#tex_complete#omnifunc
+  setlocal complete=o autocomplete
   lua require('dotfiles.tex').setup_buffer()
 endif
 
@@ -30,5 +36,6 @@ let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
       \ . ' | execute "silent! nunmap <buffer> gd"'
       \ . ' | execute "autocmd! dotfiles_tex_tags * <buffer>"'
 if has('nvim') && !exists('g:vscode')
-  let b:undo_ftplugin .= ' | call luaeval(''require("dotfiles.tex").undo_buffer()'')'
+  let b:undo_ftplugin .= ' | setlocal omnifunc< complete< autocomplete<'
+        \ . ' | call luaeval(''require("dotfiles.tex").undo_buffer()'')'
 endif

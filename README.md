@@ -125,6 +125,77 @@ relogin
 [補完の初期化](https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Use-of-compinit)、
 [fzf のシェル連携](https://github.com/junegunn/fzf#key-bindings-for-command-line) を参照してください。
 
+## Codex CLI の通知
+
+`codex-notify.py` は、Codex の応答完了・承認待ち・質問時に macOS へ音なしの通知を送ります。
+`terminal-notifier` が必要です（Brewfile に含まれています）。通知の時間による自動削除は
+行わず、クリックすると通知センターからも削除します。Warp ではクリック時にアプリを
+前面へ出し、`WARP_FOCUS_URL` が有効ならそのターミナルセッションのタブへ移動します。
+リンク先のセッションがすでに存在しない場合も、Warp 自体は前面へ出します。
+
+クリックするまで画面に残すには、macOS の「システム設定 → 通知 → terminal-notifier」で
+通知スタイルを「通知パネル（Alerts）」にします（OS によっては「持続的」と表示されます）。
+「バナー」のままでは、macOS が一定時間後に画面から隠し、通知センターにだけ残します。
+この表示設定は `terminal-notifier` を使うほかの通知にも適用されます。
+
+完了通知は `Stop` フックを使い、ローカルの会話記録に同じターンの `task_complete` が
+書かれたことを確認してから1回だけ送ります。途中の発言、重複したイベント、すでに次の
+ターンが始まった古い完了イベントでは送りません。`notify` 設定はこのスクリプトには
+向けず、Computer Use などの既存設定をそのまま利用してください。
+
+ターミナル側の通知・ベルを無効にするには、既存の `[tui]` セクションに設定します。
+
+```toml
+[tui]
+notifications = false
+```
+
+`~/.codex/hooks.json` の `hooks` に以下の設定を追加します。
+既存の同名イベントがある場合は、その配列に matcher group を追加してください。
+
+```json
+{
+  "hooks": {
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "python3 /absolute/path/to/dotfiles/codex-notify.py --hook",
+        "timeout": 15
+      }]
+    }],
+    "PermissionRequest": [{
+      "hooks": [{
+        "type": "command",
+        "command": "python3 /absolute/path/to/dotfiles/codex-notify.py --hook",
+        "timeout": 15
+      }]
+    }],
+    "PreToolUse": [{
+      "matcher": "(^|[._:])(request_user_input(_async)?|request_permissions)$",
+      "hooks": [{
+        "type": "command",
+        "command": "python3 /absolute/path/to/dotfiles/codex-notify.py --hook",
+        "timeout": 15
+      }]
+    }]
+  }
+}
+```
+
+追加したフックは Codex の `/hooks` で内容を確認して信頼済みにします。
+通知フックは承認や拒否を自動で決めず、通知に失敗しても操作をブロックしません。
+通常の文章で質問して応答が終わった場合は「応答完了」、質問ツールを使った場合は
+「回答が必要です」と表示します。
+
+完了確認と通知の送信はバックグラウンドで行うため、Codex の操作は待たせません。
+重複防止用のハッシュだけを `~/Library/Caches/codex-notify/sent.sqlite3` に7日間保存します。
+完了判定は Codex 0.158 のローカル会話記録形式を前提とし、記録を確認できない場合は
+誤通知を避けるため完了通知を送りません。
+
+設定後は Codex CLI を起動し直してください。通知が表示されない場合は、macOS の
+「システム設定 → 通知 → terminal-notifier」で通知を許可してください。
+`deploy.sh` は Codex の設定を変更しません。リポジトリを移動した場合はフックのパスを更新します。
+
 ## バックアップから戻す
 
 deploy が表示したバックアップディレクトリから、対象の設定を戻します。

@@ -23,6 +23,11 @@ if exists('+cursorlineopt')
 endif
 set scrolloff=5 sidescrolloff=5
 
+" Use our cursor color in every mode, preserving cursor shapes and blink timing.
+if exists('+guicursor')
+  set guicursor+=a:Cursor/lCursor
+endif
+
 " Show only meaningful whitespace; keep wrapped prose easy to follow.
 set list
 let &listchars = 'tab:  ,trail:·,nbsp:␣'
@@ -67,6 +72,10 @@ function! s:apply_highlights() abort
   " Apply the same contrast in Nord and the plain Vim / first-start fallback.
   highlight Normal guifg=#F0F3F8 guibg=#1B2029 gui=NONE ctermfg=255 ctermbg=234 cterm=NONE
   highlight! link NormalNC Normal
+  " A soft amber cursor stands apart from the cool background and white text.
+  highlight Cursor guifg=#1B2029 guibg=#EBCB8B gui=NONE ctermfg=234 ctermbg=222 cterm=NONE
+  highlight! link lCursor Cursor
+  highlight! link iCursor Cursor
   highlight Comment guifg=#B4BFCE gui=italic ctermfg=250 cterm=italic
   highlight LineNr guifg=#98A7BC guibg=NONE ctermfg=248 ctermbg=NONE
   highlight CursorLine guibg=#303846 gui=NONE ctermbg=237 cterm=NONE

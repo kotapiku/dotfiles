@@ -4,8 +4,8 @@ opt.autoindent = true
 opt.expandtab = true
 opt.tabstop = 2
 opt.shiftwidth = 2
-opt.ignorecase = true
-opt.smartcase = true
+opt.ignorecase = false
+opt.smartcase = false
 opt.incsearch = true
 opt.hlsearch = true
 opt.wrapscan = true
@@ -21,6 +21,9 @@ opt.hidden = true
 opt.startofline = false
 opt.spell = false
 opt.completeopt = { 'menu', 'menuone', 'noselect' }
+-- Preserve completion items' icase flags when searches use noignorecase.
+opt.infercase = true
+opt.autocompletedelay = 120
 
 -- Treat plain .tex files as LaTeX, including files without a document preamble.
 vim.filetype.add({ extension = { tex = 'tex' } })
