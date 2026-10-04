@@ -133,6 +133,8 @@ Arguments: --headless -c "VimtexInverseSearch %line '%file'"
 PDF の本文を `Shift+Command+クリック` すると編集中の Neovim に戻ります。
 対象の原稿が別タブにある場合も、そのタブとウィンドウを選んで該当行へ移動します。
 タブバーに残っている非表示のバッファも対象です。
+macOS の Warp 内で起動した Neovim では、ジャンプ成功時に Warp も前面に出します。
+`VimtexEventViewReverse` を使うため、対象外の原稿への要求では切り替えません。
 `autoload/vimtex/view.vim` で原稿のバッファを選んでから、VimTeX の逆検索を呼びます。
 VimTeX は、原稿を開かず起動した Neovim にも逆検索コマンドが必要なので、
 プラグインマネージャーによる遅延読み込みをしません。`nvr` は不要です。

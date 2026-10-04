@@ -18,6 +18,17 @@ return {
       -- Load VimTeX's implementation before wrapping its current-buffer lookup.
       vim.cmd.source(plugin.dir .. '/autoload/vimtex/view.vim')
       vim.cmd.source(vim.g.dotfiles_config .. '/autoload/vimtex/view.vim')
+
+      vim.api.nvim_create_autocmd('User', {
+        group = vim.api.nvim_create_augroup('dotfiles_tex_focus', { clear = true }),
+        pattern = 'VimtexEventViewReverse',
+        desc = 'Bring Warp forward after a successful inverse search',
+        callback = function()
+          if vim.fn.has('macunix') == 1 and vim.env.TERM_PROGRAM == 'WarpTerminal' then
+            vim.system({ '/usr/bin/open', '-a', 'Warp' }, { detach = true })
+          end
+        end,
+      })
     end,
   },
   { 'L3MON4D3/LuaSnip', version = 'v2.4.1', ft = 'tex' },
