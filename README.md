@@ -112,6 +112,9 @@ relogin
 | `Ctrl-T` | ファイルを検索してパスを挿入、bat でプレビュー |
 | `Alt-C` | ディレクトリを検索して移動、eza でプレビュー |
 | `g` | ghq のリポジトリを検索して移動 |
+| `pdf` | 現在のディレクトリ以下の PDF を fzf で選択し、既定のアプリで開く |
+| `pdf -a Dia` | PDF を fzf で選択し、Dia で開く（`-a` でアプリを指定） |
+| `pdf -a Skim` | Skim を前面にしてから PDF を開き、既存ウィンドウのタブに追加 |
 | `Ctrl-/` | 上記のファイル・ディレクトリ検索でプレビューを開閉 |
 | `jk` | vi 挿入モードからコマンドモードへ（入力間隔は 0.2 秒以内） |
 | `k` / `j` | vi コマンドモードで履歴の部分一致検索 |
@@ -120,6 +123,13 @@ relogin
 ファイル用プレビューはファイル・ディレクトリ検索にだけ設定し、`Ctrl-R` や
 任意のテキストを渡した `fzf` には適用しません。プレビューには Brewfile の bat / eza を使います。
 設定変更後は `relogin` または新しいターミナルで反映します。
+
+`pdf -a Skim` のタブ表示には、Skim の `AppleWindowTabbingMode=always` が必要です。
+通常の `deploy.sh` で設定します。手動で設定する場合は、Skim を終了してから
+`defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always`
+を実行してください。Skim のウィンドウがなければ、最初の PDF は新しいウィンドウで開きます。
+詳細は [Skim の設定仕様](https://sourceforge.net/p/skim-app/wiki/Hidden_Preferences/#system-overrides)
+を参照してください。
 
 設定の仕様は [Zsh の履歴オプション](https://zsh.sourceforge.io/Doc/Release/Options.html#History)、
 [補完の初期化](https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Use-of-compinit)、

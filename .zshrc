@@ -211,6 +211,13 @@ alias relogin='exec "$SHELL" -l'
 alias ip-add-yugen='curl -fsSL ifconfig.me | xargs -I {} curl -fsSL http://49.212.25.77/cgi-bin/ssh.cgi --data network={}'
 
 # Functions
+pdf() {
+  local file
+  file=$(rg --files --no-ignore -g "*.pdf" | fzf) || return
+  # open "$@" -- "$file"
+  open -a Dia "$@" -- "$file"
+}
+
 mkcd() {
   [[ -n "$1" ]] || return 1
   mkdir -p -- "$1" && cd -- "$1"
