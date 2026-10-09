@@ -8,7 +8,12 @@ function! vimtex#view#skim_tabs#new() abort
 endfunction
 
 function! s:start(outfile) dict abort
-  call vimtex#jobs#run(s:command(a:outfile, 1, 1))
+  let l:command = s:command(a:outfile, 1, 1)
+  if has('macunix') && $TERM_PROGRAM ==# 'WarpTerminal'
+    " Restore focus only after Skim finishes opening and synchronizing the PDF.
+    let l:command .= ' && /usr/bin/open -a Warp'
+  endif
+  call vimtex#jobs#run(l:command)
 endfunction
 
 function! s:compiler_callback(outfile) dict abort

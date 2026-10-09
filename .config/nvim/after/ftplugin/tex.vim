@@ -25,6 +25,7 @@ if has('nvim') && !exists('g:vscode')
   " Show VimTeX's omni candidates while typing, without inserting a choice.
   setlocal omnifunc=dotfiles#tex_complete#omnifunc
   setlocal complete=o autocomplete
+  lua require('dotfiles.tex_performance').setup_buffer()
   lua require('dotfiles.tex').setup_buffer()
 endif
 
@@ -37,5 +38,6 @@ let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
       \ . ' | execute "autocmd! dotfiles_tex_tags * <buffer>"'
 if has('nvim') && !exists('g:vscode')
   let b:undo_ftplugin .= ' | setlocal omnifunc< complete< autocomplete<'
+        \ . ' | call luaeval(''require("dotfiles.tex_performance").undo_buffer()'')'
         \ . ' | call luaeval(''require("dotfiles.tex").undo_buffer()'')'
 endif

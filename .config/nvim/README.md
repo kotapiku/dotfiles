@@ -96,7 +96,8 @@ True Color と256色の両方に配色を指定しています。VS Code 用設�
 | 挿入モードで `]]` | 現在の環境・区切りを閉じる |
 | `\lm` | 数式入力用の省略キー一覧を表示 |
 
-補完候補は入力が約120ミリ秒止まると表示され、選ぶまでは本文に挿入しません。
+補完候補は通常サイズの原稿では入力が約120ミリ秒、軽量モードでは300ミリ秒止まると表示され、
+選ぶまでは本文に挿入しません。
 Neovim 標準の `autocomplete` で VimTeX の候補を表示します。
 候補の絞り込みでは、大文字・小文字を区別しません。`/`・`?` の検索では、検索語に大文字が含まれるときだけ区別します。
 `Ctrl+x` → `Ctrl+o` で手動表示することもできます。
@@ -110,6 +111,8 @@ TeX は単語の途中を避けて画面上で折り返し、スペルチェッ�
 ## Skim のタブで PDF を開く
 
 `\ll` の初回コンパイル後と `\lv` では、Skim を前面にしてから PDF を開きます。
+Warp 内で起動した Neovim では、`\lv` / `Ctrl+Alt+j` による PDF 表示と
+現在位置への移動が終わると、自動で Warp にフォーカスを戻します。
 macOS の「書類を開くときはタブで開く」を「常に」にすると、既存ウィンドウに
 タブとして追加されます。Skim だけに設定する場合は、Skim を終了してから次を実行します。
 
@@ -179,6 +182,23 @@ LuaSnip は lazy.nvim が取得します。必要なら `:Lazy restore` を実�
 折りたたみの有効化は `lua/plugins/tex.lua`、初回計算の制御は `autoload/dotfiles/tex_fold.vim` にあります。
 略語一覧や診断メッセージの操作は [KEYBINDINGS.md](KEYBINDINGS.md) を参照してください。
 
+### 大きい TeX 原稿の軽量化
+
+5,000行以上、または512 KiB以上の TeX ファイルを開くと、自動で軽量モードになります。
+自動補完と括弧の対応表示は有効です。補完は入力が300ミリ秒止まると表示し、
+参照ラベルの候補は保存済みの原稿が変わるまで再利用します。
+括弧の対応表示はカーソルが80ミリ秒止まってから更新し、連続移動中の再計算をまとめます。
+スペルチェックと Airline の空白チェックを停止します。
+手動補完（`Ctrl+x` → `Ctrl+o`）、スニペット、TexLab、コンパイル、PDF との往復、
+必要なときに計算する折りたたみは引き続き使えます。
+
+構文ハイライトも維持しますが、同期のために遡る行数を減らし、1行の先頭1,000バイトまでに制限します。
+非常に長い行の後半や長い数式環境で色付け・スニペットの数式判定が不正確な場合は、
+`:TexPerformanceToggle` で通常モードに戻せます。この切り替えは現在のバッファだけに適用します。
+設定本体は `lua/dotfiles/tex_performance.lua`、ラベル候補のキャッシュは
+`autoload/vimtex/parser/auxiliary.vim`、構文読み込み後の適用は `after/syntax/tex.vim` です。
+判定の閾値は `vim.g.dotfiles_tex_large_file_lines` と `vim.g.dotfiles_tex_large_file_bytes` で調整できます。
+
 参考：[LuaSnip](https://github.com/L3MON4D3/LuaSnip)、
 [TexLab の設定](https://github.com/latex-lsp/texlab/wiki/Configuration)、
 [VimTeX](https://github.com/lervag/vimtex)。
@@ -228,12 +248,16 @@ VimTeX は v2.18、LuaSnip は v2.4.1 に固定しています。この2つを�
 
 通常のリポジトリテストはプラグインの取得なしで実行できます。
 実際のプラグインを使った検証は、取得済みの XDG データディレクトリを指定します。
+以下のコマンドは `dotfiles` リポジトリのルートから実行します。
 
 ```sh
 python3 -m unittest discover -s tests -v
 DOTFILES_NVIM_TEST_DATA="${XDG_DATA_HOME:-$HOME/.local/share}" \
   python3 -m unittest discover -s tests -p test_neovim.py -v
+DOTFILES_NVIM_TEST_DATA="${XDG_DATA_HOME:-$HOME/.local/share}" \
+  python3 -m unittest discover -s .config/nvim/tests -v
 ```
 
-後者は一時原稿で TexLab・タグ・スニペット・コンパイル・ラベル補完・キー操作を確認します。
+2つ目のコマンドは一時原稿で TexLab・タグ・スニペット・コンパイル・ラベル補完・キー操作を確認します。
+最後のコマンドは大きい原稿の軽量化・自動／手動補完・括弧の対応表示・モード切り替えを確認します。
 GUI は開かないため、Skim の画面上での往復は別途確認してください。

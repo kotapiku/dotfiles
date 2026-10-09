@@ -29,6 +29,10 @@ return {
       vim.cmd.source(plugin.dir .. '/autoload/vimtex/view.vim')
       vim.cmd.source(vim.g.dotfiles_config .. '/autoload/vimtex/view.vim')
 
+      -- Cache manual label scans while retaining VimTeX's completion rules.
+      vim.cmd.source(plugin.dir .. '/autoload/vimtex/parser/auxiliary.vim')
+      vim.cmd.source(vim.g.dotfiles_config .. '/autoload/vimtex/parser/auxiliary.vim')
+
       vim.api.nvim_create_autocmd('User', {
         group = vim.api.nvim_create_augroup('dotfiles_tex_quickfix', { clear = true }),
         pattern = 'VimtexEventCompileSuccess',
