@@ -48,8 +48,9 @@ return {
       vim.api.nvim_create_autocmd('User', {
         group = vim.api.nvim_create_augroup('dotfiles_tex_focus', { clear = true }),
         pattern = 'VimtexEventViewReverse',
-        desc = 'Bring Warp forward after a successful inverse search',
+        desc = 'Center the cursor and bring Warp forward after a successful inverse search',
         callback = function()
+          vim.cmd('normal! zz')
           if vim.fn.has('macunix') == 1 and vim.env.TERM_PROGRAM == 'WarpTerminal' then
             vim.system({ '/usr/bin/open', '-a', 'Warp' }, { detach = true })
           end

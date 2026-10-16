@@ -7,7 +7,8 @@ return {
     'ibhagwan/fzf-lua', cmd = 'FzfLua',
     opts = {
       winopts = { height = 0.85, width = 0.9, border = 'rounded' },
-      files = { file_icons = false, git_icons = false },
+      -- Skip reading and highlighting candidates while choosing a file with ,f.
+      files = { previewer = false, file_icons = false, git_icons = false },
       buffers = { file_icons = false },
     },
     keys = {
