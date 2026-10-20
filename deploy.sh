@@ -8,6 +8,7 @@ OVERWRITE=false
 DRY_RUN=false
 SKIP_BREW=false
 SKIP_MACOS=false
+TARGET_SPECIFIED=false
 BACKUP_DIRECTORY=""
 
 usage() {
@@ -17,7 +18,7 @@ Usage: deploy.sh [options]
   -f, --force       Back up conflicting files before replacing them with links
   -n, --dry-run     Print planned changes without changing files or settings
   --skip-brew       Skip Homebrew installation and brew bundle
-  --skip-macos      Skip macOS keyboard and Skim tab settings
+  --skip-macos      Skip macOS settings and Bluetooth battery notification setup
   --target DIR     Deploy into an absolute directory (config goes in DIR/.config)
   -h, --help        Show this help
 EOF
@@ -37,6 +38,7 @@ while [[ $# -gt 0 ]]; do
     --target)
       [[ $# -ge 2 && "$2" = /* ]] || fail '--target requires an absolute directory other than /'
       TARGET_DIRECTORY="$2"
+      TARGET_SPECIFIED=true
       CONFIG_DIRECTORY="$TARGET_DIRECTORY/.config"
       shift
       ;;
@@ -79,6 +81,12 @@ CONFIG_DIRECTORY="$(canonical_directory "$CONFIG_DIRECTORY")"
 [[ "$CONFIG_DIRECTORY" != / ]] || fail 'config directory must not resolve to /'
 
 PLATFORM="$(uname -s)"
+SETUP_BATTERY=false
+if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin && "$TARGET_SPECIFIED" != true ]]; then
+  SETUP_BATTERY=true
+  [[ -r "$DOT_DIRECTORY/setup-bluetooth-battery.sh" ]] || fail 'missing source: setup-bluetooth-battery.sh'
+  [[ -r "$DOT_DIRECTORY/.config/scripts/check_bluetooth_keyboard_battery.sh" ]] || fail 'missing source: Bluetooth battery check script'
+fi
 if [[ "$SKIP_BREW" != true ]]; then
   [[ "$PLATFORM" = Darwin ]] || fail 'this Brewfile requires macOS; use --skip-brew for links only'
   [[ -f "$DOT_DIRECTORY/Brewfile" && -r "$DOT_DIRECTORY/Brewfile" ]] || fail 'missing or unreadable source: Brewfile'
@@ -206,6 +214,10 @@ done
 if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin ]]; then
   run defaults write -g ApplePressAndHoldEnabled -bool false
   run defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
+fi
+
+if [[ "$SETUP_BATTERY" = true ]]; then
+  run /bin/bash "$DOT_DIRECTORY/setup-bluetooth-battery.sh"
 fi
 
 if [[ "$DRY_RUN" = true ]]; then

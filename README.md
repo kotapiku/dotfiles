@@ -18,6 +18,8 @@ deploy は macOS 標準の Bash 3.2 で動作します。
 2. このリポジトリの Brewfile に対して `brew bundle` を実行します。
 3. 設定へのリンクを作成し、macOS のキー長押しのアクセント選択を無効にします。
    Skim で書類を常にタブで開く設定（`AppleWindowTabbingMode=always`）も適用します。
+4. Bluetooth トラックパッド・キーボードのバッテリー確認を毎日22時に実行する設定を登録します。
+   残量20%以下で通知します。`~/.config` への手動リンクは不要です。
 
 Homebrew の処理が失敗した場合、設定のリンク・バックアップ・macOS 設定の変更は行いません。
 Homebrew 側で途中までインストールされたパッケージは残るため、表示されたエラーを解消して
@@ -56,7 +58,7 @@ Detexify のデスクトップアプリは
 ./deploy.sh --target /tmp/dotfiles-preview --skip-brew --skip-macos
 ```
 
-`--target` は設定の配置先だけを変えます。Homebrew と macOS の変更を省くには、
+`--target` 指定時はバッテリー通知の登録を省きます。Homebrew と macOS の設定変更も省くには、
 上記のスキップオプションも指定してください。
 配置先の `.`・`..` と既存のシンボリックリンクは解決してから検証します。
 ルートディレクトリへの配置（`//` などの別表記を含む）や、リポジトリ内に新しいリンクを
@@ -155,7 +157,17 @@ relogin
 
 別の Mac でも、リポジトリを clone または更新してから次を実行すると、
 毎日22時に接続中のトラックパッド・キーボードを確認し、残量20%以下で通知します。
-この機能だけ導入する場合、`deploy.sh` の実行は不要です。
+
+```sh
+./deploy.sh
+```
+
+通知に必要な `terminal-notifier` も Brewfile から導入します。
+`--skip-macos` または `--target` を指定した場合はバッテリー通知を登録しません。
+`--skip-brew` を指定する場合は、先に `terminal-notifier` を導入してください。
+`--dry-run` では登録予定を表示するだけです。
+
+この機能だけ導入する場合は、専用セットアップも使えます。
 
 ```sh
 brew install terminal-notifier

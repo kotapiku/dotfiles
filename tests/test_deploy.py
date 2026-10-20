@@ -17,7 +17,7 @@ class DeployTests(unittest.TestCase):
         self.checkout = self.root / "checkout with spaces"
         self.checkout.mkdir()
         self.target = self.root / "target home"
-        for name in ("deploy.sh", "Brewfile", ".zshenv", ".zshrc", ".gitconfig",
+        for name in ("deploy.sh", "setup-bluetooth-battery.sh", "Brewfile", ".zshenv", ".zshrc", ".gitconfig",
                      ".gitignore_global", ".vimrc", ".vimrc_vscode", ".latexmkrc_platex"):
             shutil.copy2(REPOSITORY / name, self.checkout / name)
         shutil.copytree(
@@ -25,6 +25,9 @@ class DeployTests(unittest.TestCase):
             symlinks=True, ignore=shutil.ignore_patterns("repos", "spell"),
         )
         shutil.copy2(REPOSITORY / ".config/starship.toml", self.checkout / ".config/starship.toml")
+        (self.checkout / ".config/scripts").mkdir()
+        shutil.copy2(REPOSITORY / ".config/scripts/check_bluetooth_keyboard_battery.sh",
+                     self.checkout / ".config/scripts")
 
     def deploy(self, *options, with_brew=False, with_macos=False, env=None, check=True):
         command = ["/bin/bash", str(self.checkout / "deploy.sh"), "--target", str(self.target)]
@@ -293,6 +296,41 @@ esac
         self.assertEqual(self.deploy("--help").returncode, 0)
         self.assertNotEqual(self.deploy("--unknown", check=False).returncode, 0)
         self.assertFalse(self.target.exists())
+
+    def test_battery_setup_runs_after_bundle_and_links(self):
+        log = self.root / "battery.log"
+        setup = self.checkout / "setup-bluetooth-battery.sh"
+        setup.write_text('''#!/bin/bash
+set -eu
+[[ -L "$HOME/.zshrc" ]]
+[[ -f "$DOTFILES_TEST_BREW_LOG" ]]
+printf 'registered\\n' > "$DOTFILES_TEST_BATTERY_LOG"
+''')
+        env = self.stub_commands(
+            uname='echo Darwin\n',
+            brew='touch "$DOTFILES_TEST_BREW_LOG"\n',
+            defaults='exit 0\n',
+        )
+        env.update(HOME=str(self.target), XDG_CONFIG_HOME=str(self.target / ".config"),
+                   DOTFILES_TEST_BREW_LOG=str(self.root / "brew.log"),
+                   DOTFILES_TEST_BATTERY_LOG=str(log))
+        command = ["/bin/bash", str(self.checkout / "deploy.sh")]
+        result = subprocess.run(command + ["--dry-run"], env=env, check=True,
+                                text=True, capture_output=True, timeout=20)
+        self.assertIn("setup-bluetooth-battery.sh", result.stdout)
+        self.assertFalse(log.exists())
+        self.assertFalse(self.target.exists())
+        subprocess.run(command, env=env, check=True, capture_output=True, timeout=20)
+        self.assertEqual(log.read_text(), "registered\n")
+
+    def test_battery_setup_skipped_for_target_and_skip_macos(self):
+        (self.checkout / "setup-bluetooth-battery.sh").write_text('exit 99\n')
+        env = self.stub_commands(uname='echo Darwin\n', defaults='exit 0\n')
+        self.deploy(with_macos=True, env=env)
+        env.update(HOME=str(self.target), XDG_CONFIG_HOME=str(self.target / ".config"))
+        subprocess.run(["/bin/bash", str(self.checkout / "deploy.sh"),
+                        "--skip-brew", "--skip-macos"], env=env, check=True,
+                       capture_output=True, timeout=20)
 
     @unittest.skipUnless(shutil.which("nvim"), "Neovim is not installed")
     def test_neovim_configs_load_from_relocated_checkout(self):
