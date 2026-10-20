@@ -26,13 +26,23 @@ class DeployTests(unittest.TestCase):
         )
         shutil.copy2(REPOSITORY / ".config/starship.toml", self.checkout / ".config/starship.toml")
 
-    def deploy(self, *options, with_brew=False, env=None, check=True):
-        command = ["/bin/bash", str(self.checkout / "deploy.sh"), "--target", str(self.target),
-                   "--skip-macos"]
+    def deploy(self, *options, with_brew=False, with_macos=False, env=None, check=True):
+        command = ["/bin/bash", str(self.checkout / "deploy.sh"), "--target", str(self.target)]
+        if not with_macos:
+            command.append("--skip-macos")
         if not with_brew:
             command.append("--skip-brew")
         return subprocess.run(command + list(options), cwd=self.root, env=env, check=check,
-                              text=True, capture_output=True)
+                              text=True, capture_output=True, timeout=20)
+
+    def stub_commands(self, **commands):
+        binaries = self.root / "bin"
+        binaries.mkdir(exist_ok=True)
+        for name, content in commands.items():
+            script = binaries / name
+            script.write_text("#!/bin/bash\nset -eu\n" + content)
+            script.chmod(0o755)
+        return dict(os.environ, PATH=str(binaries) + os.pathsep + "/usr/bin:/bin:/usr/sbin:/sbin")
 
     def test_deploy_from_another_directory_and_repeat(self):
         self.deploy()
@@ -106,29 +116,178 @@ class DeployTests(unittest.TestCase):
         self.assertIn("not a directory", result.stderr)
         self.assertFalse((self.target / ".zshrc").exists())
 
+    def test_root_target_aliases_are_rejected_without_changes(self):
+        alias = self.root / "root alias"
+        alias.symlink_to("/")
+        for target in ("/", "//", "////", "/usr/..", str(alias)):
+            with self.subTest(target=target):
+                result = self.deploy("--target", target, "--dry-run", check=False)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("must not resolve to /", result.stderr)
+                self.assertNotIn("ln -s", result.stdout)
+        self.assertFalse(self.target.exists())
+
+    def test_target_normalizes_missing_components_and_symlinks(self):
+        alias = self.root / "home alias"
+        self.target.mkdir()
+        alias.symlink_to(self.target, target_is_directory=True)
+        self.deploy("--target", str(alias) + "/missing/../", "--force")
+        self.assertEqual((self.target / ".zshrc").resolve(), self.checkout / ".zshrc")
+        self.assertFalse((self.target / "missing").exists())
+
+    def test_root_xdg_config_directory_is_rejected(self):
+        env = dict(os.environ, HOME=str(self.target), XDG_CONFIG_HOME="/")
+        result = subprocess.run(
+            ["/bin/bash", str(self.checkout / "deploy.sh"), "--skip-brew", "--skip-macos",
+             "--dry-run"], env=env, text=True, capture_output=True, timeout=20,
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("config directory must not resolve to /", result.stderr)
+        self.assertFalse(self.target.exists())
+
+    def test_custom_xdg_config_directory_and_backup(self):
+        config = self.root / "custom config"
+        config.mkdir()
+        (config / "starship.toml").write_text("original prompt")
+        env = dict(os.environ, HOME=str(self.target), XDG_CONFIG_HOME=str(config))
+        subprocess.run(
+            ["/bin/bash", str(self.checkout / "deploy.sh"), "--skip-brew", "--skip-macos", "--force"],
+            env=env, check=True, text=True, capture_output=True, timeout=20,
+        )
+        self.assertEqual((config / "nvim").resolve(), self.checkout / ".config/nvim")
+        self.assertEqual((config / "starship.toml").resolve(), self.checkout / ".config/starship.toml")
+        self.assertFalse((self.target / ".config").exists())
+        backup, = (self.target / ".dotfiles-backups").iterdir()
+        self.assertEqual((backup / ".config/starship.toml").read_text(), "original prompt")
+
+    def test_target_inside_checkout_is_rejected_before_creating_links(self):
+        result = self.deploy("--target", str(self.checkout / "nested home"), check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("destination would modify the checkout", result.stderr)
+        self.assertFalse((self.checkout / "nested home").exists())
+
+    def test_config_symlink_into_managed_directory_is_rejected(self):
+        self.target.mkdir()
+        (self.target / ".config").symlink_to(self.checkout / ".config/nvim")
+        result = self.deploy("--force", check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("destination would modify the checkout", result.stderr)
+        self.assertFalse((self.target / ".zshrc").exists())
+        self.assertFalse((self.checkout / ".config/nvim/nvim").exists())
+        self.assertFalse((self.target / ".dotfiles-backups").exists())
+
     def test_optional_ctags_file(self):
         (self.checkout / "latex.ctags").write_text("--languages=LaTeX\n")
         self.deploy()
         self.assertEqual((self.target / ".ctags.d/latex.ctags").resolve(), self.checkout / "latex.ctags")
 
     def test_existing_brew_runs_bundle_without_installer(self):
-        binaries = self.root / "bin"
-        binaries.mkdir()
         log = self.root / "brew.log"
-        for name, content in {
-            "brew": '#!/bin/bash\nprintf "%s\\n" "$@" > "$DOTFILES_TEST_BREW_LOG"\n',
-            "curl": '#!/bin/bash\necho "unexpected installer download" >&2\nexit 99\n',
-        }.items():
-            script = binaries / name
-            script.write_text(content)
-            script.chmod(0o755)
-        env = dict(os.environ, PATH=str(binaries) + os.pathsep + os.environ["PATH"],
-                   DOTFILES_TEST_BREW_LOG=str(log))
+        env = self.stub_commands(
+            uname='echo Darwin\n',
+            brew='printf "%s\\n" "$@" >> "$DOTFILES_TEST_BREW_LOG"\n',
+            curl='echo "unexpected installer download" >&2\nexit 99\n',
+        )
+        env["DOTFILES_TEST_BREW_LOG"] = str(log)
         self.deploy(with_brew=True, env=env)
-        self.assertEqual(log.read_text().splitlines(), ["bundle", f"--file={self.checkout}/Brewfile"])
+        self.assertEqual(log.read_text().splitlines(),
+                         ["shellenv", "bash", "bundle", f"--file={self.checkout}/Brewfile"])
         log.unlink()
         self.deploy("--dry-run", with_brew=True, env=env)
         self.assertFalse(log.exists())
+
+    def test_brew_outside_path_loads_environment_before_bundle(self):
+        prefix = self.root / "Homebrew with spaces"
+        (prefix / "bin").mkdir(parents=True)
+        brew = prefix / "bin/brew"
+        brew.write_text("""#!/bin/bash
+set -eu
+case "$1" in
+  shellenv)
+    [[ "$2" = bash ]]
+    printf 'export PATH=%q/bin:$PATH\\n' "$HOMEBREW_PREFIX"
+    ;;
+  bundle)
+    command -v mas > "$DOTFILES_TEST_BREW_LOG"
+    ;;
+  *) exit 99 ;;
+esac
+""")
+        brew.chmod(0o755)
+        mas = prefix / "bin/mas"
+        mas.write_text("#!/bin/bash\nexit 0\n")
+        mas.chmod(0o755)
+        log = self.root / "brew.log"
+        env = self.stub_commands(uname='echo Darwin\n', curl='exit 99\n')
+        env.update(HOMEBREW_PREFIX=str(prefix), DOTFILES_TEST_BREW_LOG=str(log))
+        self.deploy(with_brew=True, env=env)
+        self.assertEqual(log.read_text().strip(), str(mas))
+
+    def test_brew_failure_preserves_existing_configuration_and_macos_settings(self):
+        self.target.mkdir()
+        (self.target / ".zshrc").write_text("working configuration")
+        log = self.root / "defaults.log"
+        env = self.stub_commands(
+            uname='echo Darwin\n',
+            brew='[[ "$1" = shellenv ]] && exit 0\nexit 42\n',
+            defaults='echo called > "$DOTFILES_TEST_DEFAULTS_LOG"\n',
+        )
+        env["DOTFILES_TEST_DEFAULTS_LOG"] = str(log)
+        result = self.deploy("--force", with_brew=True, with_macos=True, env=env, check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("brew bundle failed", result.stderr)
+        self.assertEqual(list(self.target.iterdir()), [self.target / ".zshrc"])
+        self.assertEqual((self.target / ".zshrc").read_text(), "working configuration")
+        self.assertFalse(log.exists())
+
+    def test_missing_brewfile_fails_before_external_commands_and_links(self):
+        (self.checkout / "Brewfile").unlink()
+        log = self.root / "brew.log"
+        env = self.stub_commands(
+            uname='echo Darwin\n', brew='echo called > "$DOTFILES_TEST_BREW_LOG"\n',
+        )
+        env["DOTFILES_TEST_BREW_LOG"] = str(log)
+        result = self.deploy(with_brew=True, env=env, check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Brewfile", result.stderr)
+        self.assertFalse(self.target.exists())
+        self.assertFalse(log.exists())
+        self.deploy(env=env)
+        self.assertTrue((self.target / ".zshrc").is_symlink())
+
+    def test_non_macos_requires_skip_brew_but_can_deploy_links(self):
+        log = self.root / "external.log"
+        env = self.stub_commands(
+            uname='echo Linux\n',
+            brew='echo brew > "$DOTFILES_TEST_EXTERNAL_LOG"\n',
+            defaults='echo defaults > "$DOTFILES_TEST_EXTERNAL_LOG"\n',
+        )
+        env["DOTFILES_TEST_EXTERNAL_LOG"] = str(log)
+        result = self.deploy(with_brew=True, with_macos=True, env=env, check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("requires macOS", result.stderr)
+        self.assertFalse(self.target.exists())
+        self.assertFalse(log.exists())
+        self.deploy(with_macos=True, env=env)
+        self.assertTrue((self.target / ".zshrc").is_symlink())
+        self.assertFalse(log.exists())
+
+    def test_macos_preferences_follow_successful_bundle_and_are_skipped_in_dry_run(self):
+        log = self.root / "defaults.log"
+        env = self.stub_commands(
+            uname='echo Darwin\n',
+            brew='[[ ! -L "$DOTFILES_TEST_TARGET/.zshrc" ]]\n',
+            defaults='[[ -L "$DOTFILES_TEST_TARGET/.zshrc" ]]\nprintf "%s\\n" "$@" >> "$DOTFILES_TEST_DEFAULTS_LOG"\n',
+        )
+        env.update(DOTFILES_TEST_TARGET=str(self.target), DOTFILES_TEST_DEFAULTS_LOG=str(log))
+        self.deploy("--dry-run", with_brew=True, with_macos=True, env=env)
+        self.assertFalse(log.exists())
+        self.assertFalse(self.target.exists())
+        self.deploy(with_brew=True, with_macos=True, env=env)
+        self.assertEqual(log.read_text().splitlines(), [
+            "write", "-g", "ApplePressAndHoldEnabled", "-bool", "false",
+            "write", "net.sourceforge.skim-app.skim", "AppleWindowTabbingMode", "-string", "always",
+        ])
 
     def test_help_and_invalid_option(self):
         self.assertEqual(self.deploy("--help").returncode, 0)

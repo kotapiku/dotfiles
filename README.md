@@ -12,12 +12,24 @@ deploy は macOS 標準の Bash 3.2 で動作します。
 ./deploy.sh
 ```
 
-通常の実行では設定へのリンクを作成し、Homebrew がなければ公式インストーラで導入します。
-Homebrew の導入済み・未導入にかかわらず、このリポジトリの Brewfile に対して
-`brew bundle` を実行します。Brewfile には MacTeX などのアプリも含まれます。
-Mac App Store のアプリにはサインインが必要です。
-macOS ではキー長押しのアクセント選択を無効にし、Skim で書類を常にタブで開く設定
-（`AppleWindowTabbingMode=always`）を適用します。
+通常の実行では、配置先と設定ファイルを検証してから、次の順に処理します。
+
+1. Homebrew がなければ公式インストーラで導入し、`brew shellenv bash` で実行環境を読み込みます。
+2. このリポジトリの Brewfile に対して `brew bundle` を実行します。
+3. 設定へのリンクを作成し、macOS のキー長押しのアクセント選択を無効にします。
+   Skim で書類を常にタブで開く設定（`AppleWindowTabbingMode=always`）も適用します。
+
+Homebrew の処理が失敗した場合、設定のリンク・バックアップ・macOS 設定の変更は行いません。
+Homebrew 側で途中までインストールされたパッケージは残るため、表示されたエラーを解消して
+同じコマンドを再実行してください。
+
+`brew bundle` は既定で既存パッケージの更新も行います。更新を抑えて不足分を導入する場合は、
+`HOMEBREW_BUNDLE_NO_UPGRADE=1 ./deploy.sh` を使います。バージョンの固定ではありません。
+詳細は [Homebrew Bundle の更新仕様](https://docs.brew.sh/Brew-Bundle-and-Brewfile#brew-bundle-upgrade-and-homebrew_bundle_no_upgrade1)
+を参照してください。
+
+Detexify のデスクトップアプリは
+[Detexify の Web 版](https://detexify.kirelabs.org/) からダウンロードしてください。
 
 設定のリンクだけを作る場合:
 
@@ -46,6 +58,10 @@ macOS ではキー長押しのアクセント選択を無効にし、Skim で書
 
 `--target` は設定の配置先だけを変えます。Homebrew と macOS の変更を省くには、
 上記のスキップオプションも指定してください。
+配置先の `.`・`..` と既存のシンボリックリンクは解決してから検証します。
+ルートディレクトリへの配置（`//` などの別表記を含む）や、リポジトリ内に新しいリンクを
+作る配置は受け付けません。`XDG_CONFIG_HOME` も絶対パスで、ルート以外を指定してください。
+Brewfile は macOS 用です。macOS 以外では `--skip-brew` でリンクの配置だけを実行できます。
 
 ## 管理対象
 
@@ -310,7 +326,9 @@ python3 -B -m unittest discover -s tests -v
 ```
 
 deploy のテストは一時ディレクトリ内のコピーを使い、既存設定の保持、バックアップ、
-再実行、空白を含むパス、旧 `.config` 配置、dry-run、Homebrew の導入済み判定を確認します。
+再実行、空白を含むパス、旧 `.config` 配置、dry-run、配置先の検証を確認します。
+Homebrew が PATH にない場合の環境読込、処理失敗時の設定保持、macOS 設定の実行順序、
+macOS 以外でのリンク配置も検証します。
 Homebrew の呼び出しは代替コマンドを使い、実際のインストールや macOS 設定の変更はしません。
 Neovim と Ghostscript がインストールされている場合は、それぞれ設定の読込と PDF 変換も検証します。
 Neovim のプラグイン処理はテスト用の代替実装で、外部プラグインは取得しません。

@@ -35,8 +35,8 @@ while [[ $# -gt 0 ]]; do
     --skip-brew) SKIP_BREW=true ;;
     --skip-macos) SKIP_MACOS=true ;;
     --target)
-      [[ $# -ge 2 && "$2" = /* && "$2" != / ]] || fail '--target requires an absolute directory other than /'
-      TARGET_DIRECTORY="${2%/}"
+      [[ $# -ge 2 && "$2" = /* ]] || fail '--target requires an absolute directory other than /'
+      TARGET_DIRECTORY="$2"
       CONFIG_DIRECTORY="$TARGET_DIRECTORY/.config"
       shift
       ;;
@@ -46,7 +46,43 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+# Resolve existing symlinks and . / .. components without creating directories.
+# Checking only the spelling of --target would also accept // or /usr/.. as /.
+canonical_directory() {
+  local remaining="$1" resolved=/ component
+  [[ "$remaining" = /* ]] || fail "directory must be an absolute path: $remaining"
+  while [[ -n "$remaining" ]]; do
+    component="${remaining%%/*}"
+    if [[ "$remaining" = */* ]]; then
+      remaining="${remaining#*/}"
+    else
+      remaining=""
+    fi
+    case "$component" in
+      ''|.) continue ;;
+      ..) resolved="$(dirname -- "$resolved")" ;;
+      *) resolved="${resolved%/}/$component" ;;
+    esac
+    if [[ -d "$resolved" ]]; then
+      resolved="$(cd -- "$resolved" && pwd -P)" || fail "cannot access directory: $resolved"
+    else
+      [[ ! -e "$resolved" && ! -L "$resolved" ]] || fail "not a directory: $resolved"
+    fi
+  done
+  printf '%s\n' "$resolved"
+}
+
+TARGET_DIRECTORY="$(canonical_directory "$TARGET_DIRECTORY")"
+[[ "$TARGET_DIRECTORY" != / ]] || fail 'target directory must not resolve to /'
 [[ "$CONFIG_DIRECTORY" = /* ]] || fail 'XDG_CONFIG_HOME must be an absolute path'
+CONFIG_DIRECTORY="$(canonical_directory "$CONFIG_DIRECTORY")"
+[[ "$CONFIG_DIRECTORY" != / ]] || fail 'config directory must not resolve to /'
+
+PLATFORM="$(uname -s)"
+if [[ "$SKIP_BREW" != true ]]; then
+  [[ "$PLATFORM" = Darwin ]] || fail 'this Brewfile requires macOS; use --skip-brew for links only'
+  [[ -f "$DOT_DIRECTORY/Brewfile" && -r "$DOT_DIRECTORY/Brewfile" ]] || fail 'missing or unreadable source: Brewfile'
+fi
 
 # Deploy only explicitly managed settings, leaving ~/.config itself and
 # project-specific ~/.latexmkrc settings alone.
@@ -71,11 +107,14 @@ destination_for() {
 for relative in "${MANAGED_FILES[@]}"; do
   [[ -e "$DOT_DIRECTORY/$relative" ]] || fail "missing source: $relative"
   destination="$(destination_for "$relative")"
-  parent="$(dirname -- "$destination")"
-  while [[ ! -d "$parent" ]]; do
-    [[ ! -e "$parent" && ! -L "$parent" ]] || fail "not a directory: $parent"
-    parent="$(dirname -- "$parent")"
-  done
+  parent="$(canonical_directory "$(dirname -- "$destination")")"
+  # The legacy ~/.config -> checkout/.config layout is safe only when the
+  # destination already is the managed source. Never create links in the checkout.
+  if [[ ! "$DOT_DIRECTORY/$relative" -ef "$destination" ]]; then
+    case "$parent/${destination##*/}" in
+      "$DOT_DIRECTORY"/*) fail "destination would modify the checkout: $destination" ;;
+    esac
+  fi
 done
 
 run() {
@@ -124,20 +163,11 @@ deploy_link() {
   printf 'Link: %s -> %s\n' "$destination" "$source"
 }
 
-for relative in "${MANAGED_FILES[@]}"; do
-  deploy_link "$relative"
-done
-
-if [[ "$SKIP_MACOS" != true && "$(uname -s)" = Darwin ]]; then
-  run defaults write -g ApplePressAndHoldEnabled -bool false
-  run defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
-fi
-
 find_brew() {
   BREW="$(command -v brew || true)"
   [[ -z "$BREW" ]] || return 0
   local candidate
-  for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew /home/linuxbrew/.linuxbrew/bin/brew; do
+  for candidate in "${HOMEBREW_PREFIX:-}/bin/brew" /opt/homebrew/bin/brew /usr/local/bin/brew; do
     if [[ -x "$candidate" ]]; then
       BREW="$candidate"
       return 0
@@ -151,12 +181,31 @@ if [[ "$SKIP_BREW" != true ]]; then
     if [[ "$DRY_RUN" = true ]]; then
       printf '[dry-run] Install Homebrew using its official installer\n'
     else
-      installer="$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      /bin/bash -c "$installer"
+      installer="$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || fail 'Homebrew installer download failed'
+      /bin/bash -c "$installer" || fail 'Homebrew installation failed'
       find_brew || fail 'Homebrew was not found after installation'
     fi
   fi
-  run "${BREW:-brew}" bundle --file="$DOT_DIRECTORY/Brewfile"
+  # An absolute brew path alone does not put tools such as mas in bundle's PATH.
+  # shellenv itself can create Homebrew files, so never invoke it in a dry run.
+  if [[ "$DRY_RUN" = true ]]; then
+    run "${BREW:-brew}" shellenv bash
+  else
+    brew_environment="$("$BREW" shellenv bash)" || fail 'could not load the Homebrew environment'
+    eval "$brew_environment"
+  fi
+  run "${BREW:-brew}" bundle --file="$DOT_DIRECTORY/Brewfile" || fail 'brew bundle failed; resolve the reported errors and rerun deploy.sh'
+fi
+
+# Install dependencies first: a failed bundle must not replace the working
+# configuration or apply macOS preferences.
+for relative in "${MANAGED_FILES[@]}"; do
+  deploy_link "$relative"
+done
+
+if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin ]]; then
+  run defaults write -g ApplePressAndHoldEnabled -bool false
+  run defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
 fi
 
 if [[ "$DRY_RUN" = true ]]; then
