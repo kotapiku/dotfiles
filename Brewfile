@@ -1,6 +1,5 @@
 brew "arxiv_latex_cleaner"
 brew "bat"
-brew "bitwarden-cli" # for raycast extension
 brew "difftastic"
 brew "eza" # better ls
 brew "fzf"
