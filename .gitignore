@@ -1,6 +1,9 @@
 .config/*
 !.config/nvim
 !.config/starship.toml
+!.config/scripts/
+.config/scripts/*
+!.config/scripts/check_bluetooth_keyboard_battery.sh
 .config/nvim/spell/*
 .python-version
 .DS_Store

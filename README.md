@@ -76,7 +76,7 @@ Brewfile は macOS 用です。macOS 以外では `--skip-brew` でリンクの�
 
 `--target` 指定時の設定ディレクトリは、その配置先の `.config` です。
 `.config` 全体は置き換えません。以前の deploy で `.config` 全体をリンクした環境も利用できます。
-`.config` 配下では Neovim と Starship だけを Git 管理対象とし、他のアプリの認証情報や
+`.config` 配下では Neovim、Starship と Bluetooth バッテリー確認スクリプトを Git 管理対象とし、他のアプリの認証情報や
 実行時データは管理しません。
 
 `.latexmkrc`、`.vimrc_vscode` は自動配置しません。
@@ -150,6 +150,35 @@ relogin
 設定の仕様は [Zsh の履歴オプション](https://zsh.sourceforge.io/Doc/Release/Options.html#History)、
 [補完の初期化](https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Use-of-compinit)、
 [fzf のシェル連携](https://github.com/junegunn/fzf#key-bindings-for-command-line) を参照してください。
+
+## Bluetooth トラックパッド・キーボードの充電通知
+
+別の Mac でも、リポジトリを clone または更新してから次を実行すると、
+毎日22時に接続中のトラックパッド・キーボードを確認し、残量20%以下で通知します。
+この機能だけ導入する場合、`deploy.sh` の実行は不要です。
+
+```sh
+brew install terminal-notifier
+bash setup-bluetooth-battery.sh --dry-run
+bash setup-bluetooth-battery.sh
+```
+
+その Mac のホームディレクトリと clone 先に合わせて LaunchAgent を生成・登録します。
+既存の同名 LaunchAgent はバックアップして置き換えます。スクリプトを直接参照するため、
+リポジトリは削除せず、移動した場合はセットアップを再実行してください。
+従来のユーザー名が固定された `.config/launchd/` の plist をコピーする必要はありません。
+
+残量の確認と通知のテスト（リポジトリのルートで実行）:
+
+```sh
+zsh .config/scripts/check_bluetooth_keyboard_battery.sh 20 --dry-run
+zsh .config/scripts/check_bluetooth_keyboard_battery.sh 20 --always-notify
+```
+
+macOS の「システム設定 → 通知 → terminal-notifier」で通知を許可してください。
+残量データを取得できる接続中の機器が対象です。通知の再送は機器ごとに24時間以上あけます。
+確認結果は `~/Library/Logs/bluetooth-keyboard-battery.log` に記録します。
+この機能は macOS 専用です。
 
 ## Codex CLI の通知
 
