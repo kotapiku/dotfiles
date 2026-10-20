@@ -177,6 +177,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias sudo='sudo '
+alias rg='rg --hidden --no-ignore'
 
 if (( $+commands[eza] )); then
   alias ls='eza --icons --git'
@@ -193,8 +194,8 @@ alias gaa='git add -A'
 alias gc='git commit -m'
 alias gp='git push'
 alias gl='git log -p -2'
+alias lg='lazygit'
 
-alias ocaml='rlwrap ocaml'
 alias vi='nvim'
 alias fvi='(file=$(fzf) && nvim -- "$file")'
 
@@ -203,7 +204,6 @@ alias md='npx mdts --port auto'
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'
 alias vimrc='nvim "$XDG_CONFIG_HOME/nvim/init.lua"'
-alias tmuxconf='nvim ~/.tmux.conf'
 alias nvim_plugins='nvim "$XDG_CONFIG_HOME/nvim/lua/plugins"'
 alias relogin='exec "$SHELL" -l'
 
