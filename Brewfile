@@ -1,27 +1,25 @@
 brew "arxiv_latex_cleaner"
-brew "bat"
+brew "bat" # better cat
 brew "difftastic"
 brew "eza" # better ls
 brew "fzf"
 brew "ghostscript"
 brew "ghq"
-brew "gibo"
+brew "gibo" # to create .gitignore
 brew "git"
 brew "gh"
-brew "grep"
-brew "htop"
-brew "imagemagick"
+brew "htop" # process viewer
+brew "yazi" # file manager
 brew "lazygit"
 brew "mise"
 brew "neovim"
 brew "nkf"
 brew "ripgrep" # better grep
-brew "rlwrap"
 brew "terminal-notifier"
 brew "texlab"
 brew "universal-ctags"
 brew "wget"
-brew "zoxide"
+brew "zoxide" # better cd
 brew "starship"
 cask "nani", args: { appdir: "/Applications" }
 cask "discord"
@@ -35,7 +33,6 @@ cask "obsidian"
 cask "raycast", args: { appdir: "/Applications" }
 cask "skim", args: { appdir: "/Applications" }
 cask "slack", args: { appdir: "/Applications" }
-cask "visual-studio-code"
 cask "warp"
 cask "zulip"
 mas "Spark", id: 1176895641
