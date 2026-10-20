@@ -4,6 +4,16 @@ end
 
 map('i', 'jk', '<Esc>', 'Leave insert mode')
 map('t', 'jk', '<C-\\><C-n>', 'Leave terminal input')
+for key, direction in pairs({ j = 'down', k = 'up' }) do
+  map('t', '<C-w>' .. key, '<C-\\><C-n><C-w>' .. key, 'Move to window ' .. direction)
+end
+-- Expand an interactively typed :terminal without affecting plugin terminals.
+map('ca', 'terminal', function()
+  if vim.fn.getcmdtype() == ':' and vim.fn.getcmdline() == 'terminal' then
+    return 'botright split | startinsert | terminal'
+  end
+  return 'terminal'
+end, 'Open terminal in a bottom split', { expr = true })
 map('n', 'n', 'nzz', 'Next search match, centered')
 map('n', 'N', 'Nzz', 'Previous search match, centered')
 map('n', 'gs', ':<C-u>%s///g<Left><Left><Left>', 'Replace in file')
@@ -30,15 +40,27 @@ map('n', '<Space>hm', function()
     vim.api.nvim_set_current_buf(listed[math.ceil(#listed / 2)].bufnr)
   end
 end, 'Middle buffer')
-map('n', '<Space>hd', function()
+local function close_buffer()
   local current = vim.api.nvim_get_current_buf()
+  if vim.bo[current].buftype == 'terminal' then
+    if #vim.api.nvim_tabpage_list_wins(0) > 1 then
+      vim.api.nvim_win_close(0, true)
+    end
+    vim.api.nvim_buf_delete(current, { force = true })
+    return
+  end
   if vim.bo[current].modified then
     vim.notify('Save changes before closing this buffer.', vim.log.levels.WARN)
     return
   end
   if #vim.fn.getbufinfo({ buflisted = 1 }) > 1 then vim.cmd.bprevious() end
   vim.api.nvim_buf_delete(current, {})
-end, 'Close saved buffer')
+end
+map('n', '<Space>hd', close_buffer, 'Close buffer or terminal')
+map('t', '<Space>hd', function()
+  vim.cmd.stopinsert()
+  close_buffer()
+end, 'Close terminal')
 
 for _, object in ipairs({ 'w', '"', "'", '(', '[', '{' }) do
   map('n', '<leader>r' .. object, '"_ci' .. object .. '<C-r>+<Esc>', 'Replace inside ' .. object .. ' with clipboard')
