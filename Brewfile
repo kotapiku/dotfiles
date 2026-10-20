@@ -30,11 +30,9 @@ cask "docker-desktop"
 cask "flux-app"
 cask "font-fira-code-nerd-font", args: { appdir: "/Applications" }
 cask "google-drive", args: { appdir: "/Applications" }
-cask "google-japanese-ime", args: { appdir: "/Applications" }
 cask "mactex"
 cask "obsidian"
 cask "raycast", args: { appdir: "/Applications" }
-cask "qmk-toolbox", args: { appdir: "/Applications" }
 cask "skim", args: { appdir: "/Applications" }
 cask "slack", args: { appdir: "/Applications" }
 cask "visual-studio-code"
