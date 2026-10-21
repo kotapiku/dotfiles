@@ -201,6 +201,8 @@ alias fvi='(file=$(fzf) && nvim -- "$file")'
 
 alias md='npx mdts --port auto'
 
+alias fm='yazi' # file manager
+
 alias zshrc='nvim ~/.zshrc'
 alias zshenv='nvim ~/.zshenv'
 alias vimrc='nvim "$XDG_CONFIG_HOME/nvim/init.lua"'
