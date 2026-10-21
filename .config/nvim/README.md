@@ -128,7 +128,9 @@ defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string alwa
 
 ## Skim から原稿へ戻る
 
-Skim の設定 → Sync → PDF-TeX Sync を Custom にして設定します。
+macOS では `deploy.sh` が Skim の逆検索を設定します。
+起動中の Skim は、設定を反映するために再起動してください。
+手動で設定する場合は、Skim の設定 → Sync → PDF-TeX Sync を Custom にして次を指定します。
 
 ```text
 Command:   /opt/homebrew/bin/nvim

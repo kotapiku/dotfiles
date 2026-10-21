@@ -92,7 +92,8 @@ Warp 内の Neovim では、`\lv` / `Ctrl+Alt+j` による PDF の該当位置�
 移動後はカーソル行が画面中央に来るようにスクロールします。
 macOS の Warp 内で起動した Neovim では、ジャンプすると Warp も前面に出ます。
 
-Skim の設定 → Sync → PDF-TeX Sync は以下の Custom 設定です。
+macOS の `deploy.sh` で逆検索を自動設定します。反映には Skim の再起動が必要です。
+手動で設定する場合も、Skim の設定 → Sync → PDF-TeX Sync を以下の Custom 設定にします。
 
 ```text
 Command:   /opt/homebrew/bin/nvim

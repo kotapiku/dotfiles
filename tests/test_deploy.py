@@ -285,6 +285,7 @@ esac
         env = self.stub_commands(
             uname='echo Darwin\n',
             brew='[[ ! -L "$DOTFILES_TEST_TARGET/.zshrc" ]]\n',
+            nvim='exit 99\n',
             defaults='[[ -L "$DOTFILES_TEST_TARGET/.zshrc" ]]\nprintf "%s\\n" "$@" >> "$DOTFILES_TEST_DEFAULTS_LOG"\n',
         )
         env.update(DOTFILES_TEST_TARGET=str(self.target), DOTFILES_TEST_DEFAULTS_LOG=str(log))
@@ -295,6 +296,10 @@ esac
         self.assertEqual(log.read_text().splitlines(), [
             "write", "-g", "ApplePressAndHoldEnabled", "-bool", "false",
             "write", "net.sourceforge.skim-app.skim", "AppleWindowTabbingMode", "-string", "always",
+            "write", "net.sourceforge.skim-app.skim", "SKTeXEditorPreset", "-string", "",
+            "write", "net.sourceforge.skim-app.skim", "SKTeXEditorCommand", "-string", str(self.root / "bin/nvim"),
+            "write", "net.sourceforge.skim-app.skim", "SKTeXEditorArguments", "-string",
+            '--headless -c "VimtexInverseSearch %line \'%file\'"',
         ])
 
     def test_help_and_invalid_option(self):

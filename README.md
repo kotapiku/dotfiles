@@ -18,6 +18,8 @@ deploy は macOS 標準の Bash 3.2 で動作します。
 2. このリポジトリの Brewfile に対して `brew bundle` を実行します。
 3. 設定へのリンクを作成し、macOS のキー長押しのアクセント選択を無効にします。
    Skim で書類を常にタブで開く設定（`AppleWindowTabbingMode=always`）も適用します。
+   Neovim が見つかれば、Skim の `Cmd+Shift+クリック` で原稿へ戻る逆検索も設定します。
+   起動中の Skim には再起動後に反映されます。
    `default-apps.tsv` に従い、PDF を Skim、Markdown を Warp で開くように関連付けます。
 4. Bluetooth トラックパッド・キーボードのバッテリー確認を毎日22時に実行する設定を登録します。
    残量20%以下で通知します。`~/.config` への手動リンクは不要です。

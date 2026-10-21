@@ -233,6 +233,15 @@ done
 if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin ]]; then
   run defaults write -g ApplePressAndHoldEnabled -bool false
   run defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
+  nvim_command="$(command -v nvim || true)"
+  if [[ -n "$nvim_command" ]]; then
+    # An empty preset selects Custom; Skim's default preset targets TextMate.
+    run defaults write net.sourceforge.skim-app.skim SKTeXEditorPreset -string ''
+    run defaults write net.sourceforge.skim-app.skim SKTeXEditorCommand -string "$nvim_command"
+    run defaults write net.sourceforge.skim-app.skim SKTeXEditorArguments -string "--headless -c \"VimtexInverseSearch %line '%file'\""
+  else
+    printf 'Skipping Skim inverse search: install Neovim and rerun deploy.sh.\n' >&2
+  fi
 fi
 
 if [[ "$SETUP_DEFAULT_APPS" = true ]]; then
