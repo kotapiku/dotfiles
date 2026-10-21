@@ -99,6 +99,31 @@ vim.cmd('normal j')
 assert(vim.fn.line('.') == 2, 'code should use logical lines')
 """)
 
+    def test_completion_navigation_waits_for_enter(self):
+        self.nvim(r"""
+vim.keymap.set('i', '<F5>', function()
+  vim.fn.complete(1, { 'alpha', 'alpine' })
+end)
+local states = {}
+vim.keymap.set('i', '<F6>', function()
+  table.insert(states, { vim.api.nvim_get_current_line(), vim.fn.complete_info({ 'selected' }).selected })
+  return ''
+end, { expr = true })
+vim.api.nvim_feedkeys(vim.keycode('i<F5><C-n><F6><C-n><F6><C-p><F6><CR><Esc>'), 'xt', false)
+assert(vim.deep_equal(states, { { '', 0 }, { '', 1 }, { '', 0 } }), vim.inspect(states))
+assert(vim.api.nvim_get_current_line() == 'alpha')
+for _, case in ipairs({
+  { keys = 'i<F5><CR><Esc>', lines = { 'alpha' } },
+  { keys = 'i<F5><C-n><C-e><Esc>', lines = { '' } },
+  { keys = 'ia<CR>b<Esc>', lines = { 'a', 'b' } },
+}) do
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, { '' })
+  vim.api.nvim_win_set_cursor(0, { 1, 0 })
+  vim.api.nvim_feedkeys(vim.keycode(case.keys), 'xt', false)
+  assert(vim.deep_equal(vim.api.nvim_buf_get_lines(0, 0, -1, false), case.lines))
+end
+""")
+
     def test_tex_file_passed_at_startup(self):
         main = self.tex_project()
         for default_config in (False, True):

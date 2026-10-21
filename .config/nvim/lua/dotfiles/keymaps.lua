@@ -3,6 +3,21 @@ local function map(mode, lhs, rhs, desc, opts)
 end
 
 map('i', 'jk', '<Esc>', 'Leave insert mode')
+-- CTRL-X completion modes consume Ctrl+n/p before insert mappings run.
+-- Handle those keys before completion processes them, including omnifunc.
+vim.on_key(function(key)
+  local step = key == '\14' and 1 or key == '\16' and -1 or nil
+  if step and vim.fn.mode():sub(1, 1) == 'i' and vim.fn.pumvisible() == 1 then
+    vim.api.nvim_feedkeys(vim.keycode(step == 1 and '<Down>' or '<Up>'), 'ni', false)
+    return ''
+  end
+end, vim.api.nvim_create_namespace('dotfiles_completion_navigation'))
+map('i', '<CR>', function()
+  if vim.fn.pumvisible() == 1 then
+    return vim.fn.complete_info({ 'selected' }).selected == -1 and '<C-n><C-y>' or '<C-y>'
+  end
+  return '<CR>'
+end, 'Confirm completion or insert newline', { expr = true })
 map('t', 'jk', '<C-\\><C-n>', 'Leave terminal input')
 for key, direction in pairs({ j = 'down', k = 'up' }) do
   map('t', '<C-w>' .. key, '<C-\\><C-n><C-w>' .. key, 'Move to window ' .. direction)

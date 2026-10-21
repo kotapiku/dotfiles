@@ -41,6 +41,9 @@ set clipboard+=unnamedplus
 set tags=./tags;,tags;
 
 " completion
+inoremap <expr> <C-n> pumvisible() ? "\<Down>" : "\<C-n>"
+inoremap <expr> <C-p> pumvisible() ? "\<Up>" : "\<C-p>"
+inoremap <expr> <CR> pumvisible() ? (complete_info(['selected']).selected == -1 ? "\<C-n>\<C-y>" : "\<C-y>") : "\<CR>"
 set wildignorecase  " to ignorecase in e command
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*.cmi,*.cmo,*.cma
 
