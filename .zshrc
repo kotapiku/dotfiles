@@ -177,7 +177,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias sudo='sudo '
-alias rg='rg --hidden --no-ignore'
+alias rg='rg --hidden --glob "!.git"'
 
 if (( $+commands[eza] )); then
   alias ls='eza --icons --git'

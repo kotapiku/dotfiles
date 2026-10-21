@@ -132,7 +132,6 @@ for command, file in pairs({
   Plugins = config .. '/lua/plugins',
   Keybindings = config .. '/KEYBINDINGS.md',
   Zshrc = vim.fn.expand('~/.zshrc'),
-  Tmuxconf = vim.fn.expand('~/.tmux.conf'),
 }) do
   vim.api.nvim_create_user_command(command, function() vim.cmd.edit(file) end, {})
 end

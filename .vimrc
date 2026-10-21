@@ -118,7 +118,6 @@ tnoremap <silent> jk <C-\><C-n>
 " open dotfiles by command
 command! Zshrc e ~/.zshrc
 command! Vimrc e ~/.vimrc
-command! Tmuxconf e ~/.tmux.conf
 " Plain Vim fallback. Neovim loads .config/nvim/init.lua independently.
 filetype plugin indent on
 

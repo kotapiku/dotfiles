@@ -121,7 +121,6 @@ tnoremap <silent> jk <C-\><C-n>
 " open dotfiles by command
 command! Zshrc e ~/.zshrc
 command! Vimrc e ~/.vimrc
-command! Tmuxconf e ~/.tmux.conf
 " Neovim's built-in commenting needs no plugin manager in VS Code.
 nmap <Leader>c gcc
 xmap <Leader>c gc
