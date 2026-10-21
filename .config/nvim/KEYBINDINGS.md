@@ -402,14 +402,13 @@ TeX・Markdown・テキストで有効です。
 
 全て独自コマンドです。ノーマルモードで入力し、最後に `Enter` を押します。
 
-| 入力 | 開くもの |
-| --- | --- |
-| `:Vimrc` | Neovim の `init.lua` |
-| `:Zshrc` | `~/.zshrc` |
-| `:Tmuxconf` | `~/.tmux.conf` |
-| `:Plugins` | `lua/plugins` のプラグイン設定 |
-| `:Keybindings` | このキー一覧 |
-| `:Lazy` | プラグインの状態・更新・復元 |
+| 入力             | 開くもの                   |
+| -------------- | ---------------------- |
+| `:Vimrc`       | Neovim の `init.lua`    |
+| `:Zshrc`       | `~/.zshrc`             |
+| `:Plugins`     | `lua/plugins` のプラグイン設定 |
+| `:Keybindings` | このキー一覧                 |
+| `:Lazy`        | プラグインの状態・更新・復元         |
 
 この一覧を Neovim で開くには、`:e ~/.config/nvim/KEYBINDINGS.md` → `Enter`。
 
