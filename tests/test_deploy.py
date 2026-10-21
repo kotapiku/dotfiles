@@ -17,7 +17,7 @@ class DeployTests(unittest.TestCase):
         self.checkout = self.root / "checkout with spaces"
         self.checkout.mkdir()
         self.target = self.root / "target home"
-        for name in ("deploy.sh", "setup-bluetooth-battery.sh", "Brewfile", ".zshenv", ".zshrc", ".gitconfig",
+        for name in ("deploy.sh", "setup-bluetooth-battery.sh", "Brewfile", "default-apps.tsv", ".zshenv", ".zshrc", ".gitconfig",
                      ".gitignore_global", ".vimrc", ".vimrc_vscode", ".latexmkrc_platex"):
             shutil.copy2(REPOSITORY / name, self.checkout / name)
         shutil.copytree(
@@ -29,8 +29,13 @@ class DeployTests(unittest.TestCase):
         shutil.copy2(REPOSITORY / ".config/scripts/check_bluetooth_keyboard_battery.sh",
                      self.checkout / ".config/scripts")
 
-    def deploy(self, *options, with_brew=False, with_macos=False, env=None, check=True):
-        command = ["/bin/bash", str(self.checkout / "deploy.sh"), "--target", str(self.target)]
+    def deploy(self, *options, with_brew=False, with_macos=False, with_target=True, env=None, check=True):
+        command = ["/bin/bash", str(self.checkout / "deploy.sh")]
+        if with_target:
+            command.extend(["--target", str(self.target)])
+        else:
+            env = dict(os.environ if env is None else env, HOME=str(self.target),
+                       XDG_CONFIG_HOME=str(self.target / ".config"))
         if not with_macos:
             command.append("--skip-macos")
         if not with_brew:
@@ -297,6 +302,99 @@ esac
         self.assertNotEqual(self.deploy("--unknown", check=False).returncode, 0)
         self.assertFalse(self.target.exists())
 
+    def test_default_apps_follow_bundle_and_links_and_dry_run_does_not_apply_them(self):
+        log = self.root / "duti.log"
+        brew_log = self.root / "brew.log"
+        (self.checkout / "setup-bluetooth-battery.sh").write_text("exit 0\n")
+        env = self.stub_commands(
+            uname='echo Darwin\n',
+            brew='touch "$DOTFILES_TEST_BREW_LOG"\n',
+            defaults='exit 0\n',
+            duti='[[ -L "$HOME/.zshrc" ]]\n[[ -f "$DOTFILES_TEST_BREW_LOG" ]]\n'
+                 'printf "%s\\n" "$@" >> "$DOTFILES_TEST_DUTI_LOG"\n',
+        )
+        env.update(DOTFILES_TEST_BREW_LOG=str(brew_log), DOTFILES_TEST_DUTI_LOG=str(log))
+        result = self.deploy("--dry-run", with_brew=True, with_macos=True,
+                             with_target=False, env=env)
+        self.assertIn("[dry-run] duti -s net.sourceforge.skim-app.skim .pdf all", result.stdout)
+        self.assertIn("[dry-run] duti -s dev.warp.Warp-Stable .md all", result.stdout)
+        self.assertFalse(log.exists())
+        self.assertFalse(brew_log.exists())
+        self.assertFalse(self.target.exists())
+
+        self.deploy(with_brew=True, with_macos=True, with_target=False, env=env)
+        expected = [
+            "-s", "net.sourceforge.skim-app.skim", ".pdf", "all",
+            "-s", "dev.warp.Warp-Stable", ".md", "all",
+            "-s", "dev.warp.Warp-Stable", ".markdown", "all",
+        ]
+        self.assertEqual(log.read_text().splitlines(), expected)
+
+        # A changed table is reapplied on the next deployment, including its
+        # final line without a newline and indented comments.
+        with (self.checkout / "default-apps.tsv").open("a") as config:
+            config.write("\n  # Another association\n.txt\tdev.warp.Warp-Stable")
+        self.deploy(with_brew=True, with_macos=True, with_target=False, env=env)
+        self.assertEqual(log.read_text().splitlines(),
+                         expected + expected + ["-s", "dev.warp.Warp-Stable", ".txt", "all"])
+
+    def test_default_apps_skipped_for_target_skip_macos_and_non_macos(self):
+        (self.checkout / "default-apps.tsv").unlink()
+        env = self.stub_commands(uname='echo Darwin\n', defaults='exit 0\n', duti='exit 99\n')
+        result = self.deploy("--dry-run", with_macos=True, env=env)
+        self.assertNotIn("duti -s", result.stdout)
+        self.deploy(with_macos=True, env=env)
+        self.deploy(with_target=False, env=env)
+        env = self.stub_commands(uname='echo Linux\n')
+        self.deploy(with_macos=True, with_target=False, env=env)
+
+    def test_default_apps_dry_run_works_without_duti(self):
+        env = self.stub_commands(uname='echo Darwin\n', defaults='exit 99\n')
+        result = self.deploy("--dry-run", with_macos=True, with_target=False, env=env)
+        self.assertIn("[dry-run] duti -s", result.stdout)
+        self.assertFalse(self.target.exists())
+
+    def test_missing_duti_preserves_existing_configuration(self):
+        self.target.mkdir()
+        (self.target / ".zshrc").write_text("working configuration")
+        env = self.stub_commands(uname='echo Darwin\n', defaults='exit 99\n')
+        result = self.deploy("--force", with_macos=True, with_target=False,
+                             env=env, check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("duti not found", result.stderr)
+        self.assertEqual(list(self.target.iterdir()), [self.target / ".zshrc"])
+        self.assertEqual((self.target / ".zshrc").read_text(), "working configuration")
+
+    def test_invalid_default_apps_table_fails_before_brew_and_links(self):
+        config = self.checkout / "default-apps.tsv"
+        log = self.root / "brew.log"
+        env = self.stub_commands(
+            uname='echo Darwin\n', brew='touch "$DOTFILES_TEST_BREW_LOG"\n',
+            defaults='exit 99\n', duti='exit 99\n',
+        )
+        env["DOTFILES_TEST_BREW_LOG"] = str(log)
+        for content in (None, "pdf\tnet.sourceforge.skim-app.skim\n",
+                        ".md\n", ".md\tdev.warp.Warp-Stable\textra\n"):
+            with self.subTest(content=content):
+                if content is None:
+                    config.unlink()
+                else:
+                    config.write_text(content)
+                result = self.deploy(with_brew=True, with_macos=True, with_target=False,
+                                     env=env, check=False)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("default-apps.tsv", result.stderr)
+                self.assertFalse(log.exists())
+                self.assertFalse(self.target.exists())
+
+    def test_default_app_failure_is_reported(self):
+        (self.checkout / "setup-bluetooth-battery.sh").write_text("exit 99\n")
+        env = self.stub_commands(uname='echo Darwin\n', defaults='exit 0\n', duti='exit 42\n')
+        result = self.deploy(with_macos=True, with_target=False, env=env, check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("could not set .pdf to open with net.sourceforge.skim-app.skim", result.stderr)
+        self.assertNotIn("Dotfiles deployment complete", result.stdout)
+
     def test_battery_setup_runs_after_bundle_and_links(self):
         log = self.root / "battery.log"
         setup = self.checkout / "setup-bluetooth-battery.sh"
@@ -310,6 +408,7 @@ printf 'registered\\n' > "$DOTFILES_TEST_BATTERY_LOG"
             uname='echo Darwin\n',
             brew='touch "$DOTFILES_TEST_BREW_LOG"\n',
             defaults='exit 0\n',
+            duti='exit 0\n',
         )
         env.update(HOME=str(self.target), XDG_CONFIG_HOME=str(self.target / ".config"),
                    DOTFILES_TEST_BREW_LOG=str(self.root / "brew.log"),

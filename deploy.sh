@@ -18,7 +18,7 @@ Usage: deploy.sh [options]
   -f, --force       Back up conflicting files before replacing them with links
   -n, --dry-run     Print planned changes without changing files or settings
   --skip-brew       Skip Homebrew installation and brew bundle
-  --skip-macos      Skip macOS settings and Bluetooth battery notification setup
+  --skip-macos      Skip macOS settings, default apps, and battery notifications
   --target DIR     Deploy into an absolute directory (config goes in DIR/.config)
   -h, --help        Show this help
 EOF
@@ -82,10 +82,25 @@ CONFIG_DIRECTORY="$(canonical_directory "$CONFIG_DIRECTORY")"
 
 PLATFORM="$(uname -s)"
 SETUP_BATTERY=false
+SETUP_DEFAULT_APPS=false
+DEFAULT_APP_EXTENSIONS=()
+DEFAULT_APP_BUNDLE_IDS=()
 if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin && "$TARGET_SPECIFIED" != true ]]; then
   SETUP_BATTERY=true
+  SETUP_DEFAULT_APPS=true
   [[ -r "$DOT_DIRECTORY/setup-bluetooth-battery.sh" ]] || fail 'missing source: setup-bluetooth-battery.sh'
   [[ -r "$DOT_DIRECTORY/.config/scripts/check_bluetooth_keyboard_battery.sh" ]] || fail 'missing source: Bluetooth battery check script'
+  [[ -f "$DOT_DIRECTORY/default-apps.tsv" && -r "$DOT_DIRECTORY/default-apps.tsv" ]] || fail 'missing or unreadable source: default-apps.tsv'
+  line_number=0
+  while read -r extension bundle_id extra || [[ -n "$extension" ]]; do
+    line_number=$((line_number + 1))
+    case "$extension" in
+      ''|\#*) continue ;;
+    esac
+    [[ "$extension" = .?* && -n "$bundle_id" && -z "$extra" ]] || fail "default-apps.tsv:$line_number: expected an extension starting with . and an application bundle ID"
+    DEFAULT_APP_EXTENSIONS+=("$extension")
+    DEFAULT_APP_BUNDLE_IDS+=("$bundle_id")
+  done < "$DOT_DIRECTORY/default-apps.tsv"
 fi
 if [[ "$SKIP_BREW" != true ]]; then
   [[ "$PLATFORM" = Darwin ]] || fail 'this Brewfile requires macOS; use --skip-brew for links only'
@@ -205,6 +220,10 @@ if [[ "$SKIP_BREW" != true ]]; then
   run "${BREW:-brew}" bundle --file="$DOT_DIRECTORY/Brewfile" || fail 'brew bundle failed; resolve the reported errors and rerun deploy.sh'
 fi
 
+if [[ "$SETUP_DEFAULT_APPS" = true && "$DRY_RUN" != true ]]; then
+  command -v duti >/dev/null 2>&1 || fail 'duti not found; run brew install duti or use --skip-macos'
+fi
+
 # Install dependencies first: a failed bundle must not replace the working
 # configuration or apply macOS preferences.
 for relative in "${MANAGED_FILES[@]}"; do
@@ -214,6 +233,14 @@ done
 if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin ]]; then
   run defaults write -g ApplePressAndHoldEnabled -bool false
   run defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
+fi
+
+if [[ "$SETUP_DEFAULT_APPS" = true ]]; then
+  for index in "${!DEFAULT_APP_EXTENSIONS[@]}"; do
+    extension="${DEFAULT_APP_EXTENSIONS[$index]}"
+    bundle_id="${DEFAULT_APP_BUNDLE_IDS[$index]}"
+    run duti -s "$bundle_id" "$extension" all || fail "could not set $extension to open with $bundle_id; check the duti error and installed applications, then rerun deploy.sh"
+  done
 fi
 
 if [[ "$SETUP_BATTERY" = true ]]; then

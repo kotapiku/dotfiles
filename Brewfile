@@ -1,6 +1,7 @@
 brew "arxiv_latex_cleaner"
 brew "bat" # better cat
 brew "difftastic"
+brew "duti" # default applications for file types
 brew "eza" # better ls
 brew "fzf"
 brew "ghostscript"

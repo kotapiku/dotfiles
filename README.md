@@ -18,6 +18,7 @@ deploy は macOS 標準の Bash 3.2 で動作します。
 2. このリポジトリの Brewfile に対して `brew bundle` を実行します。
 3. 設定へのリンクを作成し、macOS のキー長押しのアクセント選択を無効にします。
    Skim で書類を常にタブで開く設定（`AppleWindowTabbingMode=always`）も適用します。
+   `default-apps.tsv` に従い、PDF を Skim、Markdown を Warp で開くように関連付けます。
 4. Bluetooth トラックパッド・キーボードのバッテリー確認を毎日22時に実行する設定を登録します。
    残量20%以下で通知します。`~/.config` への手動リンクは不要です。
 
@@ -58,7 +59,8 @@ Detexify のデスクトップアプリは
 ./deploy.sh --target /tmp/dotfiles-preview --skip-brew --skip-macos
 ```
 
-`--target` 指定時はバッテリー通知の登録を省きます。Homebrew と macOS の設定変更も省くには、
+`--target` 指定時は既定アプリの関連付けとバッテリー通知の登録を省きます。
+Homebrew と他の macOS 設定の変更も省くには、
 上記のスキップオプションも指定してください。
 配置先の `.`・`..` と既存のシンボリックリンクは解決してから検証します。
 ルートディレクトリへの配置（`//` などの別表記を含む）や、リポジトリ内に新しいリンクを
@@ -93,6 +95,43 @@ Neovim のプラグインは lazy.nvim で管理し、`$XDG_DATA_HOME/nvim/lazy`
 `.config/nvim/lazy-lock.json` に固定しています。Neovim 0.12.4 以上が必要です。
 Neovim は初回起動時にプラグインを取得します。Zsh のプラグインは、導入後に新しいシェルで
 `zsh-plugins-install` を実行して取得します。いずれも取得時にはネットワーク接続が必要です。
+
+## 拡張子ごとの既定アプリ
+
+通常の `./deploy.sh` は、Brewfile で導入する `duti` を使い、
+`default-apps.tsv` の関連付けを現在の macOS ユーザーに適用します。
+Finder のダブルクリックや `open ファイル名` で利用する既定アプリを設定します。
+
+| 拡張子 | アプリ | Bundle ID |
+| --- | --- | --- |
+| `.pdf` | Skim | `net.sourceforge.skim-app.skim` |
+| `.md`, `.markdown` | Warp | `dev.warp.Warp-Stable` |
+
+追加・変更する場合は `default-apps.tsv` を編集して、deploy を再実行してください。
+各行は `.拡張子` とアプリの Bundle ID をタブまたは空白で区切ります。
+空行と `#` から始まるコメント行も使えます。例えば `.txt` を Warp で開く場合:
+
+```text
+.txt	dev.warp.Warp-Stable
+```
+
+アプリの Bundle ID と適用後の関連付けは、次のコマンドで確認できます。
+
+```sh
+/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' /Applications/Warp.app/Contents/Info.plist
+duti -x pdf
+duti -x md
+```
+
+`--skip-macos` または `--target` 指定時は関連付けを変更しません。
+`--dry-run` は `duti -s ...` の実行予定だけを表示し、`duti` が未導入でも確認できます。
+`--skip-brew` を使う場合は、先に `duti` と対象アプリを導入してください。
+deploy のたびに対応表の設定を適用するため、Finder で手動変更した既定アプリも再設定されます。
+macOS は内部的にファイル種別（UTI）で関連付けるため、同じ種別に属する拡張子にも影響することがあります。
+
+仕様は [duti のマニュアル](https://github.com/moretension/duti/blob/master/duti.1)、
+Warp での Markdown 表示は [Warp の Markdown Viewer](https://docs.warp.dev/terminal/more-features/markdown-viewer)
+を参照してください。
 
 ## Zsh
 
@@ -369,8 +408,8 @@ python3 -B -m unittest discover -s tests -v
 deploy のテストは一時ディレクトリ内のコピーを使い、既存設定の保持、バックアップ、
 再実行、空白を含むパス、旧 `.config` 配置、dry-run、配置先の検証を確認します。
 Homebrew が PATH にない場合の環境読込、処理失敗時の設定保持、macOS 設定の実行順序、
-macOS 以外でのリンク配置も検証します。
-Homebrew の呼び出しは代替コマンドを使い、実際のインストールや macOS 設定の変更はしません。
+既定アプリの関連付けとスキップ条件、macOS 以外でのリンク配置も検証します。
+Homebrew や `duti` の呼び出しは代替コマンドを使い、実際のインストールや macOS 設定の変更はしません。
 Neovim と Ghostscript がインストールされている場合は、それぞれ設定の読込と PDF 変換も検証します。
 Neovim のプラグイン処理はテスト用の代替実装で、外部プラグインは取得しません。
 
