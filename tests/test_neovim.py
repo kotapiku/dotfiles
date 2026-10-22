@@ -286,6 +286,44 @@ assert(vim.fn.maparg('gd', 'n', false, true).buffer ~= 1, 'TeX gd map leaked int
 """)
 
     @unittest.skipUnless(shutil.which("latexmk"), "latexmk is not installed")
+    def test_vimtex_errors_close_after_repair_with_warnings(self):
+        main = self.tex_project()
+        main.write_text(main.read_text().replace(r"\ref{sec:test}", r"\ref{sec:missing}")
+                        .replace("$ff$", r"\undefinedcommand"))
+        self.nvim("vim.g.vimtex_view_enabled = 0\nvim.cmd.edit(" + json.dumps(str(main)) + ")\n" + r"""
+local buffer = vim.api.nvim_get_current_buf()
+local function status()
+  return vim.b[buffer].vimtex.compiler.status
+end
+local function has_errors()
+  return vim.iter(vim.fn.getqflist()):any(function(item) return item.type == 'E' end)
+end
+vim.cmd('VimtexCompile')
+local ok, err = xpcall(function()
+  assert(vim.wait(15000, function() return status() == 3 end, 50), 'initial compilation did not fail')
+  assert(has_errors(), 'the compiler error was not listed')
+  assert(vim.fn.getqflist({ winid = 1 }).winid ~= 0, 'errors did not open the quickfix window')
+
+  vim.api.nvim_buf_set_lines(buffer, 4, 5, false, { '$ff$' })
+  vim.api.nvim_buf_call(buffer, function() vim.cmd.write() end)
+  assert(vim.wait(15000, function() return status() == 2 end, 50),
+    'compilation with only warnings did not report success')
+  assert(not has_errors(), 'fixed errors remained in the quickfix list')
+  assert(vim.iter(vim.fn.getqflist()):any(function(item) return item.type == 'W' end),
+    'the undefined-reference warning must remain for this regression check')
+  assert(vim.fn.getqflist({ winid = 1 }).winid == 0, 'warnings kept the old error window open')
+
+  vim.api.nvim_buf_set_lines(buffer, 4, 5, false, { [[\undefinedcommand]] })
+  vim.api.nvim_buf_call(buffer, function() vim.cmd.write() end)
+  assert(vim.wait(15000, function() return status() == 3 end, 50), 'new compilation error was missed')
+  assert(has_errors(), 'the new compiler error was not listed')
+  assert(vim.fn.getqflist({ winid = 1 }).winid ~= 0, 'new errors did not reopen the quickfix window')
+end, debug.traceback)
+vim.api.nvim_buf_call(buffer, function() vim.cmd('VimtexStop') end)
+assert(ok, err)
+""", timeout=55)
+
+    @unittest.skipUnless(shutil.which("latexmk"), "latexmk is not installed")
     def test_vimtex_build_and_completion(self):
         main = self.tex_project()
         self.nvim("vim.g.vimtex_view_enabled = 0\nvim.cmd.edit(" + json.dumps(str(main)) + ")\n" + r"""

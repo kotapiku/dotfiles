@@ -16,6 +16,8 @@ return {
           '-interaction=nonstopmode',
           -- Poll saved files every second; older latexmk cannot go below 1s.
           '-e', vim.fn.shellescape('$sleep_time = 1;'),
+          -- latexmk 4.88 skips success_cmd when only warnings remain.
+          '-e', vim.fn.shellescape('$warning_cmd = "echo vimtex_compiler_callback_success";'),
         },
       }
       vim.g.vimtex_view_method = 'skim_tabs'
