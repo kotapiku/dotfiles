@@ -27,8 +27,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% theorem/proof environment (suited for IEEEtran.cls)
+% Theorem and proof environments
 \usepackage{amsthm}
+\usepackage{thmtools}
 \usepackage[capitalise,nameinlink]{cleveref}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -36,10 +37,16 @@
 \newtheorem{example}[definition]{Example}
 \crefname{example}{Example}{Examples}
 \newtheorem{nonexample}[definition]{(Non)example}
+\crefname{nonexample}{(Non)example}{(Non)examples}
+\Crefname{nonexample}{(Non)example}{(Non)examples}
 \newtheorem{convention}[definition]{Convention}
+\crefname{convention}{Convention}{Conventions}
 \newtheorem{requirements}[definition]{Requirements}
+\crefname{requirements}{Requirements}{Requirements}
 
 \theoremstyle{plain}
+\newtheorem{assumption}[definition]{Assumption}
+\crefname{assumption}{Assumption}{Assumptions}
 \newtheorem{lemma}[definition]{Lemma}
 \crefname{lemma}{Lem.}{Lemmas}
 \newtheorem{proposition}[definition]{Proposition}
@@ -49,11 +56,13 @@
 \newtheorem{corollary}[definition]{Corollary}
 \crefname{corollary}{Cor.}{Corollaries}
 \newtheorem{conjecture}[definition]{Conjecture}
+\crefname{conjecture}{Conjecture}{Conjectures}
 
 \theoremstyle{remark}
 \newtheorem{remark}[definition]{Remark}
 \crefname{remark}{Rem.}{Remarks}
 \newtheorem{notation}[definition]{Notation}
+\crefname{notation}{Notation}{Notations}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\Set}{\mathbf{Set}}
