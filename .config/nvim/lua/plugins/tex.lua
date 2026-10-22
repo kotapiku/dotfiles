@@ -25,6 +25,9 @@ return {
       vim.g.vimtex_fold_manual = 1
     end,
     config = function(plugin)
+      -- Keep package detection exact while avoiding repeated regex backtracking.
+      vim.fn['dotfiles#tex_packages#install'](plugin.dir)
+
       -- Load VimTeX's implementation before wrapping its current-buffer lookup.
       vim.cmd.source(plugin.dir .. '/autoload/vimtex/view.vim')
       vim.cmd.source(vim.g.dotfiles_config .. '/autoload/vimtex/view.vim')

@@ -33,7 +33,7 @@ class TexPerformanceTests(unittest.TestCase):
                         "\\section{Test}\\label{sec:test}\n" + body + "\\end{document}\n")
         return file
 
-    def nvim(self, file, script):
+    def nvim(self, file, script, minimal=False):
         check = self.root / "check.lua"
         check.write_text("local ok, err = xpcall(function()\n"
                          "assert(vim.v.errmsg == '', vim.v.errmsg)\n" + script
@@ -41,44 +41,49 @@ class TexPerformanceTests(unittest.TestCase):
                          "if not ok then print(err); vim.cmd('cquit') end\nvim.cmd('qa!')\n")
         result = subprocess.run(
             [shutil.which("nvim"), "--headless", "-n", "-i", "NONE",
-             "-u", str(self.config / "init.lua"), str(file),
+             "-u", "NONE" if minimal else str(self.config / "init.lua"), str(file),
              "-c", "lua dofile(" + json.dumps(str(check)) + ")"],
             env=self.env, cwd=self.root, capture_output=True, text=True, timeout=30,
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertNotIn("Error detected", result.stderr)
 
-    def test_startup_thresholds_and_syntax_reload(self):
-        for name, body, fast in (
-            ("small.tex", "Text.\n" * 4995, False),  # 4,999 total lines
-            ("many-lines.tex", "Text.\n" * 4996, True),  # 5,000 total lines
-            ("many-bytes.tex", ("word " * 210 + "\n") * 500, True),
+    def test_startup_preserves_features_and_syntax_reload(self):
+        for name, body in (
+            ("small.tex", "Text.\n" * 10),
+            ("reported-size.tex", "Text.\n" * 3106),
+            ("many-lines.tex", "Text.\n" * 6000),
+            ("many-bytes.tex", ("word " * 210 + "\n") * 500),
         ):
             with self.subTest(file=name):
                 file = self.project(name, body)
-                self.nvim(file, "local fast = " + str(fast).lower() + "\n" + r"""
-assert(vim.b.dotfiles_tex_fast == fast)
+                self.nvim(file, r"""
+assert(vim.b.dotfiles_tex_fast == nil)
 assert(vim.bo.autocomplete)
-assert(vim.o.autocompletedelay == (fast and 300 or 120))
-assert(vim.wo.spell == not fast)
-assert(vim.bo.synmaxcol == (fast and 1000 or 3000))
+assert(vim.o.autocompletedelay == 120)
+assert(vim.wo.spell and vim.b.airline_whitespace_disabled == nil)
+assert(vim.bo.synmaxcol == 3000)
+assert(vim.fn.exists(':TexPerformanceToggle') == 0)
 local group = '#vimtex_matchparen' .. vim.api.nvim_get_current_buf() .. '#CursorMoved'
-assert(vim.fn.exists(group) == (fast and 0 or 1))
+assert(vim.fn.exists(group) == 0, 'native matching should be coalesced for every TeX buffer')
 assert(vim.wo.foldmethod == 'manual' and vim.fn.foldlevel(4) == 0)
 assert(vim.bo.omnifunc == 'dotfiles#tex_complete#omnifunc')
 assert(vim.fn.exists(':VimtexCompile') == 2)
 assert(vim.fn.exists(':VimtexView') == 2)
--- A syntax reload must keep the selected performance mode.
+-- Syntax reloads retain VimTeX's full synchronization settings.
 vim.cmd('setlocal syntax=tex')
 local sync = vim.api.nvim_exec2('syntax sync', { output = true }).output
-assert(sync:find((fast and '20' or '50') .. ' lines', 1, true), sync)
+assert(sync:find('50 lines', 1, true), sync)
+vim.fn['vimtex#syntax#core#init_options']()
+assert(vim.api.nvim_exec2('syntax sync', { output = true }).output == sync,
+  'synchronization differs from VimTeX defaults')
 assert(vim.v.errmsg == '', vim.v.errmsg)
 """)
 
     def test_large_buffer_keeps_snippets_lsp_and_completion(self):
         file = self.project("large.tex", "Text.\n" * 6000)
         self.nvim(file, r"""
-assert(vim.b.dotfiles_tex_fast and vim.bo.autocomplete)
+assert(vim.wo.spell and vim.bo.autocomplete)
 assert(vim.wait(10000, function()
   local client = vim.lsp.get_clients({ bufnr = 0, name = 'texlab' })[1]
   return client and client.initialized
@@ -117,47 +122,38 @@ assert(completion.line == completion.typed,
   'completion inserted a candidate without selection: ' .. vim.inspect(completion))
 """)
 
-    def test_toggle_buffer_isolation_and_filetype_cleanup(self):
+    def test_splits_buffer_isolation_and_filetype_cleanup(self):
         large = self.project("large.tex", "Text.\n" * 6000)
         small = self.project("small.tex", "Text.\n" * 10)
         self.nvim(large, "local small = " + json.dumps(str(small)) + "\n" + r"""
 local large_buf = vim.api.nvim_get_current_buf()
 local group = '#vimtex_matchparen' .. large_buf .. '#CursorMoved'
-vim.cmd('TexPerformanceToggle')
-assert(not vim.b.dotfiles_tex_fast and vim.bo.autocomplete and vim.wo.spell)
+assert(vim.bo.autocomplete and vim.wo.spell)
 assert(vim.bo.synmaxcol == 3000 and vim.b.airline_whitespace_disabled == nil)
 assert(vim.o.autocompletedelay == 120)
-assert(vim.fn.exists(group) == 1)
+assert(vim.fn.exists(group) == 0)
 local sync = vim.api.nvim_exec2('syntax sync', { output = true }).output
 assert(sync:find('50 lines', 1, true), sync)
 local first_win = vim.api.nvim_get_current_win()
 vim.cmd.vsplit()
 local second_win = vim.api.nvim_get_current_win()
 for _, win in ipairs({ first_win, second_win }) do
-  vim.api.nvim_win_call(win, function()
-    vim.api.nvim_win_set_cursor(0, { 3, 8 })
-    vim.api.nvim_exec_autocmds('CursorMoved', { buffer = large_buf })
-    assert(vim.w.vimtex_match_id1, 'test did not highlight a bracket pair')
-  end)
+  vim.api.nvim_set_current_win(win)
+  vim.api.nvim_win_set_cursor(0, { 3, 8 })
+  vim.api.nvim_exec_autocmds('CursorMoved', { buffer = large_buf })
+  assert(vim.wait(1000, function() return vim.w.vimtex_match_id1 ~= nil end, 10),
+    'bracket pair did not appear in the active split')
+  assert(vim.wo[win].spell)
 end
-vim.cmd('TexPerformanceToggle')
-assert(vim.b.dotfiles_tex_fast and vim.bo.autocomplete and not vim.wo.spell)
-assert(vim.o.autocompletedelay == 300)
-for _, win in ipairs({ first_win, second_win }) do
-  assert(not vim.wo[win].spell, 'spell check remained enabled in another split')
-  assert(vim.w[win].vimtex_match_id1, 'bracket pair disappeared in another split')
-end
-vim.cmd('TexPerformanceToggle')
 assert(vim.wo[first_win].spell and vim.wo[second_win].spell)
-vim.cmd('TexPerformanceToggle')
 vim.cmd.edit(small)
 local small_buf = vim.api.nvim_get_current_buf()
-assert(not vim.b.dotfiles_tex_fast and vim.bo.autocomplete and vim.wo.spell)
+assert(vim.bo.autocomplete and vim.wo.spell)
 assert(vim.o.autocompletedelay == 120, 'large-buffer completion delay leaked')
 assert(vim.bo.synmaxcol == 3000, 'large-buffer limit leaked into small buffer')
 vim.cmd.buffer(large_buf)
-assert(vim.b.dotfiles_tex_fast and vim.bo.autocomplete and not vim.wo.spell)
-assert(vim.o.autocompletedelay == 300)
+assert(vim.bo.autocomplete and vim.wo.spell)
+assert(vim.o.autocompletedelay == 120)
 vim.bo.filetype = 'text'
 assert(vim.b.dotfiles_tex_fast == nil)
 assert(vim.b.airline_whitespace_disabled == nil)
@@ -165,13 +161,14 @@ assert(vim.bo.synmaxcol == 3000)
 assert(vim.fn.exists(':TexPerformanceToggle') == 0)
 assert(vim.o.autocompletedelay == 120)
 assert(vim.fn.exists(group) == 0, 'TeX matchparen callback leaked into text')
+assert(vim.fn.exists('#dotfiles_tex_performance' .. large_buf) == 0)
 vim.cmd.buffer(small_buf)
 assert(vim.bo.autocomplete and vim.wo.spell and not vim.b.dotfiles_tex_fast)
 assert(vim.v.errmsg == '', vim.v.errmsg)
 """)
 
     def test_bracket_updates_are_deferred_and_cancelled_on_leave(self):
-        large = self.project("large.tex", "Text.\n" * 6000)
+        large = self.project("small-matching.tex", "Text.\n" * 20)
         small = self.project("small.tex", "Text.\n" * 10)
         self.nvim(large, "local small = " + json.dumps(str(small)) + "\n" + r"""
 local large_buf = vim.api.nvim_get_current_buf()
@@ -195,14 +192,105 @@ vim.api.nvim_exec_autocmds('CursorMoved', { buffer = large_buf })
 vim.cmd.edit(small)
 vim.wait(150)
 assert(vim.w.vimtex_match_id1 == nil, 'pending matching leaked into another buffer')
--- Wiping an inactive large buffer must close its timer and keep the small delay.
+-- Wiping an inactive buffer must close its timer.
 vim.api.nvim_buf_delete(large_buf, { force = true })
 assert(vim.o.autocompletedelay == 120)
 assert(vim.v.errmsg == '', vim.v.errmsg)
 """)
 
+    def test_bracket_results_reuse_and_edit_syntax_invalidation(self):
+        file = self.project("matching.tex", "Text.\n" * 20)
+        self.nvim(file, r"""
+vim.api.nvim_win_set_cursor(0, { 3, 8 })
+vim.api.nvim_exec_autocmds('CursorMoved', { buffer = 0 })
+assert(vim.wait(1000, function() return vim.w.vimtex_match_id1 ~= nil end, 10))
+local first = vim.w.vimtex_match_id1
+for _ = 1, 20 do
+  for _, event in ipairs({ 'CursorMoved', 'WinEnter', 'TextChangedP' }) do
+    vim.api.nvim_exec_autocmds(event, { buffer = 0 })
+  end
+end
+vim.wait(100)
+assert(vim.w.vimtex_match_id1 == first, 'unchanged bracket results were recomputed')
+
+-- Editing at the same cursor position must invalidate the cached pair.
+vim.api.nvim_buf_set_lines(0, 2, 3, false, { [[\section{Next}\label{sec:test}]] })
+vim.api.nvim_exec_autocmds('TextChanged', { buffer = 0 })
+assert(vim.wait(1000, function()
+  return vim.w.vimtex_match_id1 ~= nil and vim.w.vimtex_match_id1 ~= first
+end, 10), 'an edit reused stale bracket results')
+local edited = vim.w.vimtex_match_id1
+vim.cmd('setlocal syntax=tex')
+assert(vim.wait(1000, function()
+  return vim.w.vimtex_match_id1 ~= nil and vim.w.vimtex_match_id1 ~= edited
+end, 10), 'a syntax reload reused stale bracket results')
+
+vim.api.nvim_buf_set_lines(0, 2, 3, false, { 'no delimiters here' })
+vim.api.nvim_exec_autocmds('TextChanged', { buffer = 0 })
+assert(vim.wait(1000, function() return vim.w.vimtex_match_id1 == nil end, 10),
+  'removed delimiters left a stale highlight')
+
+vim.api.nvim_buf_set_lines(0, 2, 3, false, { [[\section{Again}]] })
+vim.api.nvim_exec_autocmds('TextChanged', { buffer = 0 })
+vim.fn['vimtex#matchparen#disable']()
+vim.wait(100)
+assert(vim.w.vimtex_match_id1 == nil, 'a pending update re-enabled disabled bracket matching')
+vim.fn['vimtex#matchparen#enable']()
+vim.api.nvim_exec_autocmds('CursorMoved', { buffer = 0 })
+vim.wait(100)
+assert(vim.w.vimtex_match_id1, 'manually re-enabled bracket matching did not work')
+assert(vim.fn.exists('#vimtex_matchparen' .. vim.api.nvim_get_current_buf() .. '#CursorMoved') == 0)
+""")
+
+    def test_package_parser_matches_upstream_and_isolates_cached_results(self):
+        file = self.project("packages.tex", "")
+        plugin = Path(PLUGIN_DATA) / "nvim/lazy/vimtex"
+        self.nvim(file, "local config = " + json.dumps(str(self.config)) + "\n"
+                  + "local plugin = " + json.dumps(str(plugin)) + "\n" + r"""
+vim.opt.runtimepath:prepend(config)
+vim.cmd.source(plugin .. '/autoload/vimtex/re.vim')
+local class = plugin .. '/autoload/vimtex/state/class.vim'
+vim.cmd.source(class)
+local parser
+for _, script in ipairs(vim.fn.getscriptinfo()) do
+  if script.name == class then parser = '<SNR>' .. script.sid .. '_parse_packages' end
+end
+assert(parser, 'upstream package parser was not loaded')
+local cases = {
+  '',
+  [=[\usepackage{amsmath, amssymb}]=],
+  [=[\RequirePackage[flag, enabled=TRUE, disabled=false, value=7, bad=a=b]{one,two}]=],
+  [=[\usepackage[foo]{one}\usepackage[bar]{one}]=],
+  [=[\% escaped percent \usepackage{real} % comment \usepackage{ignored}]=],
+  [=[\\usepackage{escaped}\\\usepackage{real}]=],
+  [=[\usepackage [ nested[option] ] {one} \usepackage{two}]=],
+  [=[\usepackage{unterminated \usepackage{later}]=],
+  [=[\usepackage{single}]=],
+  "\\usepackage \n [ key = value ] \n { spaced, other }",
+  string.rep([=[\newcommand{\foo}{ordinary text and 数式}]=], 150)
+    .. [=[\usepackage[foo=false]{after-text}]=],
+}
+local expected = {}
+for i, text in ipairs(cases) do expected[i] = vim.fn[parser](text) end
+assert(vim.fn['dotfiles#tex_packages#install'](plugin) == 1)
+assert(vim.fn['dotfiles#tex_packages#install'](plugin) == 1, 'install should be idempotent')
+for i, text in ipairs(cases) do
+  local actual = vim.fn[parser](text)
+  assert(vim.deep_equal(actual, expected[i]), 'package parser changed case ' .. i)
+  actual.injected = { changed = true }
+  for _, options in pairs(actual) do options.mutated = true end
+  assert(vim.deep_equal(vim.fn[parser](text), expected[i]), 'cached options leaked between projects')
+end
+-- A future upstream parser with a different implementation must be left alone.
+vim.cmd('function! ' .. parser .. '(preamble_joined) abort\n'
+  .. '" matchstrlist usep|RequireP parse_optionlist\n'
+  .. 'return {"custom": {}}\nendfunction')
+assert(vim.fn['dotfiles#tex_packages#install'](plugin) == 0)
+assert(vim.fn[parser]('').custom, 'unsupported parser was overwritten')
+""", minimal=True)
+
     def test_label_cache_reuse_and_saved_source_changes(self):
-        main = self.project("main.tex", "\\input{child}\n" + "Text.\n" * 6000)
+        main = self.project("main.tex", "\\input{child}\n" + "Text.\n" * 10)
         child = self.root / "child.tex"
         child.write_text("\\label{sec:child}\n")
         self.nvim(main, r"""

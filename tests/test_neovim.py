@@ -354,7 +354,7 @@ vim.fn.jobstop(job)
         main = self.tex_project()
         main.write_text("\\documentclass{article}\n\\begin{document}\n"
                         + "".join(f"\\section{{Section {n}}}\nText.\nMore text.\n"
-                                  for n in range(200))
+                                  for n in range(1000))
                         + "\\end{document}\n")
         self.nvim('local main = ' + json.dumps(str(main)) + '\n' + r"""
 vim.cmd('normal ,f')
@@ -381,6 +381,11 @@ vim.cmd.redraw()
 assert(vim.wo.foldmethod == 'manual')
 assert(vim.fn.foldlevel(4) == 0, 'opening/moving the cursor eagerly computed folds')
 assert(vim.bo.omnifunc == 'dotfiles#tex_complete#omnifunc')
+assert(vim.b.dotfiles_tex_fast == nil, 'opening a large file should not change features')
+assert(vim.wo.spell and vim.b.airline_whitespace_disabled == nil)
+assert(vim.bo.synmaxcol == 3000 and vim.o.autocompletedelay == 120)
+assert(vim.fn.exists('#vimtex_matchparen' .. vim.api.nvim_get_current_buf() .. '#CursorMoved') == 0,
+  'opening the file left synchronous bracket matching enabled')
 
 -- A second window exists before the first window computes its fold ranges.
 local first = vim.api.nvim_get_current_win()

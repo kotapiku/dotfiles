@@ -9,10 +9,6 @@ function! s:signature(sources) abort
 endfunction
 
 function! vimtex#parser#auxiliary#labels_manual() abort
-  if !get(b:, 'dotfiles_tex_fast', 0)
-    return s:ManualLabels()
-  endif
-
   " Typing a reference does not change the labels in saved project sources.
   " Include every source's nanosecond mtime so external edits also invalidate.
   let l:sources = b:vimtex.get_sources()
