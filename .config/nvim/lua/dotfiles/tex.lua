@@ -28,6 +28,20 @@ local function project_root(bufnr)
   return vim.fs.root(file, { '.latexmkrc', 'latexmkrc', '.git' }) or vim.fs.dirname(file)
 end
 
+local function close_delimiter()
+  local close = vim.fn['vimtex#delim#close']()
+  if close == '' then
+    return ''
+  end
+  -- VimTeX appends Ctrl+f to reindent; it is not part of the closing text.
+  local delimiter = close:gsub(vim.keycode('<C-f>') .. '$', '')
+  if delimiter:match('^\\end{') then
+    local before = vim.api.nvim_get_current_line():sub(1, vim.fn.col('.') - 1)
+    return (before:match('^%s*$') and '' or '<CR>') .. close .. '<C-o>O'
+  end
+  return close .. string.rep('<Left>', vim.fn.strchars(delimiter))
+end
+
 function M.setup_buffer()
   local bufnr = vim.api.nvim_get_current_buf()
   if vim.g.vscode or buffers[bufnr] then
@@ -49,6 +63,10 @@ function M.setup_buffer()
     callback = function() buffers[bufnr] = nil end,
   })
   if ft == 'tex' then
+    vim.keymap.set('i', ']]', close_delimiter, {
+      buffer = bufnr, expr = true, silent = true,
+      desc = 'Close the TeX environment or delimiter and keep the cursor inside',
+    })
     local ok, err = pcall(require('dotfiles.tex_snippets').setup_buffer, bufnr)
     if not ok then
       warn_once('snippets', 'LuaSnip could not be loaded. Run :Lazy restore.\n' .. tostring(err))
@@ -125,6 +143,7 @@ function M.undo_buffer()
     end
   end
   if state.snippets then
+    pcall(vim.keymap.del, 'i', ']]', { buffer = bufnr })
     for _, mode in ipairs({ 'i', 's' }) do
       for _, lhs in ipairs({ '<Tab>', '<S-Tab>' }) do
         pcall(vim.keymap.del, mode, lhs, { buffer = bufnr })

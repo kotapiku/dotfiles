@@ -4,6 +4,9 @@ call dotfiles#tex_fold#setup()
 " Keep prose readable without inserting hard line breaks into the source.
 setlocal spell linebreak
 
+" Let doorboy complete brackets immediately before a closing math dollar.
+let b:separator_r_exp = '\v^%([\)}\]>,\.=/$]|\s|$)'
+
 " Start with all folds open; folding keys compute ranges on first use.
 setlocal foldenable foldlevel=99
 
@@ -33,6 +36,7 @@ endif
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
       \ . (empty(get(b:, 'undo_ftplugin', '')) ? '' : ' | ')
       \ . 'setlocal spell< linebreak< tags< foldenable< foldlevel<'
+      \ . ' | unlet! b:separator_r_exp'
       \ . ' | execute "silent! nunmap <buffer> <C-A-j>"'
       \ . ' | execute "silent! nunmap <buffer> gd"'
       \ . ' | execute "autocmd! dotfiles_tex_tags * <buffer>"'
