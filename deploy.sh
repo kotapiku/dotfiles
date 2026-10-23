@@ -113,6 +113,11 @@ MANAGED_FILES=(
   .zshenv .zshrc .gitconfig .gitignore_global .vimrc .latexmkrc_platex
   .config/nvim .config/starship.toml
 )
+if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin ]]; then
+  for tab_number in {1..9}; do
+    MANAGED_FILES+=(".config/skim/scripts/Select Tab $tab_number.applescript")
+  done
+fi
 shopt -s nullglob
 for ctags_file in "$DOT_DIRECTORY"/*.ctags; do
   MANAGED_FILES+=("${ctags_file##*/}")
@@ -120,6 +125,7 @@ done
 
 destination_for() {
   case "$1" in
+    .config/skim/scripts/*) printf '%s/Library/Application Support/Skim/Scripts/%s\n' "$TARGET_DIRECTORY" "${1#.config/skim/scripts/}" ;;
     .config/*) printf '%s/%s\n' "$CONFIG_DIRECTORY" "${1#.config/}" ;;
     *.ctags) printf '%s/.ctags.d/%s\n' "$TARGET_DIRECTORY" "$1" ;;
     *) printf '%s/%s\n' "$TARGET_DIRECTORY" "$1" ;;
@@ -143,7 +149,11 @@ done
 run() {
   if [[ "$DRY_RUN" = true ]]; then
     printf '[dry-run]'
-    printf ' %q' "$@"
+    # Bash 3.2 can split UTF-8 bytes while escaping Japanese menu titles.
+    (
+      export LC_ALL=C
+      printf ' %q' "$@"
+    )
     printf '\n'
   else
     "$@"
@@ -233,6 +243,17 @@ done
 if [[ "$SKIP_MACOS" != true && "$PLATFORM" = Darwin ]]; then
   run defaults write -g ApplePressAndHoldEnabled -bool false
   run defaults write net.sourceforge.skim-app.skim AppleWindowTabbingMode -string always
+  # Preserve unrelated app shortcuts. Move tool shortcuts away from Cmd-1..5
+  # and from Option-Cmd-1..9, which the scripts use to select tabs.
+  run defaults write net.sourceforge.skim-app.skim NSUserKeyEquivalents -dict-add \
+    'Text Tool' '^~@1' 'テキストツール' '^~@1' \
+    'Scroll Tool' '^~@2' 'スクロールツール' '^~@2' \
+    'Magnify Tool' '^~@3' '拡大鏡ツール' '^~@3' \
+    'Select Tool' '^~@4' 'ツールを選ぶ' '^~@4' \
+    'Note Tool' '^~@5' 'ノートツール' '^~@5' \
+    'Select Tab 1' '@1' 'Select Tab 2' '@2' 'Select Tab 3' '@3' \
+    'Select Tab 4' '@4' 'Select Tab 5' '@5' 'Select Tab 6' '@6' \
+    'Select Tab 7' '@7' 'Select Tab 8' '@8' 'Select Tab 9' '@9'
   nvim_command="$(command -v nvim || true)"
   if [[ -n "$nvim_command" ]]; then
     # An empty preset selects Custom; Skim's default preset targets TextMate.

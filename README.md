@@ -18,8 +18,9 @@ deploy は macOS 標準の Bash 3.2 で動作します。
 2. このリポジトリの Brewfile に対して `brew bundle` を実行します。
 3. 設定へのリンクを作成し、macOS のキー長押しのアクセント選択を無効にします。
    Skim で書類を常にタブで開く設定（`AppleWindowTabbingMode=always`）も適用します。
+   `Cmd+1`〜`Cmd+9` で左から1〜9番目のタブを選べるようにします。
    Neovim が見つかれば、Skim の `Cmd+Shift+クリック` で原稿へ戻る逆検索も設定します。
-   起動中の Skim には再起動後に反映されます。
+   Skim の設定を反映する際は、Skim を終了してから実行し、設定後に起動してください。
    `default-apps.tsv` に従い、PDF を Skim、Markdown を Warp で開くように関連付けます。
 4. Bluetooth トラックパッド・キーボードのバッテリー確認を毎日22時に実行する設定を登録します。
    残量20%以下で通知します。`~/.config` への手動リンクは不要です。
@@ -189,6 +190,19 @@ relogin
 を実行してください。Skim のウィンドウがなければ、最初の PDF は新しいウィンドウで開きます。
 詳細は [Skim の設定仕様](https://sourceforge.net/p/skim-app/wiki/Hidden_Preferences/#system-overrides)
 を参照してください。
+
+Skim の `Cmd+1`〜`Cmd+9` は、左から1〜9番目のタブを選択します。
+`deploy.sh` が `.config/skim/scripts` の AppleScript を
+`~/Library/Application Support/Skim/Scripts/` に個別にリンクし、アプリのショートカットを設定します。
+再設定するときは、Skim を終了してから `deploy.sh` を実行し、Skim を起動してください。
+初回に macOS が操作の許可を求めた場合は許可してください。
+キーボード操作が拒否される場合は、システム設定 → プライバシーとセキュリティ →
+アクセシビリティで Skim を許可します。オートメーションに Skim → System Events が表示されている場合も許可します。
+スクリプトの実行が拒否された場合は、エラー内容と許可の案内を表示します。
+元の `Cmd+1`〜`Cmd+5` のツール切替は `Ctrl+Option+Cmd+1`〜`Ctrl+Option+Cmd+5` に移します（英語・日本語メニューに対応）。
+スクリプトは [Skim 標準の `Option+Cmd+1`〜`Option+Cmd+9`](https://sourceforge.net/p/skim-app/wiki/Tips_and_Tricks/#hidden-shortcuts)
+を送ります。存在しない番号のタブは選択しません。`Cmd+9` は9番目のタブです。
+設定方法は [Skim のスクリプトメニュー仕様](https://sourceforge.net/p/skim-app/wiki/Tips_and_Tricks/#script-menu) を参照してください。
 
 設定の仕様は [Zsh の履歴オプション](https://zsh.sourceforge.io/Doc/Release/Options.html#History)、
 [補完の初期化](https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Use-of-compinit)、

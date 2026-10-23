@@ -1,6 +1,7 @@
 .config/*
 !.config/nvim
 !.config/starship.toml
+!.config/skim/
 !.config/scripts/
 .config/scripts/*
 !.config/scripts/check_bluetooth_keyboard_battery.sh

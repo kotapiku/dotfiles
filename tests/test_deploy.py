@@ -25,6 +25,7 @@ class DeployTests(unittest.TestCase):
             symlinks=True, ignore=shutil.ignore_patterns("repos", "spell"),
         )
         shutil.copy2(REPOSITORY / ".config/starship.toml", self.checkout / ".config/starship.toml")
+        shutil.copytree(REPOSITORY / ".config/skim", self.checkout / ".config/skim")
         (self.checkout / ".config/scripts").mkdir()
         shutil.copy2(REPOSITORY / ".config/scripts/check_bluetooth_keyboard_battery.sh",
                      self.checkout / ".config/scripts")
@@ -296,6 +297,13 @@ esac
         self.assertEqual(log.read_text().splitlines(), [
             "write", "-g", "ApplePressAndHoldEnabled", "-bool", "false",
             "write", "net.sourceforge.skim-app.skim", "AppleWindowTabbingMode", "-string", "always",
+            "write", "net.sourceforge.skim-app.skim", "NSUserKeyEquivalents", "-dict-add",
+            "Text Tool", "^~@1", "テキストツール", "^~@1",
+            "Scroll Tool", "^~@2", "スクロールツール", "^~@2",
+            "Magnify Tool", "^~@3", "拡大鏡ツール", "^~@3",
+            "Select Tool", "^~@4", "ツールを選ぶ", "^~@4",
+            "Note Tool", "^~@5", "ノートツール", "^~@5",
+            *[argument for number in range(1, 10) for argument in (f"Select Tab {number}", f"@{number}")],
             "write", "net.sourceforge.skim-app.skim", "SKTeXEditorPreset", "-string", "",
             "write", "net.sourceforge.skim-app.skim", "SKTeXEditorCommand", "-string", str(self.root / "bin/nvim"),
             "write", "net.sourceforge.skim-app.skim", "SKTeXEditorArguments", "-string",
